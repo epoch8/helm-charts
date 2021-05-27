@@ -1,0 +1,134 @@
+# Default values for rasa-bot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Public URL where bot and backend are hosted
+baseurl: http://localhost/
+
+telegram: {}
+  # access_token: XXX
+  # bot_name: XXX
+
+database:
+  name: db_name
+  user: db_user
+  password: db_pass
+  host: db_host
+  port: 5432
+
+rasa:
+  image:
+    repository: rasa
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart version.
+    tag: ""
+
+  tracker_store_in_db: False
+
+  models_in_gcs: False
+
+  debug: False
+
+  core:
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+      requests:
+        cpu: "0"
+        memory: 1Gi
+
+  # rasa endpoints.yml
+  endpoints:
+    action_endpoint:
+      url: "http://localhost:5055/webhook"
+
+  credentials:
+    rasa:
+      url: "http://localhost:5002/api"
+
+    # actions.connectors.telegram.TelegramInput:
+    #   access_token: "XXX"
+    #   verify: "XXX"
+    #   webhook_url: "XXX"
+
+    socketio:
+      user_message_evt: user_uttered
+      bot_message_evt: bot_uttered
+      session_persistence: true
+
+
+backend:
+  enabled: false
+
+  image:
+    repository: backend
+    tag: ""
+  command: ['python', '-m', 'http.server', '8000', '--directory', '.']
+  resources:
+    limits:
+      memory: "50Mi"
+      cpu: "0.5"
+
+env: {}
+
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: False
+  hostname: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

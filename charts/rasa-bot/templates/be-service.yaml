@@ -1,0 +1,19 @@
+{{ if .Values.backend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-be
+  labels:
+    {{- include "rasa-bot.labels" . | nindent 4 }}
+
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include "rasa-bot.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+{{ end }}

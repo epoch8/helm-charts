@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  {{ include "rasa-bot.fullname" . }}
+data:
+  endpoints.yml: |
+{{- with .Values.rasa.endpoints }}
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- if .Values.rasa.tracker_store_in_db }}{{- with .Values.database }}
+    tracker_store:
+      type: SQL
+      dialect: "postgresql"
+      url: "{{ .host }}:{{ .port }}"
+      username: "{{ .user }}"
+      password: "{{ .password }}"
+      db: "{{ .name }}"
+{{- end }}{{- end }}
+  credentials.yml: |
+    rest: {}
+{{- with .Values.rasa.credentials }}
+  {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- if .Values.telegram }}
+    telegram:
+      # actions.connectors.telegram.TelegramInput:
+      access_token: "{{ .Values.telegram.access_token }}"
+      verify: "{{ .Values.telegram.bot_name }}"
+      webhook_url: "{{ .Values.baseurl }}webhooks/telegram/webhook"
+{{- end}}

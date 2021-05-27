@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rasa-bot.fullname" . }}
+  labels:
+    {{- include "rasa-bot.labels" . | nindent 4 }}
+  annotations:
+    beta.cloud.google.com/backend-config: >-
+      {"ports": {"rasa-api": "{{ include "rasa-bot.fullname" . }}", "duckling-extractor":
+      "{{ include "rasa-bot.fullname" . }}"}}
+
+spec:
+  type: NodePort
+  ports:
+    - name: rasa-api
+      port: 80
+      targetPort: rasa-api
+      protocol: TCP
+  selector:
+    {{- include "rasa-bot.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: rasa

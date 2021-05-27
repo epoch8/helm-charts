@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rasa-bot.fullname" . }}
+  labels:
+    {{- include "rasa-bot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rasa-bot.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: rasa
+  template:
+    metadata:
+      annotations:
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/rasa-configmap.yaml") . | sha256sum }}
+      labels:
+        {{- include "rasa-bot.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: rasa
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: rasa
+          image: "{{ .Values.rasa.image.repository }}:{{ .Values.rasa.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - containerPort: 5005
+              name: rasa-api
+          livenessProbe:
+            httpGet:
+              path: /
+              port: rasa-api
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: rasa-api
+          {{- with .Values.rasa.core.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /app/endpoints.yml
+              name: configmap
+              subPath: endpoints.yml
+            - mountPath: /app/credentials.yml
+              name: configmap
+              subPath: credentials.yml
+          command:
+            - rasa
+            - run
+            - --enable-api
+            - --credentials
+            - /app/credentials.yml
+            - --endpoints
+            - /app/endpoints.yml
+            {{- if .Values.rasa.models_in_gcs }}
+            - --remote-storage
+            - gcs
+            {{- end }}
+            {{- if .Values.rasa.debug }}
+            - --debug
+            {{- end }}
+          env:
+          {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.rasa.models_in_gcs }}
+            - name: BUCKET_NAME
+              value: {{ .Release.Name }}-models
+          {{- end }}
+            - name: DUMMY_VALUE_SO_ENV_IS_NOT_EMPTY
+              value: value
+
+        - name: actions
+          image: "{{ .Values.rasa.image.repository }}:{{ .Values.rasa.image.tag | default .Chart.AppVersion }}"
+          resources:
+            limits:
+              cpu: "2"
+            requests:
+              cpu: "0"
+          volumeMounts:
+            - mountPath: /app/endpoints.yml
+              name: configmap
+              subPath: endpoints.yml
+          command:
+            - rasa
+            - run
+            - actions
+            {{- if .Values.rasa.debug }}
+            - --debug
+            {{- end }}
+          {{- with .Values.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: duckling
+          image: rasa/duckling:0.1.6.2
+          command: ['stack', 'exec', 'duckling-example-exe', '--', '-p', '8005']
+          resources:
+            limits:
+              cpu: "2"
+            requests:
+              cpu: "0"
+          ports:
+            - containerPort: 8005
+              name: duckling
+
+      volumes:
+        - name: configmap
+          configMap:
+            name: {{ include "rasa-bot.fullname" . }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
