@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "prefect-agent.name" . }}
+  labels:
+    {{- include "prefect-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "prefect-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "prefect-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ .Values.agent.serviceAccountName }}
+      containers:
+      - args:
+        - prefect agent kubernetes start
+        command:
+        - /bin/bash
+        - -c
+        env:
+        - name: PREFECT__CLOUD__AGENT__AUTH_TOKEN
+          value: {{ .Values.agent.token }}
+        - name: PREFECT__CLOUD__API
+          value: https://api.prefect.io
+        - name: NAMESPACE
+          value: {{ .Values.namespace }}
+        - name: IMAGE_PULL_SECRETS
+          value: ''
+        - name: PREFECT__CLOUD__AGENT__LABELS
+          value: '{{ .Values.agent.labels }}'
+        - name: JOB_MEM_REQUEST
+          value: ''
+        - name: JOB_MEM_LIMIT
+          value: '2Gi'
+        - name: JOB_CPU_REQUEST
+          value: ''
+        - name: JOB_CPU_LIMIT
+          value: '2'
+        - name: IMAGE_PULL_POLICY
+          value: ''
+        - name: SERVICE_ACCOUNT_NAME
+          value: ''
+        - name: PREFECT__BACKEND
+          value: server
+        - name: PREFECT__CLOUD__AGENT__AGENT_ADDRESS
+          value: http://:8080
+        image: prefecthq/prefect:0.13.18-python3.6
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 40
+          periodSeconds: 40
+        name: agent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
