@@ -11,4 +11,15 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/prefect-agent-0.1.1/prefect-agent-0.1.1.tgz
     version: 0.1.1
+  rasa-bot:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-05-27T16:01:53.040130883Z"
+    description: A Helm chart for Kubernetes
+    digest: 08944575467968f3f40b160cf9d19bad5a43d46e835f54666ec65ec1ab64e7a8
+    name: rasa-bot
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/rasa-bot-1.5.0/rasa-bot-1.5.0.tgz
+    version: 1.5.0
 generated: "2021-05-27T15:25:33.290414096Z"
