@@ -1,0 +1,3 @@
+image:
+  repository: prefecthq/prefect
+  tag: 0.14.14-python3.6

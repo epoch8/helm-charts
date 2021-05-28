@@ -48,8 +48,7 @@ spec:
           value: server
         - name: PREFECT__CLOUD__AGENT__AGENT_ADDRESS
           value: http://:8080
-        image: prefecthq/prefect:0.13.18-python3.6
-        imagePullPolicy: Always
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         livenessProbe:
           failureThreshold: 2
           httpGet:
