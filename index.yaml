@@ -1,5 +1,20 @@
 apiVersion: v1
 entries:
+  metabase:
+  - apiVersion: v1
+    appVersion: v0.36.3
+    created: "2021-06-05T20:06:39.540225937Z"
+    deprecated: true
+    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    digest: 67643558ec3197b0af2741dd47bd52bd367f04517c3decd45751d6e652cb97a8
+    home: http://www.metabase.com/
+    icon: http://www.metabase.com/images/logo.svg
+    name: metabase
+    sources:
+    - https://github.com/metabase/metabase
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/metabase-0.13.2/metabase-0.13.2.tgz
+    version: 0.13.2
   prefect-agent:
   - apiVersion: v2
     appVersion: 0.14.14-python3.6
