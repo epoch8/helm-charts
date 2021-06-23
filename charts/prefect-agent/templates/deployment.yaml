@@ -33,13 +33,13 @@ spec:
         - name: PREFECT__CLOUD__AGENT__LABELS
           value: '{{ .Values.agent.labels }}'
         - name: JOB_MEM_REQUEST
-          value: ''
+          value: {{ .Values.job.resources.requests.memory | quote }}
         - name: JOB_MEM_LIMIT
-          value: '2Gi'
+          value: {{ .Values.job.resources.limits.memory | quote }}
         - name: JOB_CPU_REQUEST
-          value: ''
+          value: {{ .Values.job.resources.requests.cpu | quote }}
         - name: JOB_CPU_LIMIT
-          value: '2'
+          value: {{ .Values.job.resources.limits.cpu | quote }}
         - name: IMAGE_PULL_POLICY
           value: ''
         - name: SERVICE_ACCOUNT_NAME
