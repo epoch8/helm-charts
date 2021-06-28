@@ -12,6 +12,8 @@ agent:
   labels: ''
 
 job:
+  imagePullSecret: ''
+
   resources:
     requests:
       cpu: ''

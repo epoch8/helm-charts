@@ -29,7 +29,7 @@ spec:
         - name: NAMESPACE
           value: {{ .Values.namespace }}
         - name: IMAGE_PULL_SECRETS
-          value: ''
+          value: {{ .Values.job.imagePullSecret | quote }}
         - name: PREFECT__CLOUD__AGENT__LABELS
           value: '{{ .Values.agent.labels }}'
         - name: JOB_MEM_REQUEST
