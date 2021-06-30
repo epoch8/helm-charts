@@ -4,13 +4,15 @@
 
 replicaCount: 1
 
+app:
+  port: 8050
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
-  port: 8050
-
+  
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
