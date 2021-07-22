@@ -28,8 +28,10 @@ spec:
           value: https://api.prefect.io
         - name: NAMESPACE
           value: {{ .Values.namespace }}
+        {{- if .Values.job.imagePullSecret }}
         - name: IMAGE_PULL_SECRETS
           value: {{ .Values.job.imagePullSecret | quote }}
+        {{- end }}
         - name: PREFECT__CLOUD__AGENT__LABELS
           value: '{{ .Values.agent.labels }}'
         - name: JOB_MEM_REQUEST
