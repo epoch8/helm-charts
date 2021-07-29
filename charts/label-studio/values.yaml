@@ -55,6 +55,14 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# istio VirtualService
+virtualService:
+  enabled: false
+
+  publicHost: "" # http://example.com:1212 - host as user would see
+  uriPrefix: "" # Prefix to use in VirtualService
+  gateway: "" # Gateway to use, for example kubeflow-system/gateway
+
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

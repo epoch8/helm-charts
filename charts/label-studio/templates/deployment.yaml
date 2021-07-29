@@ -35,8 +35,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - label-studio
-            - --host=0.0.0.0
             - --port=80
+            {{- if .Values.virtualService.enabled }}
+            - --host={{ .Values.virtualService.publicHost}}{{ .Values.virtualService.uriPrefix }}
+            {{- end }}
           {{- if .Values.auth.restrictSignup }}
           env:
             - name: LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK
@@ -52,11 +54,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /health/
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /health/
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

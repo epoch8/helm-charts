@@ -1,0 +1,25 @@
+{{ if .Values.virtualService.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "label-studio.fullname" . }}
+  labels:
+    {{- include "label-studio.labels" . | nindent 4 }}
+spec:
+  gateways:
+    - {{ .Values.virtualService.gateway }}
+  hosts:
+    - '*'
+  http:
+    - match:
+        - uri:
+            prefix: {{ .Values.virtualService.uriPrefix }}
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: {{ include "label-studio.fullname" . }}
+            port:
+              number: 80
+      timeout: 300s
+{{ end }}
