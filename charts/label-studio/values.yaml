@@ -80,3 +80,9 @@ persistence:
     resources:
       requests:
         storage: 1Gi
+
+auth:
+  restrictSignup: true
+
+  # username: ""
+  # password: ""

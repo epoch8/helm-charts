@@ -37,6 +37,15 @@ spec:
             - label-studio
             - --host=0.0.0.0
             - --port=80
+          {{- if .Values.auth.restrictSignup }}
+          env:
+            - name: LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK
+              value: "true"
+            - name: LABEL_STUDIO_USERNAME
+              value: {{ .Values.auth.username | quote }}
+            - name: LABEL_STUDIO_PASSWORD
+              value: {{ .Values.auth.password | quote }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 80
