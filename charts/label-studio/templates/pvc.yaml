@@ -1,0 +1,15 @@
+{{ if .Values.persistence.pvc.enabled }}
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "label-studio.fullname" . }}
+  labels:
+    {{- include "label-studio.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce 
+  resources:
+    {{ .Values.persistence.pvc.resources | toYaml | nindent 4 }}
+
+{{ end }}
