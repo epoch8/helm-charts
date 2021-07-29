@@ -14,6 +14,16 @@ entries:
   label-studio:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2021-07-29T15:14:09.416614586Z"
+    description: A Helm chart for Kubernetes
+    digest: 1b3e20d779ba12af75e856cdb8999c9c8fef8597e1319167dd4a3b919d84af5d
+    name: label-studio
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/label-studio-0.1.1/label-studio-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2021-07-29T14:41:12.280602339Z"
     description: A Helm chart for Kubernetes
     digest: a8178d29c25db9f6872aa5d6eca8c23c2c8516ea9076e13dd7e67cdcf82d3c4f
