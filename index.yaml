@@ -143,4 +143,15 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/rasa-bot-1.5.0/rasa-bot-1.5.0.tgz
     version: 1.5.0
+  simple-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-09-01T18:09:33.976953811Z"
+    description: A Helm chart for Kubernetes
+    digest: b65a1731124947835694663ad7a92cea7ea98ead96dc9b196dc98b2237b1511f
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-0.1.0/simple-app-0.1.0.tgz
+    version: 0.1.0
 generated: "2021-05-27T15:25:33.290414096Z"
