@@ -2,7 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+nameOverride: ""
+fullnameOverride: ""
+
+domain: ""
 
 image:
   repository: nginx
@@ -11,8 +14,35 @@ image:
   tag: ""
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+
+port: 80
+
+# Default args for health probe
+probe:
+  httpGet:
+    path: /
+
+livenessProbe: {}
+  # httpGet:
+  #   path: /
+  #   port: http
+  #   scheme: HTTP
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # successThreshold: 1
+  # failureThreshold: 3
+
+readinessProbe: {}
+  # httpGet:
+  #   path: /
+  #   port: http
+  #   scheme: HTTP
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # successThreshold: 1
+  # failureThreshold: 3
+
+replicaCount: 1
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -36,25 +66,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-app:
-  port: 80
-
 service:
   type: ClusterIP
   port: 80
-
-  livenessProbe:
-    # httpGet:
-    #   path: /
-    #   port: http
-    #   scheme: HTTP
-    timeoutSeconds: 1
-    periodSeconds: 10
-    successThreshold: 1
-    failureThreshold: 3
-
-  readinessProbe:
-    failureThreshold: 3
 
 ingress:
   enabled: false
@@ -97,3 +111,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Settings specific to GKE deployment
+gke:
+  managedCertificate:
+    enabled: true

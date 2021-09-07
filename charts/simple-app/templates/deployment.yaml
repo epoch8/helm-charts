@@ -28,32 +28,55 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "simple-app.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.app.command }}
+          {{- if .Values.command }}
           command: 
-            {{- .Values.app.command | toYaml | nindent 12 }}
+            {{- .Values.command | toYaml | nindent 12 }}
+          {{ end }}
+          {{- if .Values.env }}
+          env:
+            {{- .Values.env | toYaml | nindent 12 }}
           {{ end }}
           ports:
             - name: http
-              containerPort: {{ .Values.app.port }}
+              containerPort: {{ .Values.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.probe.httpGet.path }}
               port: http
-            timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
-            periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.app.livenessProbe.failureThreshold }}
+            {{- if .Values.livenessProbe.timeoutSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            {{- end }}
+            {{- if .Values.livenessProbe.periodSeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            {{- end }}
+            {{- if .Values.livenessProbe.successThreshold }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            {{- end }}
+            {{- if .Values.livenessProbe.failureThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            {{- end }}
           readinessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.probe.httpGet.path }}
               port: http
-            failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
+            {{- if .Values.readinessProbe.timeoutSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            {{- end }}
+            {{- if .Values.readinessProbe.periodSeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            {{- end }}
+            {{- if .Values.readinessProbe.successThreshold }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            {{- end }}
+            {{- if .Values.readinessProbe.failureThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
