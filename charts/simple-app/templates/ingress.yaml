@@ -14,6 +14,9 @@ metadata:
   labels:
     {{- include "simple-app.labels" . | nindent 4 }}
   annotations:
+  {{- if .Values.ingress.nginx }}
+    kubernetes.io/ingress.class: nginx
+  {{- end }}
   {{- if .Values.gke.managedCertificate.enabled }}
     networking.gke.io/managed-certificates: {{ include "simple-app.fullname" . }}
   {{- end }}
@@ -32,9 +35,10 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - http:
+    - host: {{ .Values.domain }}
+      http:
         paths:
-          - path: /*
+          - path: {{ if .Values.ingress.nginx }}/{{ else }}/*{{ end }}
             pathType: ImplementationSpecific
             backend:
               service:
