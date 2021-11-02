@@ -3,6 +3,16 @@ entries:
   dash-app:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2021-11-02T07:15:21.67759349Z"
+    description: A Helm chart for Kubernetes
+    digest: 986d7586ff2c514a33158010ec942031d5291097910e7c6fd0eb4c0c16240d2e
+    name: dash-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/dash-app-0.1.0/dash-app-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2021-06-30T15:01:35.947425846Z"
     description: A Helm chart for Kubernetes
     digest: 4a827be2db9077ab1a92727527a625f4feee792385e1c124d7604cd26d3e2eec
