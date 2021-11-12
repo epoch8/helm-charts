@@ -15,7 +15,11 @@ image:
 
 imagePullSecrets: []
 
+# Port that container is using
 port: 80
+
+# Environment variables for container
+env: {}
 
 # Default args for health probe
 probe:
@@ -108,4 +112,4 @@ affinity: {}
 # Settings specific to GKE deployment
 gke:
   managedCertificate:
-    enabled: true
+    enabled: false
