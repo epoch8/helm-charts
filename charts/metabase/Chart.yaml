@@ -2,8 +2,8 @@ apiVersion: v1
 description: The easy, open source way for everyone in your company to ask questions
   and learn from data.
 name: metabase
-version: 0.13.3
-appVersion: v0.40.1
+version: 0.13.4
+appVersion: v0.42.2
 deprecated: true
 home: http://www.metabase.com/
 icon: http://www.metabase.com/images/logo.svg
