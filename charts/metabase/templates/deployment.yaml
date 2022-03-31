@@ -12,6 +12,7 @@ spec:
   selector:
     matchLabels:
       app: {{ template "metabase.name" . }}
+      release: {{ .Release.Name }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
