@@ -21,6 +21,11 @@ port: 80
 # Environment variables for container
 env: {}
 
+volumes: []
+  # - name: data
+  #   size: 1Gi
+  #   mountPath: /data
+
 # Default args for health probe
 probe:
   httpGet:
