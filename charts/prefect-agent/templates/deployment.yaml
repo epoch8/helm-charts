@@ -47,9 +47,13 @@ spec:
         - name: SERVICE_ACCOUNT_NAME
           value: ''
         - name: PREFECT__BACKEND
-          value: server
+          value: cloud
         - name: PREFECT__CLOUD__AGENT__AGENT_ADDRESS
           value: http://:8080
+        - name: PREFECT__CLOUD__API_KEY
+          value: {{ .Values.agent.token }}
+        - name: PREFECT__CLOUD__TENANT_ID
+          value: ''
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         livenessProbe:
           failureThreshold: 2

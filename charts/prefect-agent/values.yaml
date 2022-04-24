@@ -1,6 +1,6 @@
 image:
   repository: prefecthq/prefect
-  tag: 0.14.22-python3.6
+  tag: 1.2.0-python3.7
 
 namespace: default
 
