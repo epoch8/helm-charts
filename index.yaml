@@ -64,6 +64,20 @@ entries:
     version: 0.1.0
   metabase:
   - apiVersion: v1
+    appVersion: v0.43.4
+    created: "2022-07-06T13:50:04.865276332Z"
+    deprecated: true
+    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    digest: 8bae79638842769396f427ea82f8785cca16d9a61b8e0702a09926e70a101708
+    home: http://www.metabase.com/
+    icon: http://www.metabase.com/images/logo.svg
+    name: metabase
+    sources:
+    - https://github.com/metabase/metabase
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/metabase-0.14.1/metabase-0.14.1.tgz
+    version: 0.14.1
+  - apiVersion: v1
     appVersion: v0.42.2
     created: "2022-03-31T08:53:56.721700575Z"
     deprecated: true
