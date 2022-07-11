@@ -26,6 +26,15 @@ volumes: []
   #   size: 1Gi
   #   mountPath: /data
 
+configs: []
+  # - name: conn.json
+  #   value: |
+  #     {
+  #       "client": "pg",
+  #       "connection": {
+  #       }
+  #     }
+
 # Default args for health probe
 probe:
   httpGet:

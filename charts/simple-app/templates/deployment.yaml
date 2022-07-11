@@ -33,14 +33,17 @@ spec:
       serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- if .Values.volumes }}
       volumes:
         {{- range .Values.volumes }}
         - name: {{ $fullName }}-{{ .name }}
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
         {{- end }}
-      {{- end }}
+        {{- range .Values.configs }}
+        - name: configs
+          configMap:
+            name: {{ $fullName }}
+        {{- end }}
       containers:
         - name: {{ include "simple-app.name" . }}
           securityContext:
@@ -93,13 +96,16 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.volumes }}
           volumeMounts:
             {{- range .Values.volumes }}
             - name: {{ $fullName }}-{{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
-          {{- end }}
+            {{- range .Values.configs }}
+            - name: configs
+              mountPath: "/configs"
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
