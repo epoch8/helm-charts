@@ -39,14 +39,18 @@ spec:
             {{- if .Values.virtualService.enabled }}
             - --host={{ .Values.virtualService.publicHost}}{{ .Values.virtualService.uriPrefix }}
             {{- end }}
-          {{- if .Values.auth.restrictSignup }}
           env:
+          {{- if .Values.auth.restrictSignup }}
             - name: LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK
               value: "true"
             - name: LABEL_STUDIO_USERNAME
               value: {{ .Values.auth.username | quote }}
             - name: LABEL_STUDIO_PASSWORD
               value: {{ .Values.auth.password | quote }}
+          {{- end }}
+          {{- range $k, $v := .Values.env }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
           {{- end }}
           ports:
             - name: http
