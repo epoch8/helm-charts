@@ -94,6 +94,8 @@ ingress:
   # True if target ingress is Nginx (alters path definition and annotation)
   nginx: false
 
+  className: ""
+
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
