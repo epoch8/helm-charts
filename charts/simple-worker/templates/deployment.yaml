@@ -1,0 +1,94 @@
+{{- $fullName := include "simple-app.fullname" . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "simple-app.fullname" . }}
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "simple-app.selectorLabels" . | nindent 6 }}
+  {{- if .Values.volumes }}
+  strategy:
+    type: Recreate
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "simple-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- range .Values.volumes }}
+        - name: {{ $fullName }}-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ $fullName }}-{{ .name }}
+        {{- end }}
+        {{- range .Values.configs }}
+        - name: configs
+          configMap:
+            name: {{ $fullName }}
+        {{- end }}
+      containers:
+        - name: {{ include "simple-app.name" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.command }}
+          command: 
+            {{- .Values.command | toYaml | nindent 12 }}
+          {{ end }}
+          {{- if .Values.env }}
+          env:
+            {{- .Values.env | toYaml | nindent 12 }}
+          {{ end }}
+          livenessProbe:
+            exec:
+              command:
+                - echo
+                - ok
+          readinessProbe:
+            exec:
+              command:
+                - echo
+                - ok
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- range .Values.volumes }}
+            - name: {{ $fullName }}-{{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+            {{- range .Values.configs }}
+            - name: configs
+              mountPath: "/configs"
+              readOnly: true
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
