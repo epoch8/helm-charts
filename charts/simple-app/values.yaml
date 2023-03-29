@@ -21,6 +21,11 @@ port: 80
 # Environment variables for container
 env: {}
 
+command: []
+# - command
+# - to
+# - run
+
 volumes: []
   # - name: data
   #   size: 1Gi
