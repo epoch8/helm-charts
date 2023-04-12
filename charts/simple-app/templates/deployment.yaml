@@ -34,6 +34,12 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
+        {{- if .Values.shmSize }}
+        - name: shared-memory
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ .Values.shmSize }}
+        {{- end }}
         {{- range .Values.volumes }}
         - name: {{ $fullName }}-{{ .name }}
           persistentVolumeClaim:
@@ -97,6 +103,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            {{- if .Values.shmSize }}
+            - name: shared-memory
+              mountPath: /dev/shm
+            {{- end }}
             {{- range .Values.volumes }}
             - name: {{ $fullName }}-{{ .name }}
               mountPath: {{ .mountPath }}

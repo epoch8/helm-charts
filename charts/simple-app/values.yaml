@@ -26,6 +26,10 @@ command: []
 # - to
 # - run
 
+# Amount of shared memory to allocate for the container
+# If not set, the default is 64Mi
+shmSize: ""
+
 volumes: []
   # - name: data
   #   size: 1Gi

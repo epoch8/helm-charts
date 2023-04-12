@@ -1,3 +1,7 @@
+# 0.8.0
+
+* Add `.shmSize` to 
+
 # 0.7.0
 
 * Add `Ingress` `className` property
