@@ -19,8 +19,9 @@ spec:
   {{- end }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -64,6 +65,11 @@ spec:
           env:
             {{- .Values.env | toYaml | nindent 12 }}
           {{ end }}
+          envFrom:
+            {{- if .Values.secrets }}
+            - secretRef:
+                name: {{ $fullName }}-secrets
+            {{- end}}
           ports:
             - name: http
               containerPort: {{ .Values.port }}
@@ -84,6 +90,9 @@ spec:
             {{- if .Values.livenessProbe.failureThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             {{- end }}
+            {{- if .Values.livenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            {{- end }}
           readinessProbe:
             httpGet:
               path: {{ .Values.probe.httpGet.path }}
@@ -99,6 +108,9 @@ spec:
             {{- end }}
             {{- if .Values.readinessProbe.failureThreshold }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            {{- end }}
+            {{- if .Values.readinessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
