@@ -1,3 +1,12 @@
+# 0.9.0
+
+* Add `.servicePorts`
+
+## Backwards incompatibility
+
+* Add `.livenessProbe.enabled`
+* Add `.readinessProbe.enabled`
+
 # 0.8.0
 
 * Add `.shmSize` to 
