@@ -68,6 +68,12 @@ spec:
             - name: http
               containerPort: {{ .Values.port }}
               protocol: TCP
+            {{- range .Values.servicePorts }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: {{ .protocol | default "TCP" }}
+            {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.probe.httpGet.path }}
@@ -84,6 +90,8 @@ spec:
             {{- if .Values.livenessProbe.failureThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             {{- end }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.probe.httpGet.path }}
@@ -100,6 +108,7 @@ spec:
             {{- if .Values.readinessProbe.failureThreshold }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
             {{- end }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
