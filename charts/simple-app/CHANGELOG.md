@@ -1,6 +1,6 @@
 # 0.9.1
 
-* Add `.initialDelaySeconds`
+* Add support for `.initialDelaySeconds` in `livenessProbe` and `readinessProbe`
 
 # 0.9.0
 
