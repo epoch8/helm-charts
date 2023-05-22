@@ -1,3 +1,7 @@
+# 0.9.1
+
+* Add `.initialDelaySeconds`
+
 # 0.9.0
 
 * Add `.servicePorts`

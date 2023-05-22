@@ -78,6 +78,9 @@ spec:
             httpGet:
               path: {{ .Values.probe.httpGet.path }}
               port: http
+            {{- if .Values.livenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            {{- end }}
             {{- if .Values.livenessProbe.timeoutSeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             {{- end }}
@@ -96,6 +99,9 @@ spec:
             httpGet:
               path: {{ .Values.probe.httpGet.path }}
               port: http
+            {{- if .Values.livenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            {{- end }}
             {{- if .Values.readinessProbe.timeoutSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             {{- end }}
