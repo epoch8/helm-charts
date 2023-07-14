@@ -15,14 +15,15 @@ image:
 
 imagePullSecrets: []
 
-# Port that container is using
 port: 80
 
-# Ports to be exposed on the service
-servicePorts: []
-  # - name: grpc
-  #   port: 50051  # both containerPort and service port
-  #   protocol: TCP
+extraPorts: []
+#  - name: grpc
+#    port: 50051
+#    protocol: TCP
+
+service:
+  type: ClusterIP
 
 # Environment variables for container
 env: {}
@@ -50,13 +51,7 @@ configs: []
   #       }
   #     }
 
-# Default args for health probe
-probe:
-  httpGet:
-    path: /
-
-livenessProbe:
-  enabled: true
+livenessProbe: {}
   # httpGet:
   #   path: /
   #   port: http
@@ -67,8 +62,7 @@ livenessProbe:
   # successThreshold: 1
   # failureThreshold: 3
 
-readinessProbe:
-  enabled: true
+readinessProbe: {}
   # httpGet:
   #   path: /
   #   port: http
@@ -103,16 +97,11 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
   enabled: false
 
   # True if target ingress is Nginx (alters path definition and annotation)
   nginx: false
-
   className: ""
 
   annotations: {}

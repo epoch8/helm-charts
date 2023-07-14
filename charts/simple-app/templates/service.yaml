@@ -7,11 +7,11 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.port }}
       targetPort: http
       protocol: TCP
       name: http
-    {{- range .Values.servicePorts}}
+    {{- range .Values.extraPorts}}
     - port: {{ .port }}
       targetPort: {{ .name }}
       protocol: {{ .protocol | default "TCP" }}

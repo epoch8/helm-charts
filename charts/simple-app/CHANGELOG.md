@@ -1,3 +1,10 @@
+# 1.0.0
+
+* Service port equals container port
+* Delete `Values.probe`. `livenessProbe` and `readinessProbe` import from values file
+
+## Backwards incompatibility
+
 # 0.9.1
 
 * Add support for `.initialDelaySeconds` in `livenessProbe` and `readinessProbe`
