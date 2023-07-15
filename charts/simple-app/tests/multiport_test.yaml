@@ -55,3 +55,12 @@ tests:
               port: 22022
               protocol: TCP
               targetPort: port2
+
+  - it: Ingress multiple port specification should work correctly
+    template: ingress.yaml
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 9000
