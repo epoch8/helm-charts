@@ -5,3 +5,8 @@ image:
   tag: 1.1.1
 
 port: 9000
+
+domain: test.epoch8.co
+
+ingress:
+  enabled: true

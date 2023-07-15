@@ -8,6 +8,15 @@ release:
   namespace: default
 
 tests:
+  - it: All manifests should match snapshot
+    templates:
+      - deployment.yaml
+      - service.yaml
+      - ingress.yaml
+      - serviceaccount.yaml
+    asserts:
+      - matchSnapshot: {}
+
   - it: Deployment should be named as release
     template: deployment.yaml
     asserts:
@@ -38,6 +47,28 @@ tests:
               name: http
               protocol: TCP
 
+  - it: Deployment should have readinessProbe set correctly by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet
+          value:
+            path: /
+            port: http
+  
+  - it: Deployment should have livenessProbe set correctly by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet
+          value:
+            path: /
+            port: http
+
   - it: Service should be named as release
     template: service.yaml
     asserts:
@@ -59,3 +90,15 @@ tests:
               port: 80
               protocol: TCP
               targetPort: http
+
+  - it: Ingress should be named as release
+    template: ingress.yaml
+    set:
+      domain: example.com
+      ingress.enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: simple

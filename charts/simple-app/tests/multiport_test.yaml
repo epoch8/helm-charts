@@ -31,7 +31,7 @@ tests:
           path: spec.ports
           value:
             - name: http
-              port: 80
+              port: 9000
               protocol: TCP
               targetPort: http
             - name: port1
