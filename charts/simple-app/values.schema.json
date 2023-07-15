@@ -42,6 +42,9 @@
                 }
             ]
         },
+        "serviceType": {
+            "type": "string"
+        },
         "extraPorts": {
             "type": "array",
             "items": {
@@ -66,14 +69,6 @@
                     "protocol": {
                         "type": "string"
                     }
-                }
-            }
-        },
-        "service": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string"
                 }
             }
         },

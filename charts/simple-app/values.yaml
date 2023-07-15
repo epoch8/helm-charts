@@ -17,17 +17,16 @@ image:
 
 imagePullSecrets: []
 
-port: 80
-servicePort: ""
+port: 8000
+
+servicePort: 80
+serviceType: ClusterIP
 
 extraPorts: []
 #  - name: grpc
 #    port: 50051
-#    servicePort: 80
+#    servicePort: ""
 #    protocol: TCP
-
-service:
-  type: ClusterIP
 
 # Environment variables for container
 env: {}
