@@ -103,13 +103,22 @@ tests:
           path: metadata.name
           value: simple
 
-  - it: Ingress should be used service port
+  - it: Ingress should use default service port if not specified
     template: ingress.yaml
-    set:
-      servicePort: 80
     asserts:
       - isKind:
           of: Ingress
       - equal:
           path: spec.rules[0].http.paths[0].backend.service.port.number
           value: 80
+
+  - it: Ingress should use custom service port
+    template: ingress.yaml
+    set:
+      servicePort: 7000
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 7000

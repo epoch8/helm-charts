@@ -65,7 +65,7 @@ All manifests should match snapshot:
                   service:
                     name: simple
                     port:
-                      number: 9000
+                      number: 80
                 path: /*
                 pathType: ImplementationSpecific
   3: |
