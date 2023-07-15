@@ -1,9 +1,22 @@
 suite: simple-app multiport case
 
+release:
+  name: simple
+  namespace: default
+
 values:
   - multiport-values.yaml
 
 tests:
+  - it: All manifests should match snapshot
+    templates:
+      - deployment.yaml
+      - service.yaml
+      - ingress.yaml
+      - serviceaccount.yaml
+    asserts:
+      - matchSnapshot: {}
+
   - it: Deployment multiple port specification should work correctly
     template: deployment.yaml
     asserts:

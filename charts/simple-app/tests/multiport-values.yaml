@@ -14,3 +14,8 @@ extraPorts:
   - name: port2
     port: 2
     servicePort: 22022
+
+domain: test.epoch8.co
+
+ingress:
+  enabled: true
