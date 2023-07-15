@@ -23,12 +23,12 @@ jobs:
 
       - name: Run tests
         run: |
-          helm unittest charts/* -o test-result.xml -t junit
+          helm unittest charts/* -o test-report.xml -t junit
 
-      - name: Test report
+      - name: test report
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: test
-          path: test-result.xml
+          name: Test Report
+          path: test-report.xml
           reporter: java-junit
