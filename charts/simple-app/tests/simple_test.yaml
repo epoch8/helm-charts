@@ -1,0 +1,42 @@
+suite: simple
+values:
+  - simple-values.yaml
+tests:
+  - it: Image tag should be set correctly
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: Simple port specification for deployment
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 9000
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].protocol
+          value: TCP
+      - lengthEqual:
+          path: spec.template.spec.containers[0].ports
+          count: 1
+
+  - it: Simple port specification for service
+    template: service.yaml
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 80
+      - equal:
+          path: spec.ports[0].protocol
+          value: TCP
+      - lengthEqual:
+          path: spec.ports
+          count: 1

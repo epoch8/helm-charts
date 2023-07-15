@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test
+  tag: 1.1.1
+
+port: 9000
+servicePort: 80

@@ -1,0 +1,42 @@
+suite: multiport
+values:
+  - multiport-values.yaml
+tests:
+  - it: Multiple port specification for deployment
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].ports
+          value:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
+            - containerPort: 1
+              name: port1
+              protocol: TCP
+            - containerPort: 2
+              name: port2
+              protocol: TCP
+
+  - it: Multiple port specification for service
+    template: service.yaml
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports
+          value:
+            - name: http
+              port: 9000
+              protocol: TCP
+              targetPort: http
+            - name: port1
+              port: 1
+              protocol: TCP
+              targetPort: port1
+            - name: port2
+              port: 22022
+              protocol: TCP
+              targetPort: port2
