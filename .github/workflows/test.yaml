@@ -23,7 +23,7 @@ jobs:
 
       - name: Run tests
         run: |
-          helm unittest charts/* -o test-result.xml
+          helm unittest charts/* -o test-result.xml -t junit
 
       - name: Test report
         uses: dorny/test-reporter@v1
