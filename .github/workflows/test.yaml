@@ -23,4 +23,13 @@ jobs:
 
       - name: Run tests
         run: |
-          helm unittest charts/*
+          helm unittest charts/* -o test-result.xml
+
+      - name: Test report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          artifact: test-results
+          name: helm unittest
+          path: "test-result.xml"
+          reporter: dotnet-trx
