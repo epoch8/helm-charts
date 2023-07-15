@@ -91,6 +91,17 @@ tests:
               protocol: TCP
               targetPort: http
 
+  - it: Service should use custom port
+    template: service.yaml
+    set:
+      servicePort: 7000
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 7000
+
   - it: Ingress should be named as release
     template: ingress.yaml
     set:
