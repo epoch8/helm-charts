@@ -69,6 +69,39 @@ tests:
             path: /
             port: http
 
+  - it: Deployment should use imagePullSecrets if specified
+    template: deployment.yaml
+    set:
+      imagePullSecrets:
+        - name: test
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: test
+
+  - it: Deployment should mount shared memory volume if shmMem specified
+    template: deployment.yaml
+    set:
+      shmSize: 1Gi
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts
+          value:
+            - mountPath: /dev/shm
+              name: shared-memory
+      - equal:
+          path: spec.template.spec.volumes
+          value:
+            - emptyDir:
+                medium: Memory
+                sizeLimit: 1Gi
+              name: shared-memory
+
   - it: Service should be named as release
     template: service.yaml
     asserts:
