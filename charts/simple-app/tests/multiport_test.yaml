@@ -1,8 +1,10 @@
-suite: multiport
+suite: simple-app multiport case
+
 values:
   - multiport-values.yaml
+
 tests:
-  - it: Multiple port specification for deployment
+  - it: Deployment multiple port specification should work correctly
     template: deployment.yaml
     asserts:
       - isKind:
@@ -20,7 +22,7 @@ tests:
               name: port2
               protocol: TCP
 
-  - it: Multiple port specification for service
+  - it: Service multiple port specification should work correctly
     template: service.yaml
     asserts:
       - isKind:

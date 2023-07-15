@@ -1,9 +1,12 @@
-suite: simple
+suite: simple-app simple case
+
 values:
   - simple-values.yaml
+
 release:
   name: simple
   namespace: default
+
 tests:
   - it: Deployment should be named as release
     template: deployment.yaml
@@ -23,20 +26,17 @@ tests:
           path: spec.template.spec.containers[0].image
           value: test:1.1.1
 
-  - it: Simple port specification for deployment
+  - it: Deployment simple port specification should work correctly
     template: deployment.yaml
     asserts:
       - isKind:
           of: Deployment
       - equal:
-          path: spec.template.spec.containers[0].ports[0].containerPort
-          value: 9000
-      - equal:
-          path: spec.template.spec.containers[0].ports[0].protocol
-          value: TCP
-      - lengthEqual:
           path: spec.template.spec.containers[0].ports
-          count: 1
+          value:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
 
   - it: Service should be named as release
     template: service.yaml
@@ -47,17 +47,15 @@ tests:
           path: metadata.name
           value: simple
 
-  - it: Simple port specification for service
+  - it: Service simple port specification should work correctly
     template: service.yaml
     asserts:
       - isKind:
           of: Service
       - equal:
-          path: spec.ports[0].port
-          value: 80
-      - equal:
-          path: spec.ports[0].protocol
-          value: TCP
-      - lengthEqual:
           path: spec.ports
-          count: 1
+          value:
+            - name: http
+              port: 80
+              protocol: TCP
+              targetPort: http
