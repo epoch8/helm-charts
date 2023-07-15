@@ -106,6 +106,8 @@ tests:
   - it: Ingress should use service port
     template: ingress.yaml
     set:
+      domain: example.com
+      ingress.enabled: true
       servicePort: 80
     asserts:
       - isKind:
