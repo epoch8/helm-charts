@@ -103,11 +103,9 @@ tests:
           path: metadata.name
           value: simple
 
-  - it: Ingress should use service port
+  - it: Ingress should be used service port
     template: ingress.yaml
     set:
-      domain: example.com
-      ingress.enabled: true
       servicePort: 80
     asserts:
       - isKind:
