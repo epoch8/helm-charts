@@ -5,14 +5,14 @@ metadata:
   labels:
     {{- include "simple-app.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.serviceType }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.servicePort }}
       targetPort: http
       protocol: TCP
       name: http
-    {{- range .Values.servicePorts}}
-    - port: {{ .port }}
+    {{- range .Values.extraPorts}}
+    - port: {{ .servicePort | default .port }}
       targetPort: {{ .name }}
       protocol: {{ .protocol | default "TCP" }}
       name: {{ .name }}

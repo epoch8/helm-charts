@@ -1,0 +1,168 @@
+suite: simple-app simple case
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - deployment.yaml
+      - service.yaml
+      - ingress.yaml
+      - serviceaccount.yaml
+    asserts:
+      - matchSnapshot: {}
+
+  - it: Deployment should be named as release
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: simple
+
+  - it: Deployment image tag should be set correctly
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: Deployment simple port specification should work correctly
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].ports
+          value:
+            - containerPort: 9000
+              name: http
+              protocol: TCP
+
+  - it: Deployment should have readinessProbe set correctly by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet
+          value:
+            path: /
+            port: http
+  
+  - it: Deployment should have livenessProbe set correctly by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet
+          value:
+            path: /
+            port: http
+
+  - it: Deployment should use imagePullSecrets if specified
+    template: deployment.yaml
+    set:
+      imagePullSecrets:
+        - name: test
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: test
+
+  - it: Deployment should mount shared memory volume if shmMem specified
+    template: deployment.yaml
+    set:
+      shmSize: 1Gi
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts
+          value:
+            - mountPath: /dev/shm
+              name: shared-memory
+      - equal:
+          path: spec.template.spec.volumes
+          value:
+            - emptyDir:
+                medium: Memory
+                sizeLimit: 1Gi
+              name: shared-memory
+
+  - it: Service should be named as release
+    template: service.yaml
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.name
+          value: simple
+
+  - it: Service simple port specification should work correctly
+    template: service.yaml
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports
+          value:
+            - name: http
+              port: 80
+              protocol: TCP
+              targetPort: http
+
+  - it: Service should use custom port
+    template: service.yaml
+    set:
+      servicePort: 7000
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0].port
+          value: 7000
+
+  - it: Ingress should be named as release
+    template: ingress.yaml
+    set:
+      domain: example.com
+      ingress.enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: metadata.name
+          value: simple
+
+  - it: Ingress should use default service port if not specified
+    template: ingress.yaml
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 80
+
+  - it: Ingress should use custom service port
+    template: ingress.yaml
+    set:
+      servicePort: 7000
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 7000

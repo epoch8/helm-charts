@@ -1,0 +1,34 @@
+name: Run tests
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.11.0
+
+      - name: Install helm-unittest
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+
+      - name: Run tests
+        run: |
+          helm unittest charts/* -o test-report.xml -t junit
+
+      - name: Test report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: test report
+          path: test-report.xml
+          reporter: java-junit

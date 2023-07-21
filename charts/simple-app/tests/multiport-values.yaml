@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test
+  tag: 1.1.1
+
+port: 9000
+servicePort: 9000
+
+extraPorts:
+  - name: port1
+    port: 1
+    protocol: TCP
+  - name: port2
+    port: 2
+    servicePort: 22022
+
+domain: test.epoch8.co
+
+ingress:
+  enabled: true

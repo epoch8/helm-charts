@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=values.schema.json
+
 # Default values for simple-app.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -15,14 +17,19 @@ image:
 
 imagePullSecrets: []
 
-# Port that container is using
-port: 80
+# Port that container listens on
+port: 8000
 
-# Ports to be exposed on the service
-servicePorts: []
-  # - name: grpc
-  #   port: 50051  # both containerPort and service port
-  #   protocol: TCP
+# Port that service should listen on
+servicePort: 80
+serviceType: ClusterIP  # Service type
+
+# Extra ports to expose from the container on the service
+extraPorts: []
+#  - name: grpc
+#    port: 50051
+#    servicePort: ""
+#    protocol: TCP
 
 # Environment variables for container
 env: {}
@@ -50,13 +57,7 @@ configs: []
   #       }
   #     }
 
-# Default args for health probe
-probe:
-  httpGet:
-    path: /
-
-livenessProbe:
-  enabled: true
+livenessProbe: {}
   # httpGet:
   #   path: /
   #   port: http
@@ -67,8 +68,7 @@ livenessProbe:
   # successThreshold: 1
   # failureThreshold: 3
 
-readinessProbe:
-  enabled: true
+readinessProbe: {}
   # httpGet:
   #   path: /
   #   port: http
@@ -103,16 +103,11 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
   enabled: false
 
   # True if target ingress is Nginx (alters path definition and annotation)
   nginx: false
-
   className: ""
 
   annotations: {}
