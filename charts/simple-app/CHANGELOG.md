@@ -1,9 +1,13 @@
-# 1.0.0
+# 0.10.0
 
 ## Backwards incompatibility
 
 * Default names for all resources equal to release name
 * Delete `Values.probe`. `livenessProbe` and `readinessProbe` import from values file
+* Rename `.service.port` -> `.servicePort`, `.service.type` -> `.serviceType`
+* Rename `.servicePorts` -> `.extraPorts`
+* Add `.extraPorts[*].servicePort` config
+
 
 # 0.9.1
 
