@@ -1,9 +1,9 @@
 # 1.0.0
 
-* Service port equals container port
-* Delete `Values.probe`. `livenessProbe` and `readinessProbe` import from values file
-
 ## Backwards incompatibility
+
+* Default names for all resources equal to release name
+* Delete `Values.probe`. `livenessProbe` and `readinessProbe` import from values file
 
 # 0.9.1
 

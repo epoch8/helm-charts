@@ -17,11 +17,14 @@ image:
 
 imagePullSecrets: []
 
+# Port that container listens on
 port: 8000
 
+# Port that service should listen on
 servicePort: 80
-serviceType: ClusterIP
+serviceType: ClusterIP  # Service type
 
+# Extra ports to expose from the container on the service
 extraPorts: []
 #  - name: grpc
 #    port: 50051
