@@ -1,8 +1,7 @@
 # CronJob template
 # for each .Values.loops item, create a cronjob
-{{ $image := .Values.image }}
-{{ $resources := .Values.resources }}
-{{ $executor := .Values.executor }}
+
+{{ $labels := include "datapipe.labels" . }}
 
 {{- range .Values.loops }}
 
@@ -10,6 +9,8 @@ apiVersion: batch/v1
 kind: CronJob
 metadata: 
   name: {{ .name }}
+  labels:
+    {{- $labels | nindent 4 }}
 spec:
   schedule: "{{ .schedule }}"
   concurrencyPolicy: Forbid
@@ -19,7 +20,7 @@ spec:
         spec:
           containers:
           - name: {{ .name }}
-            image: "{{ $image.repository }}:{{ $image.tag }}"
+            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
             command:
               - datapipe
               - step
@@ -28,17 +29,24 @@ spec:
               {{- end }}
               {{- if .executor }}
               - --executor={{ .executor }}
-              {{- else if $executor }}
-              - --executor={{ $executor }}
+              {{- else if $.Values.executor }}
+              - --executor={{ $.Values.executor }}
               {{- end }}
               {{- if .labels }}
               - --labels={{ .labels }}
               {{- end }}
               - run
+            env:
+            {{- if $.Values.env }}
+              {{- $.Values.env | toYaml | nindent 12 }}
+            {{ end }}
+            {{- if .env }}
+              {{- .env | toYaml | nindent 12 }}
+            {{ end }}
             {{- if .resources }}
             resources: {{ .resources | toYaml | nindent 14 }}
-            {{- else if $resources }}
-            resources: {{ $resources | toYaml | nindent 14 }}
+            {{- else if $.Values.resources }}
+            resources: {{ $.Values.resources | toYaml | nindent 14 }}
             {{- end }}
             ports:
               - name: ray-dash-http

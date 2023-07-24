@@ -1,0 +1,78 @@
+All manifests should match snapshot:
+  1: |
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      labels:
+        app.kubernetes.io/instance: datapipe
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: datapipe
+        app.kubernetes.io/version: 1.16.0
+        helm.sh/chart: datapipe-0.1.0
+      name: loop-hourly
+    spec:
+      concurrencyPolicy: Forbid
+      jobTemplate:
+        spec:
+          template:
+            spec:
+              containers:
+                - command:
+                    - datapipe
+                    - step
+                    - --labels=stage=loop-hourly
+                    - run
+                  env:
+                    - name: TEST_ENV
+                      value: test
+                  image: test-datapipe:1.1.1
+                  name: loop-hourly
+                  ports:
+                    - containerPort: 8265
+                      name: ray-dash-http
+              restartPolicy: OnFailure
+      schedule: 0 * * * *
+  2: |
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      labels:
+        app.kubernetes.io/instance: datapipe
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: datapipe
+        app.kubernetes.io/version: 1.16.0
+        helm.sh/chart: datapipe-0.1.0
+      name: loop-daily
+    spec:
+      concurrencyPolicy: Forbid
+      jobTemplate:
+        spec:
+          template:
+            spec:
+              containers:
+                - command:
+                    - datapipe
+                    - step
+                    - --labels=stage=loop-daily
+                    - run
+                  env:
+                    - name: TEST_ENV
+                      value: test
+                  image: test-datapipe:1.1.1
+                  name: loop-daily
+                  ports:
+                    - containerPort: 8265
+                      name: ray-dash-http
+              restartPolicy: OnFailure
+      schedule: 0 0 * * *
+  3: |
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      labels:
+        app.kubernetes.io/instance: datapipe
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: datapipe
+        app.kubernetes.io/version: 1.16.0
+        helm.sh/chart: datapipe-0.1.0
+      name: datapipe
