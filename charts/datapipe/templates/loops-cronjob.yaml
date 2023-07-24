@@ -2,13 +2,14 @@
 # for each .Values.loops item, create a cronjob
 
 {{ $labels := include "datapipe.labels" . }}
+{{ $fullName := include "datapipe.fullname" . }}
 
 {{- range .Values.loops }}
 
 apiVersion: batch/v1
 kind: CronJob
 metadata: 
-  name: {{ .name }}
+  name: {{ $fullName}}-{{ .name }}
   labels:
     {{- $labels | nindent 4 }}
 spec:

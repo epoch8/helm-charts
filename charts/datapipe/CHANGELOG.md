@@ -1,3 +1,7 @@
+# 0.2.2
+
+* Include `fullName` into `CronJob` name
+
 # 0.2.1
 
 * Add support for `.Values.env` to loop-cronjob

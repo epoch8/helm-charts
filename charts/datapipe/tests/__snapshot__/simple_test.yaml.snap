@@ -9,7 +9,7 @@ All manifests should match snapshot:
         app.kubernetes.io/name: datapipe
         app.kubernetes.io/version: 1.16.0
         helm.sh/chart: datapipe-0.1.0
-      name: loop-hourly
+      name: datapipe-loop-hourly
     spec:
       concurrencyPolicy: Forbid
       jobTemplate:
@@ -42,7 +42,7 @@ All manifests should match snapshot:
         app.kubernetes.io/name: datapipe
         app.kubernetes.io/version: 1.16.0
         helm.sh/chart: datapipe-0.1.0
-      name: loop-daily
+      name: datapipe-loop-daily
     spec:
       concurrencyPolicy: Forbid
       jobTemplate:
