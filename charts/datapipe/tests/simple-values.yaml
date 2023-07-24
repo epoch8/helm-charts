@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test-datapipe
+  tag: 1.1.1
+
+env:
+  - name: TEST_ENV
+    value: "test"
+
+loops:
+  - name: loop-hourly
+    schedule: "0 * * * *"
+    labels: "stage=loop-hourly"
+  - name: loop-daily
+    schedule: "0 0 * * *"
+    labels: "stage=loop-daily"

@@ -1,0 +1,19 @@
+suite: datapipe simple case
+
+values:
+  - simple-values.yaml
+
+chart:
+  version: 0.1.0
+
+release:
+  name: datapipe
+  namespace: default
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - loops-cronjob.yaml
+      - serviceaccount.yaml
+    asserts:
+      - matchSnapshot: {}
