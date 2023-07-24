@@ -78,7 +78,10 @@
             }
         },
         "env": {
-            "type": "object"
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
         },
         "command": {
             "type": "array",

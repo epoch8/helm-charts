@@ -32,7 +32,7 @@ extraPorts: []
 #    protocol: TCP
 
 # Environment variables for container
-env: {}
+env: []
 
 command: []
 # - command

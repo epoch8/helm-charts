@@ -10,3 +10,7 @@ domain: test.epoch8.co
 
 ingress:
   enabled: true
+
+env:
+  - name: TEST
+    value: test
