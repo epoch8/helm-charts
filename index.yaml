@@ -21,6 +21,17 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/dash-app-0.0.1/dash-app-0.0.1.tgz
     version: 0.0.1
+  datapipe:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-07-24T13:21:13.522241801Z"
+    description: A Helm chart to deploy the Datapipe application on Kubernetes
+    digest: 6cc33dd40c8e6313bbc9fc7fe192c8af6da8bce73771eca5a4bfe2e824968ebd
+    name: datapipe
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/datapipe-0.1.0/datapipe-0.1.0.tgz
+    version: 0.1.0
   label-studio:
   - apiVersion: v2
     appVersion: 1.1.0
