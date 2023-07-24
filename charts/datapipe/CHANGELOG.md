@@ -1,3 +1,7 @@
+# 0.2.3
+
+* Support custom pipeline module
+
 # 0.2.2
 
 * Include `fullName` into `CronJob` name

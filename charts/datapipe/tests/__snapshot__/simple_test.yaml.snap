@@ -19,6 +19,7 @@ All manifests should match snapshot:
               containers:
                 - command:
                     - datapipe
+                    - --pipeline=custom_module.app
                     - step
                     - --labels=stage=loop-hourly
                     - run
@@ -52,6 +53,7 @@ All manifests should match snapshot:
               containers:
                 - command:
                     - datapipe
+                    - --pipeline=custom_module.app
                     - step
                     - --labels=stage=loop-daily
                     - run

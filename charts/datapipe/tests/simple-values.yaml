@@ -4,6 +4,8 @@ image:
   repository: test-datapipe
   tag: 1.1.1
 
+pipeline: custom_module.app
+
 env:
   - name: TEST_ENV
     value: "test"

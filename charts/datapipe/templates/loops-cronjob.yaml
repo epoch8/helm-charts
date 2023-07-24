@@ -24,6 +24,9 @@ spec:
             image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
             command:
               - datapipe
+              {{- if $.Values.pipeline }}
+              - --pipeline={{ $.Values.pipeline }}
+              {{- end }}
               - step
               {{- if .stepArgs }}
               {{ .stepArgs | toYaml | nindent 14 }}
