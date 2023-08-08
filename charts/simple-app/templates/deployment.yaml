@@ -74,25 +74,13 @@ spec:
               protocol: {{ .protocol | default "TCP" }}
             {{- end }}
           livenessProbe:
-          {{- if .Values.livenessProbe }}
             {{- with .Values.livenessProbe }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- else }}
-            httpGet:
-              path: /
-              port: http
-          {{- end }}
           readinessProbe:
-          {{- if .Values.readinessProbe }}
             {{- with .Values.readinessProbe }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- else }}
-            httpGet:
-              path: /
-              port: http
-          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

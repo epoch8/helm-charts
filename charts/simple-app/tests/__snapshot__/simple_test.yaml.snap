@@ -8,7 +8,7 @@ All manifests should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
         app.kubernetes.io/version: 1.16.0
-        helm.sh/chart: simple-app-0.10.1
+        helm.sh/chart: simple-app-0.10.2
       name: simple
     spec:
       replicas: 1
@@ -57,7 +57,7 @@ All manifests should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
         app.kubernetes.io/version: 1.16.0
-        helm.sh/chart: simple-app-0.10.1
+        helm.sh/chart: simple-app-0.10.2
       name: simple
     spec:
       rules:
@@ -80,7 +80,7 @@ All manifests should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
         app.kubernetes.io/version: 1.16.0
-        helm.sh/chart: simple-app-0.10.1
+        helm.sh/chart: simple-app-0.10.2
       name: simple
     spec:
       ports:
@@ -101,5 +101,5 @@ All manifests should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
         app.kubernetes.io/version: 1.16.0
-        helm.sh/chart: simple-app-0.10.1
+        helm.sh/chart: simple-app-0.10.2
       name: simple
