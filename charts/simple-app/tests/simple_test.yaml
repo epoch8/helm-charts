@@ -102,6 +102,19 @@ tests:
                 sizeLimit: 1Gi
               name: shared-memory
 
+  - it: Deployment should correctly set livenessProbe path
+    template: deployment.yaml
+    set:
+      livenessProbe:
+        httpGet:
+          path: /test
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /test
+
   - it: Service should be named as release
     template: service.yaml
     asserts:
