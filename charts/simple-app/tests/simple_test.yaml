@@ -7,6 +7,9 @@ release:
   name: simple
   namespace: default
 
+chart:
+  version: 0.0.0
+
 tests:
   - it: All manifests should match snapshot
     templates:
