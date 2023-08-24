@@ -50,6 +50,7 @@ volumes: []
 
 configs: []
   # - name: conn.json
+  #   mountPath: /etc/conn.json
   #   value: |
   #     {
   #       "client": "pg",

@@ -45,7 +45,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
         {{- end }}
-        {{- range .Values.configs }}
+        {{- if .Values.configs }}
         - name: configs
           configMap:
             name: {{ $fullName }}
@@ -57,7 +57,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.command }}
-          command: 
+          command:
             {{- .Values.command | toYaml | nindent 12 }}
           {{ end }}
           {{- if .Values.env }}
@@ -94,7 +94,8 @@ spec:
             {{- end }}
             {{- range .Values.configs }}
             - name: configs
-              mountPath: "/configs"
+              mountPath: {{ if .mountPath }}"{{ .mountPath }}"{{ else }}"/configs/{{ .name }}"{{ end }}
+              subPath: {{ .name }}
               readOnly: true
             {{- end }}
       {{- with .Values.nodeSelector }}

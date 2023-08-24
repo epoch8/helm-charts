@@ -117,6 +117,9 @@
                     "name": {
                         "type": "string"
                     },
+                    "mountPath": {
+                        "type": "string"
+                    },
                     "value": {
                         "type": "string"
                     }
