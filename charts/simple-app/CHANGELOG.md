@@ -1,3 +1,7 @@
+# 0.10.4
+
+* Add `.configs[*].mountPath`
+
 # 0.10.0
 
 ## Backwards incompatibility

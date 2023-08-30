@@ -7,6 +7,9 @@ release:
   name: simple
   namespace: default
 
+chart:
+  version: 0.0.0
+
 tests:
   - it: All manifests should match snapshot
     templates:
@@ -114,6 +117,42 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.httpGet.path
           value: /test
+
+  - it: Deployment should have correctly mounted configs
+    template: deployment.yaml
+    set:
+      configs:
+        - name: test.json
+          mountPath: /etc/test.json
+          value: |
+            {
+              "test": "test"
+            }
+        - name: test2.json
+          value: |
+            {
+              "test2": "test2"
+            }
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts
+          value:
+            - mountPath: /etc/test.json
+              name: configs
+              subPath: test.json
+              readOnly: true
+            - mountPath: /configs/test2.json
+              name: configs
+              subPath: test2.json
+              readOnly: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            configMap:
+              name: simple
+            name: configs
 
   - it: Service should be named as release
     template: service.yaml
