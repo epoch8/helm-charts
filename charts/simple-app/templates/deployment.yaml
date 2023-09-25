@@ -42,8 +42,13 @@ spec:
         {{- end }}
         {{- range .Values.volumes }}
         - name: {{ $fullName }}-{{ .name }}
+          {{- if .emptyDir }}
+          emptyDir:
+            sizeLimit: {{ .size }}
+          {{- else }}
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
+          {{- end }}
         {{- end }}
         {{- if .Values.configs }}
         - name: configs

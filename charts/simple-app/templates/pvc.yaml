@@ -2,6 +2,7 @@
 {{- $labels := include "simple-app.labels" . | nindent 4 -}}
 
 {{ range .Values.volumes }}
+{{- if not .emptyDir }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -15,6 +16,6 @@ spec:
     requests:
       storage: {{ .size }}
 
---- 
-
+---
+{{ end }}
 {{ end }}

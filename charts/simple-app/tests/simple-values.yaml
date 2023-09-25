@@ -14,3 +14,8 @@ ingress:
 env:
   - name: TEST
     value: test
+
+volumes:
+  - name: data
+    size: 1Gi
+    mountPath: /data

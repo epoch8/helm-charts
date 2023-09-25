@@ -93,17 +93,17 @@ tests:
       - isKind:
           of: Deployment
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts
+          path: spec.template.spec.containers[0].volumeMounts[0]
           value:
-            - mountPath: /dev/shm
-              name: shared-memory
+            mountPath: /dev/shm
+            name: shared-memory
       - equal:
-          path: spec.template.spec.volumes
+          path: spec.template.spec.volumes[0]
           value:
-            - emptyDir:
-                medium: Memory
-                sizeLimit: 1Gi
-              name: shared-memory
+            emptyDir:
+              medium: Memory
+              sizeLimit: 1Gi
+            name: shared-memory
 
   - it: Deployment should correctly set livenessProbe path
     template: deployment.yaml
@@ -137,16 +137,19 @@ tests:
       - isKind:
           of: Deployment
       - equal:
-          path: spec.template.spec.containers[0].volumeMounts
+          path: spec.template.spec.containers[0].volumeMounts[1]
           value:
-            - mountPath: /etc/test.json
-              name: configs
-              subPath: test.json
-              readOnly: true
-            - mountPath: /configs/test2.json
-              name: configs
-              subPath: test2.json
-              readOnly: true
+            mountPath: /etc/test.json
+            name: configs
+            subPath: test.json
+            readOnly: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2]
+          value:
+            mountPath: /configs/test2.json
+            name: configs
+            subPath: test2.json
+            readOnly: true
       - contains:
           path: spec.template.spec.volumes
           content:
@@ -218,3 +221,64 @@ tests:
       - equal:
           path: spec.rules[0].http.paths[0].backend.service.port.number
           value: 7000
+
+  - it: Deployment should have correctly mounted volumes with pvc
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: simple-data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: simple-data
+            persistentVolumeClaim:
+              claimName: simple-data
+
+  - it: Deployment should have correctly mounted volumes without pvc
+    template: deployment.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: simple-data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: simple-data
+            emptyDir:
+              sizeLimit: 1Gi
+
+  - it: PVC should have correctly mounted volumes with pvc
+    template: pvc.yaml
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+
+  - it: PVC should have correctly mounted volumes without pvc
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
