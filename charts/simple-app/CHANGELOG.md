@@ -1,3 +1,7 @@
+# 0.10.5
+
+* Add `.volumes[*].emptyDir`
+
 # 0.10.4
 
 * Add `.configs[*].mountPath`

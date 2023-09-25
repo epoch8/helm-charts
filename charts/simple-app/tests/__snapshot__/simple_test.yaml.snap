@@ -16,6 +16,8 @@ All manifests should match snapshot:
         matchLabels:
           app.kubernetes.io/instance: simple
           app.kubernetes.io/name: simple-app
+      strategy:
+        type: Recreate
       template:
         metadata:
           labels:
@@ -43,10 +45,15 @@ All manifests should match snapshot:
                   port: http
               resources: {}
               securityContext: {}
-              volumeMounts: null
+              volumeMounts:
+                - mountPath: /data
+                  name: simple-data
           securityContext: {}
           serviceAccountName: simple
-          volumes: null
+          volumes:
+            - name: simple-data
+              persistentVolumeClaim:
+                claimName: simple-data
   2: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress

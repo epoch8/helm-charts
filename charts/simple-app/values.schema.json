@@ -105,6 +105,9 @@
                     },
                     "size": {
                         "type": "string"
+                    },
+                    "emptyDir": {
+                        "type": "boolean"
                     }
                 }
             }

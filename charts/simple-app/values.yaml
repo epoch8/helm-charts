@@ -47,6 +47,8 @@ volumes: []
   # - name: data
   #   size: 1Gi
   #   mountPath: /data
+  #   If not need pvc:
+  #   emptyDir: true
 
 configs: []
   # - name: conn.json
