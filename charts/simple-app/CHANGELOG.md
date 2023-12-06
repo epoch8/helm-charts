@@ -1,3 +1,8 @@
+# 0.10.6
+
+* Add support for Gateway/HTTPRoute
+  https://cloud.google.com/kubernetes-engine/docs/concepts/gateway-api
+
 # 0.10.5
 
 * Add `.volumes[*].emptyDir`
@@ -15,7 +20,6 @@
 * Rename `.service.port` -> `.servicePort`, `.service.type` -> `.serviceType`
 * Rename `.servicePorts` -> `.extraPorts`
 * Add `.extraPorts[*].servicePort` config
-
 
 # 0.9.1
 

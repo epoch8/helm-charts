@@ -164,6 +164,9 @@
         "ingress": {
             "type": "object"
         },
+        "gateway": {
+            "type": "object"
+        },
         "resources": {
             "type": "object"
         },

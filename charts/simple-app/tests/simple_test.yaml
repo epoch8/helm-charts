@@ -282,3 +282,17 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: Gateway should enable HTTPRoute
+    template: httproute.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: "external-gateway"
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: metadata.name
+          value: simple
