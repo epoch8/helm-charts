@@ -20,6 +20,12 @@ imagePullSecrets: []
 # Port that container listens on
 port: 8000
 
+# Path to probe for both liveness and readiness
+probe:
+  path: "/"
+
+# backendTimeout: 30s
+
 # Port that service should listen on
 servicePort: 80
 serviceType: ClusterIP  # Service type
@@ -60,25 +66,25 @@ configs: []
   #       }
   #     }
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-#  initialDelaySeconds: 5
-#  timeoutSeconds: 1
-#  periodSeconds: 10
-#  successThreshold: 1
-#  failureThreshold: 3
+livenessProbe: {}
+  # httpGet:
+  #   path: /
+  #   port: http
+  # initialDelaySeconds: 5
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # successThreshold: 1
+  # failureThreshold: 3
 
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-#  initialDelaySeconds: 5
-#  timeoutSeconds: 1
-#  periodSeconds: 10
-#  successThreshold: 1
-#  failureThreshold: 3
+readinessProbe: {}
+  # httpGet:
+  #   path: /
+  #   port: http
+  # initialDelaySeconds: 5
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # successThreshold: 1
+  # failureThreshold: 3
 
 replicaCount: 1
 
@@ -153,5 +159,9 @@ affinity: {}
 
 # Settings specific to GKE deployment
 gke:
+  # If enabled and gateway.enabled is true, creates BackendConfig and
+  # HealthCheck for service
+  enabled: false
+
   managedCertificate:
     enabled: false

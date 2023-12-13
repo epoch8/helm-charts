@@ -1,0 +1,19 @@
+{{- if .Values.gke.enabled -}}
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: {{ include "simple-app.fullname" . }}
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+spec:
+  default:
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: {{ .Values.port }}
+        requestPath: {{ .Values.probe.path }}
+  targetRef:
+    group: ""
+    kind: Service
+    name: {{ include "simple-app.fullname" . }}
+{{- end -}}

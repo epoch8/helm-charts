@@ -79,12 +79,20 @@ spec:
               protocol: {{ .protocol | default "TCP" }}
             {{- end }}
           livenessProbe:
-            {{- with .Values.livenessProbe }}
-            {{- toYaml . | nindent 12 }}
+            {{- if .Values.livenessProbe }}
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: {{ .Values.probe.path }}
+              port: http
             {{- end }}
           readinessProbe:
-            {{- with .Values.readinessProbe }}
-            {{- toYaml . | nindent 12 }}
+            {{- if .Values.readinessProbe }}
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- else }}
+            httpGet:
+              path: {{ .Values.probe.path }}
+              port: http
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

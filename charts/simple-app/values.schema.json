@@ -37,6 +37,14 @@
         "port": {
             "type": "integer"
         },
+        "probe": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "servicePort": {
             "oneOf": [
                 {

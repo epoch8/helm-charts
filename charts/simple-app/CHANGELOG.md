@@ -1,3 +1,12 @@
+# 0.11.0
+
+* Restore `Values.probe`
+* Add GKE-specific `HealthCheck` resource based on `.Values.probe.path`
+
+## Backwards incompatibility
+
+* `livenessProbe` and `readinessProbe` defaults changed
+
 # 0.10.6
 
 * Add support for Gateway/HTTPRoute
