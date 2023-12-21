@@ -1,6 +1,10 @@
+# 0.11.1
+
+* Add GKE-specific `GCPBackendPolicy` resource based on `.Values.timeoutSec`
+
 # 0.11.0
 
-* Restore `Values.probe`
+* Restore `.Values.probe`
 * Add GKE-specific `HealthCheck` resource based on `.Values.probe.path`
 
 ## Backwards incompatibility
@@ -25,7 +29,7 @@
 ## Backwards incompatibility
 
 * Default names for all resources equal to release name
-* Delete `Values.probe`. `livenessProbe` and `readinessProbe` import from values file
+* Delete `.Values.probe`. `livenessProbe` and `readinessProbe` import from values file
 * Rename `.service.port` -> `.servicePort`, `.service.type` -> `.serviceType`
 * Rename `.servicePorts` -> `.extraPorts`
 * Add `.extraPorts[*].servicePort` config
@@ -45,7 +49,7 @@
 
 # 0.8.0
 
-* Add `.shmSize` to 
+* Add `.shmSize`
 
 # 0.7.0
 

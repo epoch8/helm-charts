@@ -37,6 +37,9 @@
         "port": {
             "type": "integer"
         },
+        "timeoutSec": {
+            "type": "integer"
+        },
         "probe": {
             "type": "object",
             "properties": {

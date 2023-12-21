@@ -20,6 +20,9 @@ imagePullSecrets: []
 # Port that container listens on
 port: 8000
 
+# Timeout, applies for deployment modes where applicable
+timeoutSec: 30
+
 # Path to probe for both liveness and readiness
 probe:
   path: "/"
@@ -159,7 +162,7 @@ affinity: {}
 
 # Settings specific to GKE deployment
 gke:
-  # If enabled and gateway.enabled is true, creates BackendConfig and
+  # If enabled and gateway.enabled is true, creates GCPBackendPolicy and
   # HealthCheck for service
   enabled: false
 

@@ -1,0 +1,15 @@
+{{- if .Values.gateway.enabled -}}
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: {{ include "simple-app.fullname" . }}
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+spec:
+  default:
+    timeoutSec: {{ .Values.timeoutSec}}
+  targetRef:
+    group: ""
+    kind: Service
+    name: {{ include "simple-app.fullname" . }}
+{{- end -}}
