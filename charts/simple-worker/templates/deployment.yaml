@@ -35,9 +35,17 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         {{- range .Values.volumes }}
-        - name: {{ $fullName }}-{{ .name }}
+        - name: {{ .name }}
+          {{- if .size }}
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
+          {{- else if .configMap }}
+          configMap:
+            {{- .configMap | toYaml | nindent 12 }}
+          {{- else if .secret }}
+          secret:
+            {{- .secret | toYaml | nindent 12 }}
+          {{- end }}
         {{- end }}
         {{- range .Values.configs }}
         - name: configs
@@ -72,7 +80,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             {{- range .Values.volumes }}
-            - name: {{ $fullName }}-{{ .name }}
+            - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
             {{- range .Values.configs }}

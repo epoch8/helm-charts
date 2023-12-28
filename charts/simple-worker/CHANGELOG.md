@@ -1,11 +1,7 @@
-# 0.7.0
+# 0.1.1
 
-* Add `Ingress` `className` property
+* Add option to mount existing secrets and config maps as volume
 
-# 0.5.1
+# 0.1.0
 
-* Set deploy strategy to Recreate if PVC is enabled
-
-# 0.5.0
-
-* Support for PVC
+* Initial release
