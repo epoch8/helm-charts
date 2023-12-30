@@ -29,7 +29,7 @@ All manifests should match snapshot:
                 httpGet:
                   path: /
                   port: http
-              name: simple-app
+              name: simple
               ports:
                 - containerPort: 9000
                   name: http

@@ -1,3 +1,7 @@
+# 0.11.2
+
+* Name container the same as release (helps to read logs in GCP)
+
 # 0.11.1
 
 * Add GKE-specific `GCPBackendPolicy` resource based on `.Values.timeoutSec`
