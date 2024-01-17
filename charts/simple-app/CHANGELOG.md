@@ -1,3 +1,7 @@
+# 0.11.3
+
+* Add GCP IAP configuation for `GCPBackendPolicy`
+
 # 0.11.2
 
 * Name container the same as release (helps to read logs in GCP)

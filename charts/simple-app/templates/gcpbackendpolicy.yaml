@@ -8,6 +8,13 @@ metadata:
 spec:
   default:
     timeoutSec: {{ .Values.timeoutSec}}
+    {{ if .Values.gke.iap.enabled }}
+    iap:
+      enabled: true
+      oauth2ClientSecret:
+        name: {{ .Values.gke.iap.oauth2ClientSecret}}
+      clientID: {{ .Values.gke.iap.clientID}}
+    {{ end }}
   targetRef:
     group: ""
     kind: Service

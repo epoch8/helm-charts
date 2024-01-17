@@ -168,3 +168,8 @@ gke:
 
   managedCertificate:
     enabled: false
+
+  iap:
+    enabled: false
+    clientID: ""
+    oauth2ClientSecret: ""
