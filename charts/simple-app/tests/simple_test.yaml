@@ -231,11 +231,11 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[0]
           value:
             mountPath: /data
-            name: simple-data
+            name: data
       - equal:
           path: spec.template.spec.volumes[0]
           value:
-            name: simple-data
+            name: data
             persistentVolumeClaim:
               claimName: simple-data
 
@@ -254,13 +254,25 @@ tests:
           path: spec.template.spec.containers[0].volumeMounts[0]
           value:
             mountPath: /data
-            name: simple-data
+            name: data
       - equal:
           path: spec.template.spec.volumes[0]
           value:
-            name: simple-data
+            name: data
             emptyDir:
               sizeLimit: 1Gi
+
+  - it: PVC should not be created if emptyDir
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
 
   - it: PVC should have correctly mounted volumes with pvc
     template: pvc.yaml

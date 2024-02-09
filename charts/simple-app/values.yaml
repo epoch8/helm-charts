@@ -53,11 +53,29 @@ command: []
 shmSize: ""
 
 volumes: []
+  # if "size" is set, it will create a PVC
   # - name: data
   #   size: 1Gi
   #   mountPath: /data
-  #   If not need pvc:
+
+  # if "emptyDir" is set, it will create an emptyDir
+  # - name: cache
   #   emptyDir: true
+  #   size: 1Gi
+  #   mountPath: /cache
+
+  # if "secret" is set, it will use the secret
+  # - name: secret
+  #   secret:
+  #     secretName: secret
+  #   mountPath: /secret
+
+  # if "configMap" is set, it will use the configMap
+  # - name: config
+  #   configMap:
+  #     name: config
+  #   mountPath: /config
+
 
 configs: []
   # - name: conn.json

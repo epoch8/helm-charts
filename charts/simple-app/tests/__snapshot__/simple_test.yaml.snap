@@ -47,11 +47,11 @@ All manifests should match snapshot:
               securityContext: {}
               volumeMounts:
                 - mountPath: /data
-                  name: simple-data
+                  name: data
           securityContext: {}
           serviceAccountName: simple
           volumes:
-            - name: simple-data
+            - name: data
               persistentVolumeClaim:
                 claimName: simple-data
   2: |

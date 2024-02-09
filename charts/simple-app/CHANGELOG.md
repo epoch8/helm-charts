@@ -1,3 +1,7 @@
+# 0.11.4
+
+* Add `.volumes[].secret` and `.volumes[].configMap` options
+
 # 0.11.3
 
 * Add GCP IAP configuation for `GCPBackendPolicy`

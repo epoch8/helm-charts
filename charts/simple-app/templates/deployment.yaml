@@ -41,16 +41,22 @@ spec:
             sizeLimit: {{ .Values.shmSize }}
         {{- end }}
         {{- range .Values.volumes }}
-        - name: {{ $fullName }}-{{ .name }}
+        - name: {{ .name }}
           {{- if .emptyDir }}
           emptyDir:
             sizeLimit: {{ .size }}
-          {{- else }}
+          {{- else if .size }}
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
+          {{- else if .configMap }}
+          configMap:
+            {{- .configMap | toYaml | nindent 12 }}
+          {{- else if .secret }}
+          secret:
+            {{- .secret | toYaml | nindent 12 }}
           {{- end }}
         {{- end }}
-        {{- if .Values.configs }}
+        {{- range .Values.configs }}
         - name: configs
           configMap:
             name: {{ $fullName }}
@@ -102,7 +108,7 @@ spec:
               mountPath: /dev/shm
             {{- end }}
             {{- range .Values.volumes }}
-            - name: {{ $fullName }}-{{ .name }}
+            - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
             {{- range .Values.configs }}
