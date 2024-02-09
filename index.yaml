@@ -307,6 +307,16 @@ entries:
   simple-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-02-09T20:47:51.577001092Z"
+    description: A Helm chart for Kubernetes
+    digest: f6655bb0aa1ba8b51c1730d1378c898ba57065c1abe24b85908936157a58633b
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-0.11.4/simple-app-0.11.4.tgz
+    version: 0.11.4
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-01-17T09:26:49.774999984Z"
     description: A Helm chart for Kubernetes
     digest: c02571f587ef24cae8002d17889e2f649df568ca3451bb3480eded4a407c4515
@@ -556,6 +566,16 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/simple-app-0.1.0/simple-app-0.1.0.tgz
     version: 0.1.0
   simple-worker:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-02-09T20:47:51.722396343Z"
+    description: A Helm chart for Kubernetes
+    digest: d85f1931669abee27624cddb7b72bb4dd9782007847674e8f5afddaa2882d1fa
+    name: simple-worker
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-worker-0.1.4/simple-worker-0.1.4.tgz
+    version: 0.1.4
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2023-12-30T22:26:32.244990639Z"
