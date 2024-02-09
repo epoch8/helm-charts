@@ -34,9 +34,18 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
+        {{- if .Values.shmSize }}
+        - name: shared-memory
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ .Values.shmSize }}
+        {{- end }}
         {{- range .Values.volumes }}
         - name: {{ .name }}
-          {{- if .size }}
+          {{- if .emptyDir }}
+          emptyDir:
+            sizeLimit: {{ .size }}
+          {{- else if .size }}
           persistentVolumeClaim:
             claimName: {{ $fullName }}-{{ .name }}
           {{- else if .configMap }}
@@ -79,13 +88,18 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            {{- if .Values.shmSize }}
+            - name: shared-memory
+              mountPath: /dev/shm
+            {{- end }}
             {{- range .Values.volumes }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
             {{- range .Values.configs }}
             - name: configs
-              mountPath: "/configs"
+              mountPath: {{ if .mountPath }}"{{ .mountPath }}"{{ else }}"/configs/{{ .name }}"{{ end }}
+              subPath: {{ .name }}
               readOnly: true
             {{- end }}
       {{- with .Values.nodeSelector }}

@@ -1,3 +1,7 @@
+# 0.1.4
+
+* Synchonize volumes configuration between simple-app and simple-worker
+
 # 0.1.3
 
 * Synchronize fullname generation between simple-app and simple-worker

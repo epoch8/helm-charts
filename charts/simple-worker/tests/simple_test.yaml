@@ -1,0 +1,183 @@
+suite: simple-app simple case
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - deployment.yaml
+      - serviceaccount.yaml
+      - pvc.yaml
+    asserts:
+      - matchSnapshot: {}
+
+  - it: Deployment should be named as release
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: simple
+
+  - it: Deployment image tag should be set correctly
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: Deployment should use imagePullSecrets if specified
+    template: deployment.yaml
+    set:
+      imagePullSecrets:
+        - name: test
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: test
+
+  - it: Deployment should mount shared memory volume if shmMem specified
+    template: deployment.yaml
+    set:
+      shmSize: 1Gi
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /dev/shm
+            name: shared-memory
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            emptyDir:
+              medium: Memory
+              sizeLimit: 1Gi
+            name: shared-memory
+
+  - it: Deployment should have correctly mounted configs
+    template: deployment.yaml
+    set:
+      configs:
+        - name: test.json
+          mountPath: /etc/test.json
+          value: |
+            {
+              "test": "test"
+            }
+        - name: test2.json
+          value: |
+            {
+              "test2": "test2"
+            }
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1]
+          value:
+            mountPath: /etc/test.json
+            name: configs
+            subPath: test.json
+            readOnly: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2]
+          value:
+            mountPath: /configs/test2.json
+            name: configs
+            subPath: test2.json
+            readOnly: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            configMap:
+              name: simple
+            name: configs
+
+  - it: Deployment should have correctly mounted volumes with pvc
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: data
+            persistentVolumeClaim:
+              claimName: simple-data
+
+  - it: Deployment should have correctly mounted volumes without pvc
+    template: deployment.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: data
+            emptyDir:
+              sizeLimit: 1Gi
+
+  - it: PVC should not be created if emptyDir
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: PVC should have correctly mounted volumes with pvc
+    template: pvc.yaml
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+
+  - it: PVC should have correctly mounted volumes without pvc
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
