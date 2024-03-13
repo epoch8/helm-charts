@@ -1,0 +1,183 @@
+suite: simple-app simple case
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - cronjob.yaml
+      - serviceaccount.yaml
+      - pvc.yaml
+    asserts:
+      - matchSnapshot: {}
+
+  - it: CronJob should be named as release
+    template: cronjob.yaml
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: metadata.name
+          value: simple
+
+  - it: CronJob image tag should be set correctly
+    template: cronjob.yaml
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: CronJob should use imagePullSecrets if specified
+    template: cronjob.yaml
+    set:
+      imagePullSecrets:
+        - name: test
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.imagePullSecrets
+          value:
+            - name: test
+
+  - it: CronJob should mount shared memory volume if shmMem specified
+    template: cronjob.yaml
+    set:
+      shmSize: 1Gi
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /dev/shm
+            name: shared-memory
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0]
+          value:
+            emptyDir:
+              medium: Memory
+              sizeLimit: 1Gi
+            name: shared-memory
+
+  - it: CronJob should have correctly mounted configs
+    template: cronjob.yaml
+    set:
+      configs:
+        - name: test.json
+          mountPath: /etc/test.json
+          value: |
+            {
+              "test": "test"
+            }
+        - name: test2.json
+          value: |
+            {
+              "test2": "test2"
+            }
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[1]
+          value:
+            mountPath: /etc/test.json
+            name: configs
+            subPath: test.json
+            readOnly: true
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[2]
+          value:
+            mountPath: /configs/test2.json
+            name: configs
+            subPath: test2.json
+            readOnly: true
+      - contains:
+          path: spec.jobTemplate.spec.template.spec.volumes
+          content:
+            configMap:
+              name: simple
+            name: configs
+
+  - it: CronJob should have correctly mounted volumes with pvc
+    template: cronjob.yaml
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0]
+          value:
+            name: data
+            persistentVolumeClaim:
+              claimName: simple-data
+
+  - it: CronJob should have correctly mounted volumes without pvc
+    template: cronjob.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.volumes[0]
+          value:
+            name: data
+            emptyDir:
+              sizeLimit: 1Gi
+
+  - it: PVC should not be created if emptyDir
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: PVC should have correctly mounted volumes with pvc
+    template: pvc.yaml
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+
+  - it: PVC should have correctly mounted volumes without pvc
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0

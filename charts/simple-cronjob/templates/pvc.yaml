@@ -1,0 +1,21 @@
+{{- $fullName := include "simple-app.fullname" . -}}
+{{- $labels := include "simple-app.labels" . | nindent 4 -}}
+
+{{ range .Values.volumes }}
+{{- if not .emptyDir }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  labels:
+    {{- $labels }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .size }}
+
+---
+{{ end }}
+{{ end }}

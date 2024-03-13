@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test
+  tag: 1.1.1
+
+env:
+  - name: TEST
+    value: test
+
+volumes:
+  - name: data
+    size: 1Gi
+    mountPath: /data

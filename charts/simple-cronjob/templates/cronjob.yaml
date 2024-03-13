@@ -1,0 +1,112 @@
+{{- $fullName := include "simple-app.fullname" . -}}
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "simple-app.fullname" . }}
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.schedule }}"
+  timeZone: "{{ .Values.timeZone }}"
+  concurrencyPolicy: "{{ .Values.concurrencyPolicy }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "simple-app.selectorLabels" . | nindent 12 }}
+        spec:
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          volumes:
+            {{- if .Values.shmSize }}
+            - name: shared-memory
+              emptyDir:
+                medium: Memory
+                sizeLimit: {{ .Values.shmSize }}
+            {{- end }}
+            {{- range .Values.volumes }}
+            - name: {{ .name }}
+              {{- if .emptyDir }}
+              emptyDir:
+                sizeLimit: {{ .size }}
+              {{- else if .size }}
+              persistentVolumeClaim:
+                claimName: {{ $fullName }}-{{ .name }}
+              {{- else if .configMap }}
+              configMap:
+                {{- .configMap | toYaml | nindent 16 }}
+              {{- else if .secret }}
+              secret:
+                {{- .secret | toYaml | nindent 16 }}
+              {{- end }}
+            {{- end }}
+            {{- range .Values.configs }}
+            - name: configs
+              configMap:
+                name: {{ $fullName }}
+            {{- end }}
+          restartPolicy: "OnFailure"
+          containers:
+            - name: {{ include "simple-app.fullname" . }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- if .Values.command }}
+              command: 
+                {{- .Values.command | toYaml | nindent 16 }}
+              {{ end }}
+              {{- if .Values.env }}
+              env:
+                {{- .Values.env | toYaml | nindent 16 }}
+              {{ end }}
+              livenessProbe:
+                exec:
+                  command:
+                    - echo
+                    - ok
+              readinessProbe:
+                exec:
+                  command:
+                    - echo
+                    - ok
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              volumeMounts:
+                {{- if .Values.shmSize }}
+                - name: shared-memory
+                  mountPath: /dev/shm
+                {{- end }}
+                {{- range .Values.volumes }}
+                - name: {{ .name }}
+                  mountPath: {{ .mountPath }}
+                {{- end }}
+                {{- range .Values.configs }}
+                - name: configs
+                  mountPath: {{ if .mountPath }}"{{ .mountPath }}"{{ else }}"/configs/{{ .name }}"{{ end }}
+                  subPath: {{ .name }}
+                  readOnly: true
+                {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

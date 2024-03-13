@@ -1,0 +1,183 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "simple-app values schema",
+    "type": "object",
+    "properties": {
+        "nameOverride": {
+            "type": "string"
+        },
+        "fullnameOverride": {
+            "type": "string"
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "repository": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "imagePullSecrets": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "domain": {
+            "type": "string"
+        },
+        "env": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+        },
+        "schedule": {
+            "type": "string"
+        },
+        "timeZone": {
+            "type": "string"
+        },
+        "concurrencyPolicy": {
+            "type": "string"
+        },
+        "command": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "shmSize": {
+            "type": "string"
+        },
+        "volumes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "mountPath": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "string"
+                    },
+                    "emptyDir": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "configs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "mountPath": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "livenessProbe": {
+            "type": "object"
+        },
+        "readinessProbe": {
+            "type": "object"
+        },
+        "replicaCount": {
+            "type": "integer"
+        },
+        "serviceAccount": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "annotations": {
+                    "type": "object"
+                }
+            }
+        },
+        "podAnnotations": {
+            "type": "object"
+        },
+        "podSecurityContext": {
+            "type": "object"
+        },
+        "securityContext": {
+            "type": "object"
+        },
+        "ingress": {
+            "type": "object"
+        },
+        "gateway": {
+            "type": "object"
+        },
+        "resources": {
+            "type": "object"
+        },
+        "autoscaling": {
+            "type": "object"
+        },
+        "nodeSelector": {
+            "type": "object"
+        },
+        "tolerations": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+        },
+        "affinity": {
+            "type": "object"
+        },
+        "gke": {
+            "type": "object",
+            "properties": {
+                "managedCertificate": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "iap": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "clientID": {
+                                    "type": "string"
+                                },
+                                "oauth2ClientSecret": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}
