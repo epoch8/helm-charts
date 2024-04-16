@@ -1,0 +1,16 @@
+{{ if and .Values.gke.enabled .Values.gke.monitoring.enabled }}
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: {{ include "simple-app.fullname" . }}
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "simple-app.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - port: http
+    path: {{ .Values.gke.monitoring.path }}
+    interval: {{ .Values.gke.monitoring.interval }}
+{{ end }}

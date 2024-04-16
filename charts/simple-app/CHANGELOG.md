@@ -1,3 +1,7 @@
+# 0.11.5
+
+* Add support for `monitoring.googleapis.com/v1` `PodMonitoring`
+
 # 0.11.4
 
 * Add `.volumes[].secret` and `.volumes[].configMap` options

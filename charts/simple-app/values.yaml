@@ -191,3 +191,8 @@ gke:
     enabled: false
     clientID: ""
     oauth2ClientSecret: ""
+
+  monitoring:
+    enabled: false
+    path: "/metrics"
+    interval: "30s"
