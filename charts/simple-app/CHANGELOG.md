@@ -1,4 +1,5 @@
 # 0.11.6
+
 * Update HPA `apiVersion`: `autoscaling/v2beta1` -> `autoscaling/v2`
 
 # 0.11.5
