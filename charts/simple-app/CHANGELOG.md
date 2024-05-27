@@ -1,3 +1,7 @@
+# 0.11.7
+
+* Fix HPA for `autoscaling/v2` syntax
+
 # 0.11.6
 
 * Update HPA `apiVersion`: `autoscaling/v2beta1` -> `autoscaling/v2`
