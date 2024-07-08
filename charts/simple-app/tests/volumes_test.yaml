@@ -1,0 +1,69 @@
+suite: simple-app volume mounts test
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+
+  - it: PVC - Create PVC if size is set
+    templates:
+      - pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: spec
+          value:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+
+  - it: PVC - Do not create PVC if emptyDir is set
+    templates:
+      - pvc.yaml
+    set:
+      volumes:
+        - name: cache
+          emptyDir: true
+          size: 1Gi
+          mountPath: /cache
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: PVC - Use secret if secret is set
+    templates:
+      - pvc.yaml
+    set:
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+          mountPath: /secret
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: PVC - Use configMap if configMap is set
+    templates:
+      - pvc.yaml
+    set:
+      volumes:
+        - name: config
+          configMap:
+            name: config
+          mountPath: /config
+    asserts:
+      - hasDocuments:
+          count: 0

@@ -1,3 +1,7 @@
+# 0.11.8
+
+* Fix for PVC creation in case of volumes `secret` and `configMap` types
+
 # 0.11.7
 
 * Fix HPA for `autoscaling/v2` syntax

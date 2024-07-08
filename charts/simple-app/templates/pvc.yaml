@@ -2,7 +2,7 @@
 {{- $labels := include "simple-app.labels" . | nindent 4 -}}
 
 {{ range .Values.volumes }}
-{{- if not .emptyDir }}
+{{- if and (not .emptyDir) (and (not .secret) (not .configMap)) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
