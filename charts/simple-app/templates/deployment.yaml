@@ -13,10 +13,12 @@ spec:
   selector:
     matchLabels:
       {{- include "simple-app.selectorLabels" . | nindent 6 }}
-  {{- if .Values.volumes }}
   strategy:
+    {{- if (include "simple-app.needs-recreate" .) }}
     type: Recreate
-  {{- end }}
+    {{- else }}
+    type: RollingUpdate
+    {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}

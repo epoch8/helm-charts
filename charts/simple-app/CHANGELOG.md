@@ -1,3 +1,7 @@
+# 0.11.9
+
+* Do `RollingUpdate` unless we really need to do `Recreate`
+
 # 0.11.8
 
 * Fix for PVC creation in case of volumes `secret` and `configMap` types

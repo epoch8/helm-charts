@@ -29,6 +29,24 @@ tests:
               requests:
                 storage: 1Gi
 
+  - it: Deployment - Mount volume if volume is set
+    templates:
+      - deployment.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.template.spec.volumes[0].name
+          value: data
+      - equal:
+          path: spec.strategy.type
+          value: Recreate
+
   - it: PVC - Do not create PVC if emptyDir is set
     templates:
       - pvc.yaml
@@ -42,6 +60,20 @@ tests:
       - hasDocuments:
           count: 0
 
+  - it: Deployment - Do not recreteate if emptyDir is set
+    templates:
+      - deployment.yaml
+    set:
+      volumes:
+        - name: cache
+          emptyDir: true
+          size: 1Gi
+          mountPath: /cache
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate
+
   - it: PVC - Use secret if secret is set
     templates:
       - pvc.yaml
@@ -54,6 +86,20 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  
+  - it: Deployment - Do not recreteate if secret is set
+    templates:
+      - deployment.yaml
+    set:
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+          mountPath: /secret
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate
 
   - it: PVC - Use configMap if configMap is set
     templates:
@@ -67,3 +113,17 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: Deployment - Do not recreteate if configMap is set
+    templates:
+      - deployment.yaml
+    set:
+      volumes:
+        - name: config
+          configMap:
+            name: config
+          mountPath: /config
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate

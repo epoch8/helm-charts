@@ -16,6 +16,8 @@ All manifests should match snapshot:
         matchLabels:
           app.kubernetes.io/instance: simple
           app.kubernetes.io/name: simple-app
+      strategy:
+        type: RollingUpdate
       template:
         metadata:
           labels:

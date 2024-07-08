@@ -55,3 +55,18 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Does deployment needs recreate
+*/}}
+{{- define "simple-app.needs-recreate" -}}
+{{- $needsRecreate := "" -}}
+{{- range $key, $value := .Values.volumes -}}
+    {{- if and (not $value.emptyDir) (not $value.secret) (not $value.configMap) -}}
+        {{- $needsRecreate = "true" -}}
+        {{- break -}}
+    {{- end -}}
+{{- end -}}
+{{- $needsRecreate -}}
+{{- end -}}
