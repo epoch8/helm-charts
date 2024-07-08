@@ -1,3 +1,7 @@
+# 0.1.5
+
+* Fix for PVC creation in case of volumes `secret` and `configMap` types
+
 # 0.1.4
 
 * Synchonize volumes configuration between simple-app and simple-worker
