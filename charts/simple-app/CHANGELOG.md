@@ -1,3 +1,7 @@
+# 0.11.10
+
+* Add ability to specify `namespace` for Gateway reference in HTTPRoute
+
 # 0.11.9
 
 * Do `RollingUpdate` unless we really need to do `Recreate`

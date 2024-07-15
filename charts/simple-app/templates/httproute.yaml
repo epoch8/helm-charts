@@ -9,6 +9,7 @@ spec:
   parentRefs:
   - kind: Gateway
     name: {{ .Values.gateway.name }}
+    {{ if .Values.gateway.namespace }}namespace: {{ .Values.gateway.namespace }}{{ end }}
   hostnames:
   - "{{ .Values.domain }}"
   rules:
