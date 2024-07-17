@@ -1,3 +1,7 @@
+# 0.1.2
+
+* Remove dummy healtchecks, sometimes they result in Pod being stuck
+
 # 0.1.1
 
 * Fix for PVC creation in case of volumes `secret` and `configMap` types
