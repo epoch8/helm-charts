@@ -26,17 +26,7 @@ All manifests should match snapshot:
                       value: test
                   image: test:1.1.1
                   imagePullPolicy: IfNotPresent
-                  livenessProbe:
-                    exec:
-                      command:
-                        - echo
-                        - ok
                   name: simple
-                  readinessProbe:
-                    exec:
-                      command:
-                        - echo
-                        - ok
                   resources: {}
                   securityContext: {}
                   volumeMounts:
