@@ -1,3 +1,8 @@
+# 0.12.0
+
+* Add `monitoringCoreos` setting for prometheus-operator managed metrics
+  collection
+
 # 0.11.10
 
 * Add ability to specify `namespace` for Gateway reference in HTTPRoute

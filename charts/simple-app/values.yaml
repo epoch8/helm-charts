@@ -196,3 +196,8 @@ gke:
     enabled: false
     path: "/metrics"
     interval: "30s"
+
+monitoringCoreos:
+  # If enabled, creates ServiceMonitor for Prometheus Operator
+  enabled: false
+  path: "/metrics"

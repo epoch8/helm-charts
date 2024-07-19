@@ -1,0 +1,18 @@
+{{ if .Values.monitoringCoreos.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+  name: {{ include "simple-app.fullname" . }}
+spec:
+  endpoints:
+    - path: {{ .Values.gke.monitoring.path }}
+      port: http
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "simple-app.selectorLabels" . | nindent 6 }}
+{{ end }}

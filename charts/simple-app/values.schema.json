@@ -222,6 +222,17 @@
                     }
                 }
             }
+        },
+        "monitoringCoreos": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
         }
     },
     "additionalProperties": false
