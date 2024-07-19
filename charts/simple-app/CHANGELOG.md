@@ -1,4 +1,4 @@
-# 0.12.0
+# 0.12.0, 0.12.1
 
 * Add `monitoringCoreos` setting for prometheus-operator managed metrics
   collection
