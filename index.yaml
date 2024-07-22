@@ -638,6 +638,16 @@ entries:
   simple-cronjob:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-07-22T07:38:05.367442436Z"
+    description: A Helm chart for Kubernetes
+    digest: 86663d8dccd9016d646452ed51a77004a596410d51ba74fb0a51a6a53c5bafd0
+    name: simple-cronjob
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-0.1.3/simple-cronjob-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-07-17T08:46:16.074699496Z"
     description: A Helm chart for Kubernetes
     digest: 704bb0125aefeeae105332f01e0bc451cb3dc3db679e54c21a20cfadc85444b5
