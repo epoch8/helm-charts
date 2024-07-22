@@ -1,4 +1,4 @@
-# 0.1.2
+# 0.1.2, 0.1.3
 
 * Remove dummy healtchecks, sometimes they result in Pod being stuck
 
