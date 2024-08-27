@@ -196,6 +196,9 @@
         "affinity": {
             "type": "object"
         },
+        "spreadServiceAcrossNodes": {
+            "type": "boolean"
+        },
         "gke": {
             "type": "object",
             "properties": {

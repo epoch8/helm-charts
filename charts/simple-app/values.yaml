@@ -4,9 +4,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-skew: 1
-skewPolicy: ScheduleAnyway
-
 nameOverride: ""
 fullnameOverride: ""
 
@@ -180,6 +177,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# If set, create topologySpreadConstraints to spread the pods across nodes
+spreadServiceAcrossNodes: false
 
 # Settings specific to GKE deployment
 gke:
