@@ -131,3 +131,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: {{ .Release.Name }}
+        maxSkew: {{ .Values.skew }}
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: {{ .Values.skewPolicy }}
