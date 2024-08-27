@@ -308,3 +308,22 @@ tests:
       - equal:
           path: metadata.name
           value: simple
+
+  - it: Spread service across nodes
+    template: deployment.yaml
+    set:
+      spreadServiceAcrossNodes: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.topologySpreadConstraints
+          value:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              nodeTaintsPolicy: Honor
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: simple
+                  app.kubernetes.io/name: simple-app

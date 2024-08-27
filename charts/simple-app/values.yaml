@@ -178,6 +178,9 @@ tolerations: []
 
 affinity: {}
 
+# If set, create topologySpreadConstraints to spread the pods across nodes
+spreadServiceAcrossNodes: false
+
 # Settings specific to GKE deployment
 gke:
   # If enabled and gateway.enabled is true, creates GCPBackendPolicy and
