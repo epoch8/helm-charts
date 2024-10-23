@@ -1,3 +1,8 @@
+# 0.14.0
+
+* Add `monitoringCoreos.port` for case when monitoring endpoint is on a
+  different port
+
 # 0.13.0
 
 * Add `spreadServiceAcrossNodes` setting

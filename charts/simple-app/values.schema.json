@@ -234,6 +234,9 @@
                 },
                 "path": {
                     "type": "string"
+                },
+                "port": {
+                    "type": ["string", "integer"]
                 }
             }
         }

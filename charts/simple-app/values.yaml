@@ -204,3 +204,4 @@ monitoringCoreos:
   # If enabled, creates ServiceMonitor for Prometheus Operator
   enabled: false
   path: "/metrics"
+  port: http

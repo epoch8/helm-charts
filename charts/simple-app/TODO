@@ -1,0 +1,2 @@
+* Remove `fullnameOverride` - it should always be equal to `.Release.Name`
+* Rename `nameOverride` to `appName`, make it required

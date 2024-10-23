@@ -7,8 +7,8 @@ metadata:
   name: {{ include "simple-app.fullname" . }}
 spec:
   endpoints:
-    - path: {{ .Values.gke.monitoring.path }}
-      port: http
+    - path: {{ .Values.monitoringCoreos.path }}
+      port: {{ .Values.monitoringCoreos.port }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
