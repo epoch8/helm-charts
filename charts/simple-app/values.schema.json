@@ -239,6 +239,35 @@
                     "type": ["string", "integer"]
                 }
             }
+        },
+        "initContainers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "imagePullPolicy": {
+                        "type": "string"
+                    },
+                    "command": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "env": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
         }
     },
     "additionalProperties": false

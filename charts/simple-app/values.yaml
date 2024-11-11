@@ -205,3 +205,12 @@ monitoringCoreos:
   enabled: false
   path: "/metrics"
   port: http
+
+initContainers: []
+#  - name: init-container
+#    image: ""
+#    imagePullPolicy: Always
+#    command: ["service"]
+#    env:
+#      - name: MY_ENV
+#        value: "my_value"

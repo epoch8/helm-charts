@@ -327,3 +327,28 @@ tests:
                 matchLabels:
                   app.kubernetes.io/instance: simple
                   app.kubernetes.io/name: simple-app
+
+  - it: Deployment should have initContainer
+    template: deployment.yaml
+    set:
+      initContainers:
+        - name: init-container
+          image: "test:1.0.0"
+          imagePullPolicy: Always
+          command: ["service"]
+          env:
+            - name: MY_ENV
+              value: "my_value"
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.initContainers
+          value:
+            - name: init-container
+              image: "test:1.0.0"
+              imagePullPolicy: Always
+              command: [ "service" ]
+              env:
+                - name: MY_ENV
+                  value: "my_value"

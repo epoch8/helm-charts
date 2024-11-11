@@ -63,6 +63,10 @@ spec:
           configMap:
             name: {{ $fullName }}
         {{- end }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ include "simple-app.fullname" . }}
           securityContext:
