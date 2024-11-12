@@ -1,0 +1,33 @@
+All manifests should match snapshot:
+  1: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      annotations:
+        helm.sh/hook: post-install,post-upgrade
+        helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+        helm.sh/hook-weight: "-1"
+      labels:
+        app.kubernetes.io/instance: simple
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: simple-app
+        app.kubernetes.io/version: 1.16.0
+        helm.sh/chart: simple-app-0.0.0
+      name: simple-hook-job
+    spec:
+      template:
+        spec:
+          containers:
+            - command:
+                - my_service
+                - run
+              env:
+                - name: TEST
+                  value: test
+              image: test:1.1.1
+              imagePullPolicy: IfNotPresent
+              name: hook-job
+              resources: null
+          restartPolicy: Never
+          securityContext: {}
+          serviceAccountName: simple
