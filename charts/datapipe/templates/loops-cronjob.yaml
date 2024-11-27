@@ -21,7 +21,7 @@ spec:
         spec:
           containers:
           - name: {{ .name }}
-            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+            image: "{{ $.Values.image.repository }}:{{ .imagetag | default $.Values.image.tag }}"
             command:
               - datapipe
               {{- if $.Values.pipeline }}
