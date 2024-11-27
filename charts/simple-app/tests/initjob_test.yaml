@@ -1,7 +1,7 @@
-suite: simple-app hook test
+suite: simple-app init job test
 
 values:
-  - hook-values.yaml
+  - initjob-values.yaml
 
 release:
   name: simple
@@ -13,13 +13,13 @@ chart:
 tests:
   - it: All manifests should match snapshot
     templates:
-      - hook-job.yaml
+      - initjob.yaml
     asserts:
       - matchSnapshot: {}
 
-  - it: Hook Job - Set default hook image
+  - it: Init Job - Set default init job image
     templates:
-      - hook-job.yaml
+      - initjob.yaml
     asserts:
       - isKind:
           of: Job
@@ -27,11 +27,11 @@ tests:
           path: spec.template.spec.containers[0].image
           value: test:1.1.1
 
-  - it: Hook Job - Set hook image
+  - it: Init Job - Set init job image
     templates:
-      - hook-job.yaml
+      - initjob.yaml
     set:
-      hook:
+      initJob:
         repository: "test-hook"
         tag: "2.2.2"
     asserts:

@@ -20,6 +20,6 @@ volumes:
     size: 1Gi
     mountPath: /data
 
-hook:
+initJob:
   enabled: true
   command: ["my_service", "run"]

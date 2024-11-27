@@ -1,9 +1,9 @@
 {{- $fullName := include "simple-app.fullname" . -}}
-{{- if .Values.hook.enabled }}
+{{- if .Values.initJob.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ $fullName }}-hook-job"
+  name: "{{ $fullName }}-init-job"
   labels:
     {{- include "simple-app.labels" . | nindent 4 }}
   annotations:
@@ -28,21 +28,21 @@ spec:
       {{- end }}
       containers:
         - name: "hook-job"
-          image: "{{ .Values.hook.repository | default .Values.image.repository }}:{{ .Values.hook.tag | default .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.hook.pullPolicy | default .Values.image.pullPolicy }}
-          {{- with .Values.hook.command }}
+          image: "{{ .Values.initJob.repository | default .Values.image.repository }}:{{ .Values.initJob.tag | default .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
+          {{- with .Values.initJob.command }}
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.hook.env }}
+          {{- if .Values.initJob.env }}
           env:
-            {{- .Values.hook.env | toYaml | nindent 12 }}
+            {{- .Values.initJob.env | toYaml | nindent 12 }}
           {{ else if .Values.env  }}
           env:
             {{- .Values.env | toYaml | nindent 12 }}
           {{ end }}
           resources:
-            {{- toYaml .Values.hook.resources | nindent 12 }}
+            {{- toYaml .Values.initJob.resources | default .Values.resources | nindent 12 }}
       serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

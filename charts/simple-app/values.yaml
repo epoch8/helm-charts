@@ -48,6 +48,22 @@ command: []
 # - to
 # - run
 
+initJob:
+  # If enabled, creates Job that executes after all resources are installed or upgraded in Kubernetes
+  enabled: false
+  # Required parameter. The command that the hook runs
+  command: []
+  #  Hook repository. Default: Values.image.repository
+  #  repository: ""
+  #  Hook tag. Default: Values.image.tag
+  #  tag: ""
+  #  Hook pullPolicy. Default: Values.image.pullPolicy
+  #  pullPolicy: ""
+  #  Hook environment variables. Default: Values.env
+  #  env: []
+  #  Hook resources. Default: {}
+  #  resources: {}
+
 # Amount of shared memory to allocate for the container
 # If not set, the default is 64Mi
 shmSize: ""
@@ -205,19 +221,3 @@ monitoringCoreos:
   enabled: false
   path: "/metrics"
   port: http
-
-hook:
-  # If enabled, creates Job that executes after all resources are installed or upgraded in Kubernetes
-  enabled: false
-  # Required parameter. The command that the hook runs
-  command: []
-  #  Hook repository. Default: Values.image.repository
-  #  repository: ""
-  #  Hook tag. Default: Values.image.tag
-  #  tag: ""
-  #  Hook pullPolicy. Default: Values.image.pullPolicy
-  #  pullPolicy: ""
-  #  Hook environment variables. Default: Values.env
-  #  env: []
-  #  Hook resources. Default: {}
-  #  resources: {}
