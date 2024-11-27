@@ -1,0 +1,49 @@
+{{- $fullName := include "simple-app.fullname" . -}}
+{{- if .Values.initJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ $fullName }}-init"
+  labels:
+    {{- include "simple-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "-1"
+spec:
+  template:
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: "hook-job"
+          image: "{{ .Values.initJob.repository | default .Values.image.repository }}:{{ .Values.initJob.tag | default .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
+          {{- with .Values.initJob.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.initJob.env }}
+          env:
+            {{- .Values.initJob.env | toYaml | nindent 12 }}
+          {{ else if .Values.env  }}
+          env:
+            {{- .Values.env | toYaml | nindent 12 }}
+          {{ end }}
+          resources:
+            {{- toYaml .Values.initJob.resources | default .Values.resources | nindent 12 }}
+      serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+{{ end }}

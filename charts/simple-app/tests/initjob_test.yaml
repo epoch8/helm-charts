@@ -1,0 +1,42 @@
+suite: simple-app init job test
+
+values:
+  - initjob-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - initjob.yaml
+    asserts:
+      - matchSnapshot: {}
+
+  - it: Init Job - Set default init job image
+    templates:
+      - initjob.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: Init Job - Set init job image
+    templates:
+      - initjob.yaml
+    set:
+      initJob:
+        repository: "test-hook"
+        tag: "2.2.2"
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test-hook:2.2.2

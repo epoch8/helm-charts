@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test
+  tag: 1.1.1
+
+port: 9000
+
+domain: test.epoch8.co
+
+ingress:
+  enabled: true
+
+env:
+  - name: TEST
+    value: test
+
+volumes:
+  - name: data
+    size: 1Gi
+    mountPath: /data
+
+initJob:
+  enabled: true
+  command: ["my_service", "run"]
