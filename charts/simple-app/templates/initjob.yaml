@@ -3,12 +3,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ $fullName }}-init-job"
+  name: "{{ $fullName }}-init"
   labels:
     {{- include "simple-app.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook-weight": "-1"
 spec:
   template:
