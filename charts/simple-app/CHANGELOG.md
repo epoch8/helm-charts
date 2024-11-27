@@ -1,4 +1,4 @@
-# WIP
+# 0.15.0
 
 * Add `.initJob` to run Job after install or upgrade
 
