@@ -1,5 +1,46 @@
 apiVersion: v1
 entries:
+  cvat:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2025-01-13T09:50:06.829779199Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.*
+    - condition: nuclio.enabled
+      name: nuclio
+      repository: https://nuclio.github.io/nuclio/charts
+      version: 0.19.0
+    - condition: analytics.enabled
+      name: vector
+      repository: https://helm.vector.dev
+      version: 0.19.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 4.1.*
+    - condition: analytics.enabled
+      name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.60.*
+    - condition: traefik.enabled
+      name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 25.0.0
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.5.*
+    description: A Helm chart for Kubernetes
+    digest: 29114295e3a56cfcefe5cc86456041cf717fc0b44034e399550e4930a003df5f
+    kubeVersion: '>= 1.19.0-0'
+    name: cvat
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/cvat-0.14.0/cvat-0.14.0.tgz
+    version: 0.14.0
   dash-app:
   - apiVersion: v2
     appVersion: 0.0.1
