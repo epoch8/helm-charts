@@ -1,3 +1,7 @@
+# 0.15.2
+
+* Switch `.initJob` hook from `post-upgrade` to `pre-upgrade`
+
 # 0.15.0, 0.15.1
 
 * Add `.initJob` to run Job after install or upgrade
