@@ -1,3 +1,7 @@
+# 0.16.0
+
+* Add `.volumes[].hostPath` property to mount volume as a hostPath type
+
 # 0.15.2
 
 * Switch `.initJob` hook from `post-upgrade` to `pre-upgrade`
