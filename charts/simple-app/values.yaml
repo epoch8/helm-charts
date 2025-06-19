@@ -69,6 +69,11 @@ initJob:
 shmSize: ""
 
 volumes: []
+  # if "hostPath" is set, it won't create anything, just mount hostPath on host to mountPath in container
+  # - name: data
+  #   mountPath: /data
+  #   hostPath: /home/ml/stuff
+
   # if "size" is set, it will create a PVC
   # - name: data
   #   size: 1Gi

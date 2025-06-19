@@ -44,7 +44,11 @@ spec:
         {{- end }}
         {{- range .Values.volumes }}
         - name: {{ .name }}
-          {{- if .emptyDir }}
+          {{- if .hostPath }}
+          hostPath:
+            path: {{ .hostPath }}
+            type: Directory
+          {{- else if .emptyDir }}
           emptyDir:
             sizeLimit: {{ .size }}
           {{- else if .size }}
