@@ -14,7 +14,12 @@ If release name contains chart name it will be used as a full name.
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
+{{- if .Values.nameOverride -}}
+{{- $name := include "simple-app.name" . }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- else -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- end -}}
 {{- end }}
 {{- end }}
 
@@ -23,6 +28,17 @@ Create chart name and version as used by the chart label.
 */}}
 {{- define "simple-app.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Compute image based on global values and image specific values
+*/}}
+{{- define "simple-app.image" -}}
+{{- $image := .Values.image -}}
+{{- $global := .Values.global.image -}}
+{{- $imageName := default $global.repository $image.repository -}}
+{{- $imageTag := default $global.tag $image.tag -}}
+{{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
 {{- end }}
 
 {{/*
@@ -46,13 +62,30 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Should the service account be created
+
+If global SA is defined and serviceAccount.create is not set explicitly, then global SA will be used
+else local serviceAccount.create will be used
+*/}}
+{{- define "simple-app.serviceAccount.create" -}}
+{{- if .Values.global.serviceAccount.name -}}
+{{- default false .Values.serviceAccount.create -}}
+{{- else -}}
+{{- default true .Values.serviceAccount.create -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+{{- end }}
+
+{{/*
+Name of the service account to use
 */}}
 {{- define "simple-app.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "simple-app.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "simple-app.fullname" .) (default .Values.global.serviceAccount.name .Values.serviceAccount.name) }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" (default .Values.global.serviceAccount.name .Values.serviceAccount.name) }}
 {{- end }}
 {{- end }}
 

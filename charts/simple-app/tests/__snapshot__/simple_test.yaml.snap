@@ -34,7 +34,7 @@ All manifests should match snapshot:
                 httpGet:
                   path: /
                   port: http
-              name: simple
+              name: simple-app
               ports:
                 - containerPort: 9000
                   name: http
@@ -49,7 +49,7 @@ All manifests should match snapshot:
                 - mountPath: /data
                   name: data
           securityContext: {}
-          serviceAccountName: simple
+          serviceAccountName: default
           volumes:
             - name: data
               persistentVolumeClaim:
@@ -109,4 +109,4 @@ All manifests should match snapshot:
         app.kubernetes.io/name: simple-app
         app.kubernetes.io/version: 1.16.0
         helm.sh/chart: simple-app-0.0.0
-      name: simple
+      name: default
