@@ -1,3 +1,7 @@
+# 0.17.0
+
+* Add initial compatibility with multi-subchart use case
+
 # 0.16.0
 
 * Add `.volumes[].hostPath` property to mount volume as a hostPath type
