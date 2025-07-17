@@ -1,3 +1,7 @@
+# 0.16.1
+
+* Fixed bug when creating serviceaccount if `.initJob` hook is enabled
+
 # 0.16.0
 
 * Add `.volumes[].hostPath` property to mount volume as a hostPath type

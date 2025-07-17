@@ -103,6 +103,7 @@ All manifests should match snapshot:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
+      annotations: null
       labels:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
