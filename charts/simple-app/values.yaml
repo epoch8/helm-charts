@@ -43,6 +43,8 @@ extraPorts: []
 # Environment variables for container
 env: []
 
+workingDir: ""
+
 command: []
 # - command
 # - to
@@ -53,6 +55,7 @@ initJob:
   enabled: false
   # Required parameter. The command that the hook runs
   command: []
+  #  workingDir: ""
   #  Hook repository. Default: Values.image.repository
   #  repository: ""
   #  Hook tag. Default: Values.image.tag

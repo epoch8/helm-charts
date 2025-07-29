@@ -1,3 +1,7 @@
+# 0.17.0
+
+* Add `.workingDir` to root configuration and `.initJob`
+
 # 0.16.1
 
 * Fixed bug when creating serviceaccount if `.initJob` hook is enabled

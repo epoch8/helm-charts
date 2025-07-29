@@ -94,6 +94,9 @@
                 "type": "object"
             }
         },
+        "workingDir": {
+            "type": "string"
+        },
         "command": {
             "type": "array",
             "items": {
@@ -105,6 +108,9 @@
             "properties": {
                 "enabled": {
                     "type": "boolean"
+                },
+                "workingDir": {
+                    "type": "string"
                 },
                 "command": {
                     "type": "array",
@@ -268,7 +274,10 @@
                     "type": "string"
                 },
                 "port": {
-                    "type": ["string", "integer"]
+                    "type": [
+                        "string",
+                        "integer"
+                    ]
                 }
             }
         }

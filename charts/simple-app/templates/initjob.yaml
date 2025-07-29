@@ -30,6 +30,9 @@ spec:
         - name: "hook-job"
           image: "{{ .Values.initJob.repository | default .Values.image.repository }}:{{ .Values.initJob.tag | default .Values.image.tag }}"
           imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
+          {{- if .Values.initJob.workingDir }}
+          workingDir: {{ .Values.initJob.workingDir }}
+          {{- end }}
           {{- with .Values.initJob.command }}
           command:
             {{- toYaml . | nindent 12 }}
