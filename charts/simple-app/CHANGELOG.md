@@ -1,3 +1,7 @@
+# 0.17.1
+
+* Remove successful init jobs
+
 # 0.17.0
 
 * Add `.workingDir` to root configuration and `.initJob`
