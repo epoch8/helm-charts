@@ -65,6 +65,16 @@ entries:
   datapipe:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-30T09:18:11.379456621Z"
+    description: A Helm chart to deploy the Datapipe application on Kubernetes
+    digest: 8a6559fcb1e87d85b05cb961f2cba5dd50749b358df8176888fa4500d1e9193d
+    name: datapipe
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/datapipe-0.3.0/datapipe-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-07-24T22:41:45.007817226Z"
     description: A Helm chart to deploy the Datapipe application on Kubernetes
     digest: 51256e55db966a7e2a4fb73a01568c1d3b0d250e805af5dfc31ff6f4d3e8b693
