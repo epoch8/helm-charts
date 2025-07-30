@@ -1,3 +1,7 @@
+# 0.3.0
+
+* Support `.initJob` similar to `simple-app`
+
 # 0.2.3
 
 * Support custom pipeline module
