@@ -1,4 +1,4 @@
-# 0.17.2
+# 0.18.0
 
 * Add `autoscaling.customMetrics` and `autoscaling.behavior` for HPA
 
