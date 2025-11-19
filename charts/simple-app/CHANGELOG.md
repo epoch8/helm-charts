@@ -1,3 +1,7 @@
+# 0.17.2
+
+* Add `autoscaling.customMetrics` and `autoscaling.behavior` for HPA
+
 # 0.17.1
 
 * Remove successful init jobs
