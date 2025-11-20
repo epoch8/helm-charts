@@ -195,6 +195,36 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+  # Custom metrics for HPA (Pods, Object, or External metrics)
+  customMetrics: []
+  # Example:
+  # - type: Pods
+  #   pods:
+  #     metric:
+  #       name: requests-per-second
+  #     target:
+  #       type: AverageValue
+  #       averageValue: "100"
+  # Behavior configuration for HPA scaling
+  behavior: {}
+  # Example:
+  #   scaleUp:
+  #     stabilizationWindowSeconds: 0
+  #     policies:
+  #       - type: Pods
+  #         value: 4
+  #         periodSeconds: 15
+  #       - type: Percent
+  #         value: 100
+  #         periodSeconds: 15
+  #     selectPolicy: Max
+  #   scaleDown:
+  #     stabilizationWindowSeconds: 300
+  #     policies:
+  #       - type: Percent
+  #         value: 100
+  #         periodSeconds: 15
+  #     selectPolicy: Min
 
 nodeSelector: {}
 
