@@ -1,3 +1,7 @@
+# 0.19.0
+
+* Add `terminationGracePeriodSeconds` parameter for pod termination grace period
+
 # 0.18.0
 
 * Add `autoscaling.customMetrics` and `autoscaling.behavior` for HPA

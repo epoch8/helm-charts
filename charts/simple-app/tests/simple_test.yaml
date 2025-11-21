@@ -72,6 +72,17 @@ tests:
             path: /
             port: http
 
+  - it: Deployment should set terminationGracePeriodSeconds when specified
+    template: deployment.yaml
+    set:
+      terminationGracePeriodSeconds: 60
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.terminationGracePeriodSeconds
+          value: 60
+
   - it: Deployment should use imagePullSecrets if specified
     template: deployment.yaml
     set:

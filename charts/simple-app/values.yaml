@@ -133,6 +133,10 @@ readinessProbe: {}
 
 replicaCount: 1
 
+# Grace period for pod termination in seconds
+# If not set, Kubernetes default (30) will be used
+terminationGracePeriodSeconds: null
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
