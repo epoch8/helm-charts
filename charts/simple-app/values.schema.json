@@ -187,6 +187,16 @@
         "replicaCount": {
             "type": "integer"
         },
+        "terminationGracePeriodSeconds": {
+            "oneOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
         "serviceAccount": {
             "type": "object",
             "properties": {
