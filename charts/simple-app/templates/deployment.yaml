@@ -71,10 +71,10 @@ spec:
             name: {{ $fullName }}
         {{- end }}
       containers:
-        - name: {{ include "simple-app.fullname" . }}
+        - name: {{ include "simple-app.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ include "simple-app.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.workingDir }}
           workingDir: {{ .Values.workingDir }}
@@ -83,9 +83,9 @@ spec:
           command:
             {{- .Values.command | toYaml | nindent 12 }}
           {{ end }}
-          {{- if .Values.env }}
+          {{- if default .Values.global.env .Values.env }}
           env:
-            {{- .Values.env | toYaml | nindent 12 }}
+            {{- default .Values.global.env .Values.env | toYaml | nindent 12 }}
           {{ end }}
           ports:
             - name: http

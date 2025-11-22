@@ -30,4 +30,4 @@ All manifests should match snapshot:
               resources: null
           restartPolicy: Never
           securityContext: {}
-          serviceAccountName: simple
+          serviceAccountName: default

@@ -1,3 +1,7 @@
+# WIP
+
+* Add initial compatibility with multi-subchart use case
+
 # 0.19.0
 
 * Add `terminationGracePeriodSeconds` parameter for pod termination grace period
