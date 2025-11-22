@@ -97,6 +97,9 @@
                 "type": "object"
             }
         },
+        "workingDir": {
+            "type": "string"
+        },
         "command": {
             "type": "array",
             "items": {
@@ -108,6 +111,9 @@
             "properties": {
                 "enabled": {
                     "type": "boolean"
+                },
+                "workingDir": {
+                    "type": "string"
                 },
                 "command": {
                     "type": "array",
@@ -183,6 +189,16 @@
         },
         "replicaCount": {
             "type": "integer"
+        },
+        "terminationGracePeriodSeconds": {
+            "oneOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "null"
+                }
+            ]
         },
         "serviceAccount": {
             "type": "object",
@@ -271,7 +287,10 @@
                     "type": "string"
                 },
                 "port": {
-                    "type": ["string", "integer"]
+                    "type": [
+                        "string",
+                        "integer"
+                    ]
                 }
             }
         }

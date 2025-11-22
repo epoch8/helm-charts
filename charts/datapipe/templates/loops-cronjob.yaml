@@ -41,11 +41,13 @@ spec:
               {{- end }}
               - run
             env:
+              - name: PYTHONUNBUFFERED
+                value: "1"
             {{- if $.Values.env }}
-              {{- $.Values.env | toYaml | nindent 12 }}
+              {{- $.Values.env | toYaml | nindent 14 }}
             {{ end }}
             {{- if .env }}
-              {{- .env | toYaml | nindent 12 }}
+              {{- .env | toYaml | nindent 14 }}
             {{ end }}
             {{- if .resources }}
             resources: {{ .resources | toYaml | nindent 14 }}

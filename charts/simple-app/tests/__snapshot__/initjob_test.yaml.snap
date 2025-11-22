@@ -5,7 +5,7 @@ All manifests should match snapshot:
     metadata:
       annotations:
         helm.sh/hook: pre-install,pre-upgrade
-        helm.sh/hook-delete-policy: before-hook-creation
+        helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
         helm.sh/hook-weight: "-1"
       labels:
         app.kubernetes.io/instance: simple

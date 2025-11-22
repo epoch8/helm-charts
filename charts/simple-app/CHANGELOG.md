@@ -1,6 +1,26 @@
-# 0.17.0
+# WIP
 
 * Add initial compatibility with multi-subchart use case
+
+# 0.19.0
+
+* Add `terminationGracePeriodSeconds` parameter for pod termination grace period
+
+# 0.18.0
+
+* Add `autoscaling.customMetrics` and `autoscaling.behavior` for HPA
+
+# 0.17.1
+
+* Remove successful init jobs
+
+# 0.17.0
+
+* Add `.workingDir` to root configuration and `.initJob`
+
+# 0.16.1
+
+* Fixed bug when creating serviceaccount if `.initJob` hook is enabled
 
 # 0.16.0
 

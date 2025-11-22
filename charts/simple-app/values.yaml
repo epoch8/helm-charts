@@ -43,6 +43,8 @@ extraPorts: []
 # Environment variables for container
 env: []
 
+workingDir: ""
+
 command: []
 # - command
 # - to
@@ -53,6 +55,7 @@ initJob:
   enabled: false
   # Required parameter. The command that the hook runs
   command: []
+  #  workingDir: ""
   #  Hook repository. Default: Values.image.repository
   #  repository: ""
   #  Hook tag. Default: Values.image.tag
@@ -130,6 +133,10 @@ readinessProbe: {}
 
 replicaCount: 1
 
+# Grace period for pod termination in seconds
+# If not set, Kubernetes default (30) will be used
+terminationGracePeriodSeconds: null
+
 serviceAccount: {}
   ## Specifies whether a service account should be created
   # create: true
@@ -192,6 +199,36 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+  # Custom metrics for HPA (Pods, Object, or External metrics)
+  customMetrics: []
+  # Example:
+  # - type: Pods
+  #   pods:
+  #     metric:
+  #       name: requests-per-second
+  #     target:
+  #       type: AverageValue
+  #       averageValue: "100"
+  # Behavior configuration for HPA scaling
+  behavior: {}
+  # Example:
+  #   scaleUp:
+  #     stabilizationWindowSeconds: 0
+  #     policies:
+  #       - type: Pods
+  #         value: 4
+  #         periodSeconds: 15
+  #       - type: Percent
+  #         value: 100
+  #         periodSeconds: 15
+  #     selectPolicy: Max
+  #   scaleDown:
+  #     stabilizationWindowSeconds: 300
+  #     policies:
+  #       - type: Percent
+  #         value: 100
+  #         periodSeconds: 15
+  #     selectPolicy: Min
 
 nodeSelector: {}
 

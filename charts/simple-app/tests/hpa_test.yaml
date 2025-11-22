@@ -1,0 +1,405 @@
+suite: simple-app HPA tests
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: HPA should not be created when autoscaling is disabled
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: HPA should be created when autoscaling is enabled
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: metadata.name
+          value: simple
+      - equal:
+          path: spec.minReplicas
+          value: 1
+      - equal:
+          path: spec.maxReplicas
+          value: 100
+
+  - it: HPA should have CPU metric when targetCPUUtilizationPercentage is set
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: 80
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: cpu
+      - equal:
+          path: spec.metrics[0].resource.target.type
+          value: Utilization
+      - equal:
+          path: spec.metrics[0].resource.target.averageUtilization
+          value: 80
+
+  - it: HPA should have memory metric when targetMemoryUtilizationPercentage is set
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: null
+      autoscaling.targetMemoryUtilizationPercentage: 70
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: memory
+      - equal:
+          path: spec.metrics[0].resource.target.type
+          value: Utilization
+      - equal:
+          path: spec.metrics[0].resource.target.averageUtilization
+          value: 70
+
+  - it: HPA should have both CPU and memory metrics when both are set
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: 80
+      autoscaling.targetMemoryUtilizationPercentage: 70
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: cpu
+      - equal:
+          path: spec.metrics[1].type
+          value: Resource
+      - equal:
+          path: spec.metrics[1].resource.name
+          value: memory
+
+  - it: HPA should not have customMetrics when customMetrics is empty
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: 80
+      autoscaling.customMetrics: []
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: cpu
+      - notExists:
+          path: spec.metrics[1]
+
+  - it: HPA should have Pods type customMetrics
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: 80
+      autoscaling.customMetrics:
+        - type: Pods
+          pods:
+            metric:
+              name: requests-per-second
+            target:
+              type: AverageValue
+              averageValue: "100"
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: cpu
+      - equal:
+          path: spec.metrics[1].type
+          value: Pods
+      - equal:
+          path: spec.metrics[1].pods.metric.name
+          value: requests-per-second
+      - equal:
+          path: spec.metrics[1].pods.target.type
+          value: AverageValue
+      - equal:
+          path: spec.metrics[1].pods.target.averageValue
+          value: "100"
+
+  - it: HPA should have Object type customMetrics
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: null
+      autoscaling.customMetrics:
+        - type: Object
+          object:
+            metric:
+              name: requests-per-second
+            target:
+              type: Value
+              value: "200"
+            describedObject:
+              apiVersion: v1
+              kind: Service
+              name: my-service
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Object
+      - equal:
+          path: spec.metrics[0].object.metric.name
+          value: requests-per-second
+      - equal:
+          path: spec.metrics[0].object.target.type
+          value: Value
+      - equal:
+          path: spec.metrics[0].object.target.value
+          value: "200"
+      - equal:
+          path: spec.metrics[0].object.describedObject.apiVersion
+          value: v1
+      - equal:
+          path: spec.metrics[0].object.describedObject.kind
+          value: Service
+      - equal:
+          path: spec.metrics[0].object.describedObject.name
+          value: my-service
+
+  - it: HPA should have External type customMetrics
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: null
+      autoscaling.customMetrics:
+        - type: External
+          external:
+            metric:
+              name: queue_messages_ready
+            target:
+              type: AverageValue
+              averageValue: "30"
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: External
+      - equal:
+          path: spec.metrics[0].external.metric.name
+          value: queue_messages_ready
+      - equal:
+          path: spec.metrics[0].external.target.type
+          value: AverageValue
+      - equal:
+          path: spec.metrics[0].external.target.averageValue
+          value: "30"
+
+  - it: HPA should have multiple customMetrics
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.targetCPUUtilizationPercentage: 80
+      autoscaling.customMetrics:
+        - type: Pods
+          pods:
+            metric:
+              name: requests-per-second
+            target:
+              type: AverageValue
+              averageValue: "100"
+        - type: External
+          external:
+            metric:
+              name: queue_messages_ready
+            target:
+              type: AverageValue
+              averageValue: "30"
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.metrics[0].type
+          value: Resource
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: cpu
+      - equal:
+          path: spec.metrics[1].type
+          value: Pods
+      - equal:
+          path: spec.metrics[1].pods.metric.name
+          value: requests-per-second
+      - equal:
+          path: spec.metrics[2].type
+          value: External
+      - equal:
+          path: spec.metrics[2].external.metric.name
+          value: queue_messages_ready
+      - notExists:
+          path: spec.metrics[3]
+
+  - it: HPA should have correct scaleTargetRef
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.scaleTargetRef.apiVersion
+          value: apps/v1
+      - equal:
+          path: spec.scaleTargetRef.kind
+          value: Deployment
+      - equal:
+          path: spec.scaleTargetRef.name
+          value: simple
+
+  - it: HPA should not have behavior when behavior is empty
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.behavior: {}
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - notExists:
+          path: spec.behavior
+
+  - it: HPA should have behavior with scaleUp configuration
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+            - type: Pods
+              value: 4
+              periodSeconds: 15
+            - type: Percent
+              value: 100
+              periodSeconds: 15
+          selectPolicy: Max
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.behavior.scaleUp.stabilizationWindowSeconds
+          value: 0
+      - equal:
+          path: spec.behavior.scaleUp.selectPolicy
+          value: Max
+      - equal:
+          path: spec.behavior.scaleUp.policies[0].type
+          value: Pods
+      - equal:
+          path: spec.behavior.scaleUp.policies[0].value
+          value: 4
+      - equal:
+          path: spec.behavior.scaleUp.policies[0].periodSeconds
+          value: 15
+      - equal:
+          path: spec.behavior.scaleUp.policies[1].type
+          value: Percent
+      - equal:
+          path: spec.behavior.scaleUp.policies[1].value
+          value: 100
+
+  - it: HPA should have behavior with scaleDown configuration
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+            - type: Percent
+              value: 100
+              periodSeconds: 15
+          selectPolicy: Min
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.behavior.scaleDown.stabilizationWindowSeconds
+          value: 300
+      - equal:
+          path: spec.behavior.scaleDown.selectPolicy
+          value: Min
+      - equal:
+          path: spec.behavior.scaleDown.policies[0].type
+          value: Percent
+      - equal:
+          path: spec.behavior.scaleDown.policies[0].value
+          value: 100
+      - equal:
+          path: spec.behavior.scaleDown.policies[0].periodSeconds
+          value: 15
+
+  - it: HPA should have behavior with both scaleUp and scaleDown
+    template: hpa.yaml
+    set:
+      autoscaling.enabled: true
+      autoscaling.behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+            - type: Pods
+              value: 4
+              periodSeconds: 15
+          selectPolicy: Max
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+            - type: Percent
+              value: 100
+              periodSeconds: 15
+          selectPolicy: Min
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.behavior.scaleUp.stabilizationWindowSeconds
+          value: 0
+      - equal:
+          path: spec.behavior.scaleUp.selectPolicy
+          value: Max
+      - equal:
+          path: spec.behavior.scaleDown.stabilizationWindowSeconds
+          value: 300
+      - equal:
+          path: spec.behavior.scaleDown.selectPolicy
+          value: Min
+
