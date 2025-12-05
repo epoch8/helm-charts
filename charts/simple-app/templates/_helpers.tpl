@@ -15,8 +15,7 @@ If release name contains chart name it will be used as a full name.
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- if .Values.nameOverride -}}
-{{- $name := include "simple-app.name" . }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- else -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end -}}
@@ -36,8 +35,8 @@ Compute image based on global values and image specific values
 {{- define "simple-app.image" -}}
 {{- $image := .Values.image -}}
 {{- $global := .Values.global.image -}}
-{{- $imageName := default $global.repository $image.repository -}}
-{{- $imageTag := default $global.tag $image.tag -}}
+{{- $imageName := $image.repository | default $global.repository -}}
+{{- $imageTag := $image.tag | default $global.tag -}}
 {{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
 {{- end }}
 
@@ -47,9 +46,7 @@ Common labels
 {{- define "simple-app.labels" -}}
 helm.sh/chart: {{ include "simple-app.chart" . }}
 {{ include "simple-app.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
+app.kubernetes.io/version: {{ .Values.image.tag | default .Values.global.image.tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
@@ -61,32 +58,43 @@ app.kubernetes.io/name: {{ include "simple-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+
 {{/*
 Should the service account be created
 
-If global SA is defined and serviceAccount.create is not set explicitly, then global SA will be used
-else local serviceAccount.create will be used
+If local serviceAccount.create is set, use it
+Else if global.serviceAccount.create is set, use it
+Else default to true
+
+Returns empty string if false, "true" if true
 */}}
 {{- define "simple-app.serviceAccount.create" -}}
-{{- if .Values.global.serviceAccount.name -}}
-{{- default false .Values.serviceAccount.create -}}
+{{- $localCreate := .Values.serviceAccount.create -}}
+{{- $globalCreate := .Values.global.serviceAccount.create -}}
+{{- if ne $localCreate nil -}}
+{{- if $localCreate -}}true{{- end -}}
+{{- else if ne $globalCreate nil -}}
+{{- if $globalCreate -}}true{{- end -}}
 {{- else -}}
-{{- default true .Values.serviceAccount.create -}}
+true
 {{- end -}}
-{{- end -}}
-
-{{/*
 {{- end }}
+
 
 {{/*
 Name of the service account to use
+
+If "simple-app.serviceAccount.create" is true, use:
+    .Values.serviceAccount.name or .Values.global.serviceAccount.name or include "simple-app.fullname"
+If "simple-app.serviceAccount.create" is false, use:
+    .Values.serviceAccount.name or .Values.global.serviceAccount.name or "default"
 */}}
 {{- define "simple-app.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "simple-app.fullname" .) (default .Values.global.serviceAccount.name .Values.serviceAccount.name) }}
-{{- else }}
-{{- default "default" (default .Values.global.serviceAccount.name .Values.serviceAccount.name) }}
-{{- end }}
+{{- if include "simple-app.serviceAccount.create" . -}}
+{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default (include "simple-app.fullname" .) -}}
+{{- else -}}
+{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default "default" -}}
+{{- end -}}
 {{- end }}
 
 
@@ -103,3 +111,14 @@ Does deployment needs recreate
 {{- end -}}
 {{- $needsRecreate -}}
 {{- end -}}
+
+
+{{/*
+Compute environment variables from global and local values
+*/}}
+{{- define "simple-app.env" -}}
+{{- if .Values.env | default .Values.global.env }}
+env:
+    {{- .Values.env | default .Values.global.env | toYaml | nindent 2 }}
+{{- end }}
+{{- end }}

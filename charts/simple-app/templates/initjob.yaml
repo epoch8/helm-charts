@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
         - name: "hook-job"
-          image: "{{ .Values.initJob.repository | default .Values.image.repository }}:{{ .Values.initJob.tag | default .Values.image.tag }}"
+          image: "{{ include "simple-app.image" . }}"
           imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
           {{- if .Values.initJob.workingDir }}
           workingDir: {{ .Values.initJob.workingDir }}
@@ -37,13 +37,7 @@ spec:
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.initJob.env }}
-          env:
-            {{- .Values.initJob.env | toYaml | nindent 12 }}
-          {{ else if .Values.env  }}
-          env:
-            {{- .Values.env | toYaml | nindent 12 }}
-          {{ end }}
+          {{- include "simple-app.env" . | nindent 10 }}
           resources:
             {{- toYaml .Values.initJob.resources | default .Values.resources | nindent 12 }}
       serviceAccountName: {{ include "simple-app.serviceAccountName" . }}

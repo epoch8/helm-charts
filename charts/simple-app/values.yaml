@@ -10,8 +10,8 @@ fullnameOverride: ""
 domain: ""
 
 image:
-  repository: ""
   pullPolicy: IfNotPresent
+  repository: ""
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 

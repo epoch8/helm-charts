@@ -58,19 +58,16 @@ spec:
             {{- end }}
           restartPolicy: "OnFailure"
           containers:
-            - name: {{ include "simple-app.fullname" . }}
+            - name: {{ include "simple-app.name" . }}
               securityContext:
                 {{- toYaml .Values.securityContext | nindent 16 }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              image: "{{ include "simple-app.image" . }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- if .Values.command }}
               command: 
                 {{- .Values.command | toYaml | nindent 16 }}
               {{ end }}
-              {{- if .Values.env }}
-              env:
-                {{- .Values.env | toYaml | nindent 16 }}
-              {{ end }}
+              {{- include "simple-app.env" . | nindent 14 }}
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               volumeMounts:

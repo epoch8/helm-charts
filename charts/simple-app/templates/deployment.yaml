@@ -82,11 +82,8 @@ spec:
           {{- if .Values.command }}
           command:
             {{- .Values.command | toYaml | nindent 12 }}
-          {{ end }}
-          {{- if default .Values.global.env .Values.env }}
-          env:
-            {{- default .Values.global.env .Values.env | toYaml | nindent 12 }}
-          {{ end }}
+          {{- end }}
+          {{- include "simple-app.env" . | nindent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.port }}
