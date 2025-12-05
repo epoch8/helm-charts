@@ -106,3 +106,4 @@ affinity: {}
 ####
 global:
   serviceAccount: {}
+  image: {}
