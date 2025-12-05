@@ -7,7 +7,7 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
       name: simple
     spec:
@@ -50,7 +50,7 @@ All manifests should match snapshot:
               securityContext: {}
               volumeMounts: null
           securityContext: {}
-          serviceAccountName: default
+          serviceAccountName: simple
           volumes: null
   2: |
     apiVersion: networking.k8s.io/v1
@@ -61,7 +61,7 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
       name: simple
     spec:
@@ -84,7 +84,7 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
       name: simple
     spec:
@@ -117,6 +117,6 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
-      name: default
+      name: simple

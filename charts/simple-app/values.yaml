@@ -268,3 +268,4 @@ monitoringCoreos:
 ####
 global:
   serviceAccount: {}
+  image: {}

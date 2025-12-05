@@ -40,6 +40,20 @@ Compute image based on global values and image specific values
 {{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
 {{- end }}
 
+
+{{/*
+Compute image based on global values and image specific values
+*/}}
+{{- define "simple-app.initJobImage" -}}
+{{- $initJobImage := .Values.initJob -}}
+{{- $image := .Values.image -}}
+{{- $global := .Values.global.image -}}
+{{- $imageName := $initJobImage.repository | default $image.repository | default $global.repository -}}
+{{- $imageTag := $initJobImage.tag | default $image.tag | default $global.tag -}}
+{{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
+{{- end }}
+
+
 {{/*
 Common labels
 */}}

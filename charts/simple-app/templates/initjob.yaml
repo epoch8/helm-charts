@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
         - name: "hook-job"
-          image: "{{ include "simple-app.image" . }}"
+          image: "{{ include "simple-app.initJobImage" . }}"
           imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
           {{- if .Values.initJob.workingDir }}
           workingDir: {{ .Values.initJob.workingDir }}

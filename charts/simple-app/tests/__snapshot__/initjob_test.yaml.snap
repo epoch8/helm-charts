@@ -11,7 +11,7 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
       name: simple-init
     spec:
@@ -30,4 +30,4 @@ All manifests should match snapshot:
               resources: null
           restartPolicy: Never
           securityContext: {}
-          serviceAccountName: default
+          serviceAccountName: simple
