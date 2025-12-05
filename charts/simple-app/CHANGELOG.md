@@ -1,6 +1,6 @@
-# WIP
+# 0.20.0
 
-* Add initial compatibility with multi-subchart use case
+* Adapt chart for multi-chart use case with better use of .Values.global
 
 # 0.19.0
 

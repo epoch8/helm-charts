@@ -1,3 +1,7 @@
+# 0.2.0
+
+* Adapt chart for multi-chart use case with better use of .Values.global
+
 # 0.1.2, 0.1.3
 
 * Remove dummy healtchecks, sometimes they result in Pod being stuck
