@@ -1,8 +1,13 @@
-# 0.20.0
+# 1.0.0
 
-* Adapt chart for multi-chart use case with better use of .Values.global
+## Breaking changes
+
 * Reverse logic of release `simple-app==0.10.0`: now default names of all
   resources equal to `{.Release.Name}-{.Chart.Name}`
+
+## Changes
+
+* Adapt chart for multi-chart use case with better use of .Values.global
 
 # 0.19.0
 
