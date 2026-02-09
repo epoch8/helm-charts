@@ -29,7 +29,7 @@ dependencies:
 ### Values Configuration
 In `values.yaml`, you can define global configurations that apply to all subcharts, as well as specific overrides for each alias.
 
-**Important:** You MUST provide a `nameOverride` (or `fullnameOverride`) for each aliased subchart. Since all instances share the same base chart name, they will try to create resources with identical names (e.g., `release-name-simple-app`) if not overridden. This will cause collisions for Deployments, Services, and ServiceAccounts.
+**Note:** If `nameOverride` is not set, the chart name (alias) will be used to generate resource names, ensuring uniqueness.
 
 ```yaml
 global:
@@ -42,12 +42,10 @@ global:
       value: production
 
 service-one:
-  nameOverride: service-one
   # Inherits image from global
   replicaCount: 2
 
 service-two:
-  nameOverride: service-two
   # Overrides image tag, inherits repository from global
   image:
     tag: "1.2.4"

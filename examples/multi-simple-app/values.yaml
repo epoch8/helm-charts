@@ -9,7 +9,6 @@ global:
 
 
 service-one:
-  nameOverride: service-one
   command: ["python", "-m", "app_one"]
 
   resources:
@@ -22,7 +21,6 @@ service-one:
 
 
 service-two:
-  nameOverride: service-two
   command: ["python", "-m", "app_two"]
 
   resources:
@@ -34,7 +32,6 @@ service-two:
       memory: "256Mi"
 
 cron-job-one:
-  nameOverride: cron-job-one
   schedule: "*/5 * * * *"
   command: ["python", "-m", "cron_job_one"]
   resources:
@@ -46,7 +43,6 @@ cron-job-one:
       memory: "128Mi"
 
 cron-job-two:
-  nameOverride: cron-job-two
   schedule: "*/10 * * * *"
   command: ["python", "-m", "cron_job_two"]
   resources:

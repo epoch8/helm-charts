@@ -12,4 +12,4 @@ dependencies:
   repository: file://../../charts/simple-cronjob
   version: 0.2.0
 digest: sha256:8cc9f0de700fd223d53b3d2e148030363ae72cf8024eb1e08f4bb199c047601f
-generated: "2026-02-09T14:34:57.227540924+04:00"
+generated: "2026-02-09T15:22:13.023508753+04:00"
