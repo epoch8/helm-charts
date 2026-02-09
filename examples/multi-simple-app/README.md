@@ -19,15 +19,17 @@ In your `Chart.yaml`, you include the base charts (`simple-app`, `simple-cronjob
 ```yaml
 dependencies:
   - name: simple-app
-    alias: app-one
+    alias: service-one
     # ...
   - name: simple-app
-    alias: app-two
+    alias: service-two
     # ...
 ```
 
 ### Values Configuration
 In `values.yaml`, you can define global configurations that apply to all subcharts, as well as specific overrides for each alias.
+
+**Important:** You MUST provide a `nameOverride` (or `fullnameOverride`) for each aliased subchart. Since all instances share the same base chart name, they will try to create resources with identical names (e.g., `release-name-simple-app`) if not overridden. This will cause collisions for Deployments, Services, and ServiceAccounts.
 
 ```yaml
 global:
@@ -39,11 +41,13 @@ global:
     - name: ENVIRONMENT
       value: production
 
-app-one:
+service-one:
+  nameOverride: service-one
   # Inherits image from global
   replicaCount: 2
 
-app-two:
+service-two:
+  nameOverride: service-two
   # Overrides image tag, inherits repository from global
   image:
     tag: "1.2.4"

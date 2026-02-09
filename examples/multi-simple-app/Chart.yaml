@@ -6,11 +6,11 @@ dependencies:
   - name: simple-app
     version: "0.20.0"
     repository: "file://../../charts/simple-app"
-    alias: app-one
+    alias: service-one
   - name: simple-app
     version: "0.20.0"
     repository: "file://../../charts/simple-app"
-    alias: app-two
+    alias: service-two
   - name: simple-cronjob
     version: "0.2.0"
     repository: "file://../../charts/simple-cronjob"

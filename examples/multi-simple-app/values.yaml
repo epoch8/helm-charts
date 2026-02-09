@@ -8,7 +8,8 @@ global:
       value: "common env value"
 
 
-app-one:
+service-one:
+  nameOverride: service-one
   command: ["python", "-m", "app_one"]
 
   resources:
@@ -20,7 +21,8 @@ app-one:
       memory: "256Mi"
 
 
-app-two:
+service-two:
+  nameOverride: service-two
   command: ["python", "-m", "app_two"]
 
   resources:
@@ -32,6 +34,7 @@ app-two:
       memory: "256Mi"
 
 cron-job-one:
+  nameOverride: cron-job-one
   schedule: "*/5 * * * *"
   command: ["python", "-m", "cron_job_one"]
   resources:
@@ -43,7 +46,8 @@ cron-job-one:
       memory: "128Mi"
 
 cron-job-two:
-  schedule: "0 */1 * * *"
+  nameOverride: cron-job-two
+  schedule: "*/10 * * * *"
   command: ["python", "-m", "cron_job_two"]
   resources:
     limits:
