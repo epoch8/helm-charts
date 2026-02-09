@@ -1,18 +1,18 @@
-{{- $fullName := include "simple-app.fullname" . -}}
+{{- $fullName := include "epoch8-common.fullname" . -}}
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "simple-app.fullname" . }}
+  name: {{ include "epoch8-common.fullname" . }}
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "simple-app.selectorLabels" . | nindent 6 }}
+      {{- include "epoch8-common.selectorLabels" . | nindent 6 }}
   {{- if .Values.volumes }}
   strategy:
     type: Recreate
@@ -24,13 +24,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "simple-app.selectorLabels" . | nindent 8 }}
+        {{- include "epoch8-common.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
@@ -62,16 +62,16 @@ spec:
             name: {{ $fullName }}
         {{- end }}
       containers:
-        - name: {{ include "simple-app.fullname" . }}
+        - name: {{ include "epoch8-common.fullname" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ include "simple-app.image" . }}"
+          image: "{{ include "epoch8-common.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.command }}
           command: 
             {{- .Values.command | toYaml | nindent 12 }}
           {{ end }}
-          {{- include "simple-app.env" . | nindent 10 }}
+          {{- include "epoch8-common.env" . | nindent 10 }}
           livenessProbe:
             exec:
               command:

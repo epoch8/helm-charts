@@ -8,6 +8,7 @@
 ## Changes
 
 * Adapt chart for multi-chart use case with better use of .Values.global
+* Extract common helpers to `epoch8-common` subchart
 
 # 0.1.2, 0.1.3
 

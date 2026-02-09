@@ -225,6 +225,9 @@
                     }
                 }
             }
+        },
+        "epoch8-common": {
+            "type": "object"
         }
     },
     "additionalProperties": false
