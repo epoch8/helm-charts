@@ -1,0 +1,17 @@
+apiVersion: v2
+name: multi-simple-app
+description: Example chart deploying multiple simple-app instances
+version: 0.1.0
+dependencies:
+  - name: simple-app
+    version: "0.20.0"
+    repository: "file://../../charts/simple-app"
+    alias: app-one
+  - name: simple-app
+    version: "0.20.0"
+    repository: "file://../../charts/simple-app"
+    alias: app-two
+  - name: simple-cronjob
+    version: "0.2.0"
+    repository: "file://../../charts/simple-cronjob"
+    alias: cron-job

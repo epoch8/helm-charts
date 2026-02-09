@@ -1,0 +1,32 @@
+global:
+  image:
+    repository: "my-service-repo"
+    tag: "v2026.02.09"
+
+  env:
+    - name: COMMON_ENV_VAR
+      value: "common env value"
+
+
+app-one:
+  command: ["python", "-m", "app_one"]
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: "512Mi"
+    requests:
+      cpu: "500m"
+      memory: "256Mi"
+
+
+app-two:
+  command: ["python", "-m", "app_two"]
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: "512Mi"
+    requests:
+      cpu: "500m"
+      memory: "256Mi"

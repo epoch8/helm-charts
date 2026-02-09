@@ -1,0 +1,12 @@
+dependencies:
+- name: simple-app
+  repository: file://../../charts/simple-app
+  version: 0.20.0
+- name: simple-app
+  repository: file://../../charts/simple-app
+  version: 0.20.0
+- name: simple-cronjob
+  repository: file://../../charts/simple-cronjob
+  version: 0.2.0
+digest: sha256:b200f6ce39d07b4d37cca3c453a7888e50e9ac1fb282882fb79184a788f3a8a1
+generated: "2026-02-09T13:45:44.994520995+04:00"
