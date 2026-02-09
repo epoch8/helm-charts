@@ -26,7 +26,7 @@ tests:
           of: Deployment
       - equal:
           path: metadata.name
-          value: simple
+          value: simple-simple-worker
 
   - it: Deployment image tag should be set correctly
     template: deployment.yaml
@@ -106,7 +106,7 @@ tests:
           path: spec.template.spec.volumes
           content:
             configMap:
-              name: simple
+              name: simple-simple-worker
             name: configs
 
   - it: Deployment should have correctly mounted volumes with pvc
@@ -124,7 +124,7 @@ tests:
           value:
             name: data
             persistentVolumeClaim:
-              claimName: simple-data
+              claimName: simple-simple-worker-data
 
   - it: Deployment should have correctly mounted volumes without pvc
     template: deployment.yaml

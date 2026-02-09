@@ -3,6 +3,9 @@
     "title": "simple-app values schema",
     "type": "object",
     "properties": {
+        "global": {
+            "type": "object"
+        },
         "nameOverride": {
             "type": "string"
         },

@@ -65,16 +65,13 @@ spec:
         - name: {{ include "simple-app.fullname" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ include "simple-app.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.command }}
           command: 
             {{- .Values.command | toYaml | nindent 12 }}
           {{ end }}
-          {{- if .Values.env }}
-          env:
-            {{- .Values.env | toYaml | nindent 12 }}
-          {{ end }}
+          {{- include "simple-app.env" . | nindent 10 }}
           livenessProbe:
             exec:
               command:

@@ -6,7 +6,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  repository: nginx
+  repository: ""
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -14,7 +14,7 @@ image:
 imagePullSecrets: []
 
 # Environment variables for container
-env: {}
+env: []
 
 volumes: []
   # if "size" is set, it will create a PVC
@@ -53,14 +53,14 @@ configs: []
 
 replicaCount: 1
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+serviceAccount: {}
+  ## Specifies whether a service account should be created
+  # create: true
+  ## Annotations to add to the service account
+  # annotations: {}
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  # name: ""
 
 podAnnotations: {}
 
@@ -99,3 +99,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+####
+global:
+  serviceAccount: {}
+  image: {}
