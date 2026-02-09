@@ -8,5 +8,8 @@ dependencies:
 - name: simple-cronjob
   repository: file://../../charts/simple-cronjob
   version: 0.2.0
-digest: sha256:b200f6ce39d07b4d37cca3c453a7888e50e9ac1fb282882fb79184a788f3a8a1
-generated: "2026-02-09T13:45:44.994520995+04:00"
+- name: simple-cronjob
+  repository: file://../../charts/simple-cronjob
+  version: 0.2.0
+digest: sha256:b0a3b610d188578cc561b92d58d58fbd957c3de430ba03f39dc6f5988a6b0378
+generated: "2026-02-09T14:15:01.737959801+04:00"

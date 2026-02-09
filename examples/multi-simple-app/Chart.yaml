@@ -14,4 +14,8 @@ dependencies:
   - name: simple-cronjob
     version: "0.2.0"
     repository: "file://../../charts/simple-cronjob"
-    alias: cron-job
+    alias: cron-job-one
+  - name: simple-cronjob
+    version: "0.2.0"
+    repository: "file://../../charts/simple-cronjob"
+    alias: cron-job-two

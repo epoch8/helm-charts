@@ -30,3 +30,25 @@ app-two:
     requests:
       cpu: "500m"
       memory: "256Mi"
+
+cron-job-one:
+  schedule: "*/5 * * * *"
+  command: ["python", "-m", "cron_job_one"]
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "250m"
+      memory: "128Mi"
+
+cron-job-two:
+  schedule: "0 */1 * * *"
+  command: ["python", "-m", "cron_job_two"]
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "250m"
+      memory: "128Mi"
