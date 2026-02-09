@@ -15,7 +15,7 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3.5
         with:
-          version: v3.11.0
+          version: v3.19.0
 
       - name: Install helm-unittest
         run: |
