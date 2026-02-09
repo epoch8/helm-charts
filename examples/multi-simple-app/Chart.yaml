@@ -4,18 +4,18 @@ description: Example chart deploying multiple simple-app instances
 version: 0.1.0
 dependencies:
   - name: simple-app
-    version: "0.20.0"
+    version: "1.0.0"
     repository: "file://../../charts/simple-app"
     alias: service-one
   - name: simple-app
-    version: "0.20.0"
+    version: "1.0.0"
     repository: "file://../../charts/simple-app"
     alias: service-two
   - name: simple-cronjob
-    version: "0.2.0"
+    version: "1.0.0"
     repository: "file://../../charts/simple-cronjob"
     alias: cron-job-one
   - name: simple-cronjob
-    version: "0.2.0"
+    version: "1.0.0"
     repository: "file://../../charts/simple-cronjob"
     alias: cron-job-two

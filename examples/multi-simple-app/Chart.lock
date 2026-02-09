@@ -1,15 +1,15 @@
 dependencies:
 - name: simple-app
   repository: file://../../charts/simple-app
-  version: 0.20.0
+  version: 1.0.0
 - name: simple-app
   repository: file://../../charts/simple-app
-  version: 0.20.0
+  version: 1.0.0
 - name: simple-cronjob
   repository: file://../../charts/simple-cronjob
-  version: 0.2.0
+  version: 1.0.0
 - name: simple-cronjob
   repository: file://../../charts/simple-cronjob
-  version: 0.2.0
-digest: sha256:8cc9f0de700fd223d53b3d2e148030363ae72cf8024eb1e08f4bb199c047601f
-generated: "2026-02-09T15:22:13.023508753+04:00"
+  version: 1.0.0
+digest: sha256:1ec2a2e08e4fffc97b1251f8819f103b0ed629b0e3cdab8b3854c02cd02f92b4
+generated: "2026-02-09T17:10:18.739435634+04:00"
