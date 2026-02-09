@@ -1,20 +1,28 @@
 # Multi-Simple-App Example
 
-This example demonstrates how to create a "super-chart" that configures and deploys multiple instances of `simple-app` (or `simple-cronjob`) in a single Helm release.
+This example demonstrates how to create a "super-chart" that configures and
+deploys multiple instances of `simple-app` (or `simple-cronjob`) in a single
+Helm release.
 
 ## Overview
 
-This setup allows applications to be "stacked" easily in a multi-chart scenario. The main goal is to establish a hierarchy of configuration where:
+This setup allows applications to be "stacked" easily in a multi-chart scenario.
+The main goal is to establish a hierarchy of configuration where:
 
-1.  **Global Defaults**: Common values (like container images, registries, or shared environment variables) are defined in the `global` key.
-2.  **Local Overrides**: Defaults are respected unless explicitly overridden by a specific application's configuration.
+1.  **Global Defaults**: Common values (like container images, registries, or
+    shared environment variables) are defined in the `global` key.
+2.  **Local Overrides**: Defaults are respected unless explicitly overridden by
+    a specific application's configuration.
 
-By applying this chart, you create all resources at once and manage them as a single Helm release.
+By applying this chart, you create all resources at once and manage them as a
+single Helm release.
 
 ## Configuration Structure
 
 ### Chart Definition
-In your `Chart.yaml`, you include the base charts (`simple-app`, `simple-cronjob`, etc.) multiple times, assigning a unique `alias` to each instance.
+In your `Chart.yaml`, you include the base charts (`simple-app`,
+`simple-cronjob`, etc.) multiple times, assigning a unique `alias` to each
+instance.
 
 ```yaml
 dependencies:
@@ -27,9 +35,11 @@ dependencies:
 ```
 
 ### Values Configuration
-In `values.yaml`, you can define global configurations that apply to all subcharts, as well as specific overrides for each alias.
+In `values.yaml`, you can define global configurations that apply to all
+subcharts, as well as specific overrides for each alias.
 
-**Note:** If `nameOverride` is not set, the chart name (alias) will be used to generate resource names, ensuring uniqueness.
+**Note:** If `nameOverride` is not set, the chart name (alias) will be used to
+generate resource names, ensuring uniqueness.
 
 ```yaml
 global:

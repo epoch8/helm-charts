@@ -28,7 +28,7 @@ tests:
           of: HorizontalPodAutoscaler
       - equal:
           path: metadata.name
-          value: simple
+          value: simple-simple-app
       - equal:
           path: spec.minReplicas
           value: 1
@@ -284,7 +284,7 @@ tests:
           value: Deployment
       - equal:
           path: spec.scaleTargetRef.name
-          value: simple
+          value: simple-simple-app
 
   - it: HPA should not have behavior when behavior is empty
     template: hpa.yaml
