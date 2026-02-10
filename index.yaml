@@ -123,6 +123,16 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/datapipe-0.1.0/datapipe-0.1.0.tgz
     version: 0.1.0
+  epoch8-common:
+  - apiVersion: v2
+    created: "2026-02-10T09:24:01.839031171Z"
+    description: Common helper templates for Epoch8 Helm charts
+    digest: 1a6bbffcf98bf65431c12e17a05079c885d6a0f16b5059495966b07b57440f60
+    name: epoch8-common
+    type: library
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/epoch8-common-0.1.0/epoch8-common-0.1.0.tgz
+    version: 0.1.0
   label-studio:
   - apiVersion: v2
     appVersion: 1.1.0
@@ -356,6 +366,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/rasa-bot-1.5.0/rasa-bot-1.5.0.tgz
     version: 1.5.0
   simple-app:
+  - apiVersion: v2
+    appVersion: undefined
+    created: "2026-02-10T09:24:02.081867685Z"
+    dependencies:
+    - name: epoch8-common
+      repository: file://../epoch8-common
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: dda9f9dabc85e05bd331546cff39771ca20f49870345fb4d34f53045e0447f84
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-1.0.0/simple-app-1.0.0.tgz
+    version: 1.0.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-11-21T10:05:36.204913802Z"
@@ -798,6 +822,20 @@ entries:
     version: 0.1.0
   simple-cronjob:
   - apiVersion: v2
+    appVersion: undefined
+    created: "2026-02-10T09:24:02.329934644Z"
+    dependencies:
+    - name: epoch8-common
+      repository: file://../epoch8-common
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: b7597cb2233845f4ec643188840109c5243a77be76ba5e2460fc9fc976becfd8
+    name: simple-cronjob
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-1.0.0/simple-cronjob-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-07-22T07:38:05.367442436Z"
     description: A Helm chart for Kubernetes
@@ -838,6 +876,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-0.1.0/simple-cronjob-0.1.0.tgz
     version: 0.1.0
   simple-worker:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-10T09:24:02.5884628Z"
+    dependencies:
+    - name: epoch8-common
+      repository: file://../epoch8-common
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: 5fbed89a684912190490c170e6351f8ac73ce246e553b81100518814eb012948
+    name: simple-worker
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-worker-1.0.0/simple-worker-1.0.0.tgz
+    version: 1.0.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-07-08T19:32:43.876468502Z"
