@@ -1,0 +1,54 @@
+global:
+  image:
+    repository: "my-service-repo"
+    tag: "v2026.02.09"
+
+  env:
+    - name: COMMON_ENV_VAR
+      value: "common env value"
+
+
+service-one:
+  command: ["python", "-m", "app_one"]
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: "512Mi"
+    requests:
+      cpu: "500m"
+      memory: "256Mi"
+
+
+service-two:
+  command: ["python", "-m", "app_two"]
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: "512Mi"
+    requests:
+      cpu: "500m"
+      memory: "256Mi"
+
+cron-job-one:
+  schedule: "*/5 * * * *"
+  command: ["python", "-m", "cron_job_one"]
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "250m"
+      memory: "128Mi"
+
+cron-job-two:
+  schedule: "*/10 * * * *"
+  command: ["python", "-m", "cron_job_two"]
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+    requests:
+      cpu: "250m"
+      memory: "128Mi"

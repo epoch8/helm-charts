@@ -3,8 +3,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
-  name: {{ include "simple-app.fullname" . }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
+  name: {{ include "epoch8-common.fullname" . }}
 spec:
   endpoints:
     - path: {{ .Values.monitoringCoreos.path }}
@@ -14,5 +14,5 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "simple-app.selectorLabels" . | nindent 6 }}
+      {{- include "epoch8-common.selectorLabels" . | nindent 6 }}
 {{ end }}

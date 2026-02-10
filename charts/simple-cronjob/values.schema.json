@@ -3,6 +3,9 @@
     "title": "simple-app values schema",
     "type": "object",
     "properties": {
+        "global": {
+            "type": "object"
+        },
         "nameOverride": {
             "type": "string"
         },
@@ -177,6 +180,9 @@
                     }
                 }
             }
+        },
+        "epoch8-common": {
+            "type": "object"
         }
     },
     "additionalProperties": false

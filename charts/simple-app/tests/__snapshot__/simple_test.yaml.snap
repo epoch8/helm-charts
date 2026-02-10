@@ -7,9 +7,9 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
-      name: simple
+      name: simple-simple-app
     spec:
       replicas: 1
       selector:
@@ -34,7 +34,7 @@ All manifests should match snapshot:
                 httpGet:
                   path: /
                   port: http
-              name: simple
+              name: simple-app
               ports:
                 - containerPort: 9000
                   name: http
@@ -49,11 +49,11 @@ All manifests should match snapshot:
                 - mountPath: /data
                   name: data
           securityContext: {}
-          serviceAccountName: simple
+          serviceAccountName: simple-simple-app
           volumes:
             - name: data
               persistentVolumeClaim:
-                claimName: simple-data
+                claimName: simple-simple-app-data
   2: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -63,9 +63,9 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
-      name: simple
+      name: simple-simple-app
     spec:
       rules:
         - host: test.epoch8.co
@@ -73,7 +73,7 @@ All manifests should match snapshot:
             paths:
               - backend:
                   service:
-                    name: simple
+                    name: simple-simple-app
                     port:
                       number: 80
                 path: /*
@@ -86,9 +86,9 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
-      name: simple
+      name: simple-simple-app
     spec:
       ports:
         - name: http
@@ -111,6 +111,6 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-app
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-app-0.0.0
-      name: simple
+      name: simple-simple-app

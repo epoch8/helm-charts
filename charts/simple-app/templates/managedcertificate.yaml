@@ -2,7 +2,7 @@
 apiVersion: networking.gke.io/v1beta1
 kind: ManagedCertificate
 metadata:
-  name: {{ include "simple-app.fullname" . }}
+  name: {{ include "epoch8-common.fullname" . }}
 spec:
   domains:
     - {{ .Values.domain }}

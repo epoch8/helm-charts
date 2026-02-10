@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "simple-app.fullname" . }}
+  name: {{ include "epoch8-common.fullname" . }}
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
 data:
   {{- range .Values.configs }}
   {{ .name }}: |

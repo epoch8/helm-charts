@@ -2,9 +2,9 @@
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
-  name: {{ include "simple-app.fullname" . }}
+  name: {{ include "epoch8-common.fullname" . }}
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
 spec:
   parentRefs:
   - kind: Gateway
@@ -14,6 +14,6 @@ spec:
   - "{{ .Values.domain }}"
   rules:
   - backendRefs:
-    - name: {{ include "simple-app.fullname" . }}
+    - name: {{ include "epoch8-common.fullname" . }}
       port: {{ .Values.servicePort }}
 {{- end -}}

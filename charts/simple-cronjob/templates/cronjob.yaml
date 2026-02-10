@@ -1,11 +1,11 @@
-{{- $fullName := include "simple-app.fullname" . -}}
+{{- $fullName := include "epoch8-common.fullname" . -}}
 
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "simple-app.fullname" . }}
+  name: {{ include "epoch8-common.fullname" . }}
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.schedule }}"
   timeZone: "{{ .Values.timeZone }}"
@@ -19,13 +19,13 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           labels:
-            {{- include "simple-app.selectorLabels" . | nindent 12 }}
+            {{- include "epoch8-common.selectorLabels" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+          serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
           securityContext:
             {{- toYaml .Values.podSecurityContext | nindent 12 }}
           volumes:
@@ -58,19 +58,16 @@ spec:
             {{- end }}
           restartPolicy: "OnFailure"
           containers:
-            - name: {{ include "simple-app.fullname" . }}
+            - name: {{ include "epoch8-common.name" . }}
               securityContext:
                 {{- toYaml .Values.securityContext | nindent 16 }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              image: "{{ include "epoch8-common.image" . }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- if .Values.command }}
               command: 
                 {{- .Values.command | toYaml | nindent 16 }}
               {{ end }}
-              {{- if .Values.env }}
-              env:
-                {{- .Values.env | toYaml | nindent 16 }}
-              {{ end }}
+              {{- include "epoch8-common.env" . | nindent 14 }}
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               volumeMounts:

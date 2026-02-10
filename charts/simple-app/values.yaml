@@ -10,8 +10,8 @@ fullnameOverride: ""
 domain: ""
 
 image:
-  repository: nginx
   pullPolicy: IfNotPresent
+  repository: ""
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
@@ -137,14 +137,14 @@ replicaCount: 1
 # If not set, Kubernetes default (30) will be used
 terminationGracePeriodSeconds: null
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+serviceAccount: {}
+  ## Specifies whether a service account should be created
+  # create: true
+  ## Annotations to add to the service account
+  # annotations: {}
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  # name: ""
 
 podAnnotations: {}
 
@@ -263,3 +263,9 @@ monitoringCoreos:
   enabled: false
   path: "/metrics"
   port: http
+
+
+####
+global:
+  serviceAccount: {}
+  image: {}

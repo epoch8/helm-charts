@@ -1,11 +1,11 @@
-{{- $fullName := include "simple-app.fullname" . -}}
+{{- $fullName := include "epoch8-common.fullname" . -}}
 {{- if .Values.initJob.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ $fullName }}-init"
   labels:
-    {{- include "simple-app.labels" . | nindent 4 }}
+    {{- include "epoch8-common.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
@@ -28,7 +28,7 @@ spec:
       {{- end }}
       containers:
         - name: "hook-job"
-          image: "{{ .Values.initJob.repository | default .Values.image.repository }}:{{ .Values.initJob.tag | default .Values.image.tag }}"
+          image: "{{ include "simple-app.initJobImage" . }}"
           imagePullPolicy: {{ .Values.initJob.pullPolicy | default .Values.image.pullPolicy }}
           {{- if .Values.initJob.workingDir }}
           workingDir: {{ .Values.initJob.workingDir }}
@@ -37,16 +37,10 @@ spec:
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.initJob.env }}
-          env:
-            {{- .Values.initJob.env | toYaml | nindent 12 }}
-          {{ else if .Values.env  }}
-          env:
-            {{- .Values.env | toYaml | nindent 12 }}
-          {{ end }}
+          {{- include "epoch8-common.env" . | nindent 10 }}
           resources:
             {{- toYaml .Values.initJob.resources | default .Values.resources | nindent 12 }}
-      serviceAccountName: {{ include "simple-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
 {{ end }}

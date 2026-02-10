@@ -1,5 +1,5 @@
-{{- $fullName := include "simple-app.fullname" . -}}
-{{- $labels := include "simple-app.labels" . | nindent 4 -}}
+{{- $fullName := include "epoch8-common.fullname" . -}}
+{{- $labels := include "epoch8-common.labels" . | nindent 4 -}}
 
 {{ range .Values.volumes }}
 {{- if and (not .hostPath) (and (not .emptyDir) (and (not .secret) (not .configMap))) }}

@@ -7,9 +7,9 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-cronjob
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-cronjob-0.0.0
-      name: simple
+      name: simple-simple-cronjob
     spec:
       concurrencyPolicy: Forbid
       jobTemplate:
@@ -26,7 +26,7 @@ All manifests should match snapshot:
                       value: test
                   image: test:1.1.1
                   imagePullPolicy: IfNotPresent
-                  name: simple
+                  name: simple-cronjob
                   resources: {}
                   securityContext: {}
                   volumeMounts:
@@ -34,11 +34,11 @@ All manifests should match snapshot:
                       name: data
               restartPolicy: OnFailure
               securityContext: {}
-              serviceAccountName: simple
+              serviceAccountName: simple-simple-cronjob
               volumes:
                 - name: data
                   persistentVolumeClaim:
-                    claimName: simple-data
+                    claimName: simple-simple-cronjob-data
       schedule: '*/1 * * * *'
       timeZone: GMT
   2: |
@@ -49,9 +49,9 @@ All manifests should match snapshot:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-cronjob
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-cronjob-0.0.0
-      name: simple-data
+      name: simple-simple-cronjob-data
     spec:
       accessModes:
         - ReadWriteOnce
@@ -62,10 +62,14 @@ All manifests should match snapshot:
     apiVersion: v1
     kind: ServiceAccount
     metadata:
+      annotations:
+        helm.sh/hook: pre-install,pre-upgrade
+        helm.sh/hook-delete-policy: before-hook-creation
+        helm.sh/hook-weight: "-5"
       labels:
         app.kubernetes.io/instance: simple
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: simple-cronjob
-        app.kubernetes.io/version: 1.16.0
+        app.kubernetes.io/version: 1.1.1
         helm.sh/chart: simple-cronjob-0.0.0
-      name: simple
+      name: simple-simple-cronjob
