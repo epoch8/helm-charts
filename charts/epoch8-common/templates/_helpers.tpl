@@ -108,3 +108,14 @@ env:
     {{- .Values.env | default .Values.global.env | toYaml | nindent 2 }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Compute hostAliases from global and local values
+*/}}
+{{- define "epoch8-common.hostAliases" -}}
+{{- if .Values.hostAliases | default .Values.global.hostAliases }}
+hostAliases:
+  {{- .Values.hostAliases | default .Values.global.hostAliases | toYaml | nindent 2 }}
+{{- end }}
+{{- end }}

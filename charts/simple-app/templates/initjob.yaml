@@ -43,4 +43,5 @@ spec:
       serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- include "epoch8-common.hostAliases" . | nindent 6 }}
 {{ end }}

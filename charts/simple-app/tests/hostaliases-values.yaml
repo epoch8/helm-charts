@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../values.schema.json
+
+image:
+  repository: test
+  tag: 1.1.1
+
+port: 9000
+
+domain: test.epoch8.co
+
+hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "foo.local"
+    - "bar.local"
+  - ip: "10.1.2.3"
+    hostnames:
+    - "baz.remote"
+
+initJob:
+  enabled: true
+  command: ["echo", "test"]

@@ -38,6 +38,7 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- include "epoch8-common.hostAliases" . | nindent 6 }}
       volumes:
         {{- if .Values.shmSize }}
         - name: shared-memory

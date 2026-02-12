@@ -16,6 +16,12 @@ imagePullSecrets: []
 # Environment variables for container
 env: []
 
+# Host aliases to inject into pod /etc/hosts
+hostAliases: []
+  # - ip: "127.0.0.1"
+  #   hostnames:
+  #   - "foo.local"
+
 schedule: "*/1 * * * *"
 timeZone: "GMT"
 
@@ -107,3 +113,4 @@ affinity: {}
 global:
   serviceAccount: {}
   image: {}
+  hostAliases: []
