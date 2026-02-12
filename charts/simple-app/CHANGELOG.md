@@ -1,3 +1,8 @@
+# 1.1.0
+
+* Add support for `hostAliases` configuration with global and local override support
+* Update epoch8-common dependency to 0.2.0
+
 # 1.0.0
 
 ## Breaking changes

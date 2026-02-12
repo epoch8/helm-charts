@@ -1,0 +1,116 @@
+suite: simple-app hostAliases test
+
+values:
+  - hostaliases-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: Deployment - hostAliases should be set from local values
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.hostAliases
+          value:
+            - ip: "127.0.0.1"
+              hostnames:
+              - "foo.local"
+              - "bar.local"
+            - ip: "10.1.2.3"
+              hostnames:
+              - "baz.remote"
+
+  - it: Deployment - hostAliases should be set from global values
+    template: deployment.yaml
+    set:
+      hostAliases: []
+      global:
+        hostAliases:
+          - ip: "192.168.1.100"
+            hostnames:
+            - "global.internal"
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.hostAliases
+          value:
+            - ip: "192.168.1.100"
+              hostnames:
+              - "global.internal"
+
+  - it: Deployment - local hostAliases should override global
+    template: deployment.yaml
+    set:
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+          - "local.override"
+      global:
+        hostAliases:
+          - ip: "192.168.1.100"
+            hostnames:
+            - "global.internal"
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.hostAliases
+          value:
+            - ip: "127.0.0.1"
+              hostnames:
+              - "local.override"
+
+  - it: Deployment - hostAliases should not render when empty
+    template: deployment.yaml
+    set:
+      hostAliases: []
+      global:
+        hostAliases: []
+    asserts:
+      - isKind:
+          of: Deployment
+      - isNull:
+          path: spec.template.spec.hostAliases
+
+  - it: Init Job - hostAliases should be set from local values
+    template: initjob.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.hostAliases
+          value:
+            - ip: "127.0.0.1"
+              hostnames:
+              - "foo.local"
+              - "bar.local"
+            - ip: "10.1.2.3"
+              hostnames:
+              - "baz.remote"
+
+  - it: Init Job - hostAliases should be set from global values
+    template: initjob.yaml
+    set:
+      hostAliases: []
+      global:
+        hostAliases:
+          - ip: "192.168.1.100"
+            hostnames:
+            - "global.internal"
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.hostAliases
+          value:
+            - ip: "192.168.1.100"
+              hostnames:
+              - "global.internal"

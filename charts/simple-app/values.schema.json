@@ -97,6 +97,23 @@
                 "type": "object"
             }
         },
+        "hostAliases": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "ip": {
+                        "type": "string"
+                    },
+                    "hostnames": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "workingDir": {
             "type": "string"
         },

@@ -2,4 +2,4 @@ apiVersion: v2
 name: epoch8-common
 description: Common helper templates for Epoch8 Helm charts
 type: library
-version: "0.1.0"
+version: "0.2.0"

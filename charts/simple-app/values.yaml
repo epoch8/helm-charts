@@ -43,6 +43,16 @@ extraPorts: []
 # Environment variables for container
 env: []
 
+# Host aliases to inject into pod /etc/hosts
+hostAliases: []
+  # - ip: "127.0.0.1"
+  #   hostnames:
+  #   - "foo.local"
+  #   - "bar.local"
+  # - ip: "10.1.2.3"
+  #   hostnames:
+  #   - "foo.remote"
+
 workingDir: ""
 
 command: []
@@ -269,3 +279,4 @@ monitoringCoreos:
 global:
   serviceAccount: {}
   image: {}
+  hostAliases: []

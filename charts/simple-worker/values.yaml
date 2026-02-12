@@ -16,6 +16,12 @@ imagePullSecrets: []
 # Environment variables for container
 env: []
 
+# Host aliases to inject into pod /etc/hosts
+hostAliases: []
+  # - ip: "127.0.0.1"
+  #   hostnames:
+  #   - "foo.local"
+
 volumes: []
   # if "size" is set, it will create a PVC
   # - name: data
@@ -104,3 +110,4 @@ affinity: {}
 global:
   serviceAccount: {}
   image: {}
+  hostAliases: []
