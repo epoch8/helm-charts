@@ -119,3 +119,36 @@ hostAliases:
   {{- .Values.hostAliases | default .Values.global.hostAliases | toYaml | nindent 2 }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Generate checksum annotations for pod restarts on config changes.
+Creates a SHA256 checksum of the configs values to trigger rolling updates
+when config content changes.
+*/}}
+{{- define "epoch8-common.configChecksumAnnotations" -}}
+{{- if .Values.configs }}
+{{- if not (hasKey .Values "autoRestartOnConfigChange") | or .Values.autoRestartOnConfigChange }}
+checksum/configs: {{ toYaml .Values.configs | sha256sum }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Generate all pod annotations including checksums and user-provided annotations.
+Outputs the complete annotations block only if there are annotations to add.
+Usage: {{- include "epoch8-common.podAnnotations" . | nindent <spaces> }}
+*/}}
+{{- define "epoch8-common.podAnnotations" -}}
+{{- $checksumAnnotations := include "epoch8-common.configChecksumAnnotations" . -}}
+{{- if or $checksumAnnotations .Values.podAnnotations -}}
+annotations:
+  {{- if $checksumAnnotations }}
+  {{- $checksumAnnotations | nindent 2 }}
+  {{- end }}
+  {{- with .Values.podAnnotations }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}

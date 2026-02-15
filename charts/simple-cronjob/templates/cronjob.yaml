@@ -14,10 +14,7 @@ spec:
     spec:
       template:
         metadata:
-          {{- with .Values.podAnnotations }}
-          annotations:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+          {{- include "epoch8-common.podAnnotations" . | nindent 10 }}
           labels:
             {{- include "epoch8-common.selectorLabels" . | nindent 12 }}
         spec:

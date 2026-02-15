@@ -1,6 +1,6 @@
 dependencies:
 - name: epoch8-common
   repository: file://../epoch8-common
-  version: 0.2.0
-digest: sha256:340be34a4b83e315eeb86cfbb8cad06a6a8b71ca1434703228355b1e48631ccf
-generated: "2026-02-12T15:00:57.902145762+04:00"
+  version: 0.3.0
+digest: sha256:66f923b2f654561014424d3f19e1c5c210f5b114338414cbbc6b2a545738cbd1
+generated: "2026-02-15T12:21:20.196828091+04:00"

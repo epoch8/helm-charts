@@ -1,3 +1,10 @@
+# 0.3.0
+
+* Add `epoch8-common.configChecksumAnnotations` helper for automatic pod restarts when ConfigMap changes
+* Add `epoch8-common.podAnnotations` helper for centralized pod annotations generation
+* Enables rolling updates when `.Values.configs` content changes
+* Can be disabled with `autoRestartOnConfigChange: false`
+
 # 0.2.0
 
 * Add `epoch8-common.hostAliases` helper for managing Pod hostAliases with global and local override support
