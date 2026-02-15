@@ -160,6 +160,9 @@
                 }
             }
         },
+        "autoRestartOnConfigChange": {
+            "type": "boolean"
+        },
         "livenessProbe": {
             "type": "object"
         },

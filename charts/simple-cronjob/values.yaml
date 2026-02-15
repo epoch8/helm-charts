@@ -22,6 +22,15 @@ hostAliases: []
   #   hostnames:
   #   - "foo.local"
 
+command: []
+# - command
+# - to
+# - run
+
+# Amount of shared memory to allocate for the container
+# If not set, no shared-memory volume is allocated
+shmSize: ""
+
 schedule: "*/1 * * * *"
 timeZone: "GMT"
 
@@ -52,6 +61,9 @@ volumes: []
   #   mountPath: /config
 
 
+# ConfigMap creation from inline values
+# When configs are set, pods will automatically restart when values change.
+# To disable auto-restart, set: autoRestartOnConfigChange: false
 configs: []
   # - name: conn.json
   #   mountPath: /etc/conn.json
@@ -61,6 +73,9 @@ configs: []
   #       "connection": {
   #       }
   #     }
+
+# Disable automatic pod restarts when configs change (default: true)
+# autoRestartOnConfigChange: false
 
 serviceAccount: {}
   ## Specifies whether a service account should be created

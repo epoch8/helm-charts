@@ -111,6 +111,9 @@ volumes: []
   #   mountPath: /config
 
 
+# ConfigMap creation from inline values
+# When configs are set, pods will automatically restart when values change.
+# To disable auto-restart, set: autoRestartOnConfigChange: false
 configs: []
   # - name: conn.json
   #   mountPath: /etc/conn.json
@@ -120,6 +123,9 @@ configs: []
   #       "connection": {
   #       }
   #     }
+
+# Disable automatic pod restarts when configs change (default: true)
+# autoRestartOnConfigChange: false
 
 livenessProbe: {}
   # httpGet:
