@@ -100,12 +100,17 @@ If "epoch8-common.serviceAccount.create" is false, use:
 
 
 {{/*
-Compute environment variables from global and local values
+Compute environment variables from global and local values.
+- .Values.env overrides .Values.global.env (use one or the other)
+- .Values.extraEnv is always appended to the base env (global or local)
 */}}
 {{- define "epoch8-common.env" -}}
-{{- if .Values.env | default .Values.global.env }}
+{{- $baseEnv := .Values.env | default .Values.global.env | default list }}
+{{- $extraEnv := .Values.extraEnv | default list }}
+{{- $allEnv := concat $baseEnv $extraEnv }}
+{{- if $allEnv }}
 env:
-    {{- .Values.env | default .Values.global.env | toYaml | nindent 2 }}
+    {{- $allEnv | toYaml | nindent 2 }}
 {{- end }}
 {{- end }}
 

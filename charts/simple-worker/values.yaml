@@ -16,6 +16,9 @@ imagePullSecrets: []
 # Environment variables for container
 env: []
 
+# Extra environment variables, joined with global.env (or env if set)
+extraEnv: []
+
 # Host aliases to inject into pod /etc/hosts
 hostAliases: []
   # - ip: "127.0.0.1"

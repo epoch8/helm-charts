@@ -1,3 +1,9 @@
+# 1.3.0
+
+* Add `extraEnv` for appending extra environment variables to the base env (`env` or `global.env`)
+* Update epoch8-common dependency to 0.4.0
+
+
 # 1.2.0
 
 * Add automatic pod restart when ConfigMap changes via `epoch8-common.podAnnotations` helper
