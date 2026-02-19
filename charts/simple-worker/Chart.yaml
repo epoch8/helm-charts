@@ -24,7 +24,7 @@ version: "1.3.0"
 appVersion: "1.16.0"
 
 dependencies:
-  - name: epoch8-common
+  - name: simple-charts-common
     version: "0.4.0"
-    repository: "file://../epoch8-common"
+    repository: "file://../simple-charts-common"
 

@@ -1,20 +1,20 @@
 # 1.3.0
 
 * Add `extraEnv` for appending extra environment variables to the base env (`env` or `global.env`)
-* Update epoch8-common dependency to 0.4.0
+* Update simple-charts-common dependency to 0.4.0
 
 
 # 1.2.0
 
-* Add automatic pod restart when ConfigMap changes via `epoch8-common.podAnnotations` helper
+* Add automatic pod restart when ConfigMap changes via `simple-charts-common.podAnnotations` helper
 * Pods now automatically restart on `configs` value changes (can be disabled with `autoRestartOnConfigChange: false`)
-* Centralize pod annotations generation in `epoch8-common.podAnnotations` helper
-* Update epoch8-common dependency to 0.3.0
+* Centralize pod annotations generation in `simple-charts-common.podAnnotations` helper
+* Update simple-charts-common dependency to 0.3.0
 
 # 1.1.0
 
 * Add support for `hostAliases` configuration with global and local override support
-* Update epoch8-common dependency to 0.2.0
+* Update simple-charts-common dependency to 0.2.0
 
 # 1.0.0
 
@@ -26,7 +26,7 @@
 ## Changes
 
 * Adapt chart for multi-chart use case with better use of .Values.global
-* Extract common helpers to `epoch8-common` subchart
+* Extract common helpers to `simple-charts-common` subchart
 
 # 0.19.0
 

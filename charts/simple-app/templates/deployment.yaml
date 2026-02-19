@@ -1,18 +1,18 @@
-{{- $fullName := include "epoch8-common.fullname" . -}}
+{{- $fullName := include "simple-charts-common.fullname" . -}}
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "epoch8-common.fullname" . }}
+  name: {{ include "simple-charts-common.fullname" . }}
   labels:
-    {{- include "epoch8-common.labels" . | nindent 4 }}
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "epoch8-common.selectorLabels" . | nindent 6 }}
+      {{- include "simple-charts-common.selectorLabels" . | nindent 6 }}
   strategy:
     {{- if (include "simple-app.needs-recreate" .) }}
     type: Recreate
@@ -21,21 +21,21 @@ spec:
     {{- end }}
   template:
     metadata:
-      {{- include "epoch8-common.podAnnotations" . | nindent 6 }}
+      {{- include "simple-charts-common.podAnnotations" . | nindent 6 }}
       labels:
-        {{- include "epoch8-common.selectorLabels" . | nindent 8 }}
+        {{- include "simple-charts-common.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
+      serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
       {{- if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- include "epoch8-common.hostAliases" . | nindent 6 }}
+      {{- include "simple-charts-common.hostAliases" . | nindent 6 }}
       volumes:
         {{- if .Values.shmSize }}
         - name: shared-memory
@@ -69,10 +69,10 @@ spec:
             name: {{ $fullName }}
         {{- end }}
       containers:
-        - name: {{ include "epoch8-common.name" . }}
+        - name: {{ include "simple-charts-common.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ include "epoch8-common.image" . }}"
+          image: "{{ include "simple-charts-common.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.workingDir }}
           workingDir: {{ .Values.workingDir }}
@@ -81,7 +81,7 @@ spec:
           command:
             {{- .Values.command | toYaml | nindent 12 }}
           {{- end }}
-          {{- include "epoch8-common.env" . | nindent 10 }}
+          {{- include "simple-charts-common.env" . | nindent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.port }}
@@ -140,7 +140,7 @@ spec:
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
-          {{- include "epoch8-common.selectorLabels" . | nindent 12 }}
+          {{- include "simple-charts-common.selectorLabels" . | nindent 12 }}
         maxSkew: 1
         topologyKey: "kubernetes.io/hostname"
         nodeTaintsPolicy: Honor

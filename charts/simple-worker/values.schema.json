@@ -252,7 +252,7 @@
                 }
             }
         },
-        "epoch8-common": {
+        "simple-charts-common": {
             "type": "object"
         }
     },

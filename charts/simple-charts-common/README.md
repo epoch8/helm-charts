@@ -1,4 +1,4 @@
-# epoch8-common
+# simple-charts-common
 
 Common helper templates for Epoch8 Helm charts.
 
@@ -8,31 +8,31 @@ This is a Helm library chart that provides reusable helper templates for Epoch8'
 
 ## Provided Helpers
 
-### `epoch8-common.name`
+### `simple-charts-common.name`
 Expands the chart name with support for `.Values.nameOverride`.
 
-### `epoch8-common.fullname`
+### `simple-charts-common.fullname`
 Creates a fully qualified name (truncated to 63 characters). Uses `.Values.fullnameOverride` if provided, otherwise combines `Release.Name` with the chart name.
 
-### `epoch8-common.chart`
+### `simple-charts-common.chart`
 Generates the chart name and version label in the format required by `helm.sh/chart`.
 
-### `epoch8-common.image`
+### `simple-charts-common.image`
 Computes the full image reference by merging global and local image settings. Supports cascading defaults: local → global.
 
-### `epoch8-common.labels`
+### `simple-charts-common.labels`
 Standard Kubernetes labels including chart, version, selector labels, and managed-by.
 
-### `epoch8-common.selectorLabels`
+### `simple-charts-common.selectorLabels`
 Pod selector labels (`app.kubernetes.io/name` and `app.kubernetes.io/instance`).
 
-### `epoch8-common.serviceAccount.create`
+### `simple-charts-common.serviceAccount.create`
 Boolean logic for service account creation. Returns "true" or empty string based on local → global → default true.
 
-### `epoch8-common.serviceAccountName`
+### `simple-charts-common.serviceAccountName`
 Resolves the service account name based on whether a service account should be created.
 
-### `epoch8-common.env`
+### `simple-charts-common.env`
 Outputs environment variables from merged global and local values.
 
 ## Usage
@@ -41,9 +41,9 @@ Add as a dependency in your Chart.yaml:
 
 ```yaml
 dependencies:
-  - name: epoch8-common
+  - name: simple-charts-common
     version: "^0.1.0"
-    repository: "file://../epoch8-common"
+    repository: "file://../simple-charts-common"
 ```
 
 Then use the helpers in your templates:
@@ -52,22 +52,22 @@ Then use the helpers in your templates:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "epoch8-common.fullname" . }}
+  name: {{ include "simple-charts-common.fullname" . }}
   labels:
-    {{- include "epoch8-common.labels" . | nindent 4 }}
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "epoch8-common.selectorLabels" . | nindent 6 }}
+      {{- include "simple-charts-common.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "epoch8-common.selectorLabels" . | nindent 8 }}
+        {{- include "simple-charts-common.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: {{ include "epoch8-common.name" . }}
-        image: {{ include "epoch8-common.image" . }}
-        {{- include "epoch8-common.env" . | nindent 8 }}
+      - name: {{ include "simple-charts-common.name" . }}
+        image: {{ include "simple-charts-common.image" . }}
+        {{- include "simple-charts-common.env" . | nindent 8 }}
 ```
 
 ## Requirements
