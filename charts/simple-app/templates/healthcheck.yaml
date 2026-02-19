@@ -2,9 +2,9 @@
 apiVersion: networking.gke.io/v1
 kind: HealthCheckPolicy
 metadata:
-  name: {{ include "epoch8-common.fullname" . }}
+  name: {{ include "simple-charts-common.fullname" . }}
   labels:
-    {{- include "epoch8-common.labels" . | nindent 4 }}
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
 spec:
   default:
     config:
@@ -15,5 +15,5 @@ spec:
   targetRef:
     group: ""
     kind: Service
-    name: {{ include "epoch8-common.fullname" . }}
+    name: {{ include "simple-charts-common.fullname" . }}
 {{- end -}}

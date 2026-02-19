@@ -43,6 +43,12 @@
                 "type": "object"
             }
         },
+        "extraEnv": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+        },
         "hostAliases": {
             "type": "array",
             "items": {
@@ -201,7 +207,7 @@
                 }
             }
         },
-        "epoch8-common": {
+        "simple-charts-common": {
             "type": "object"
         }
     },

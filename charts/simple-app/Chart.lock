@@ -1,6 +1,6 @@
 dependencies:
-- name: epoch8-common
-  repository: file://../epoch8-common
-  version: 0.3.0
-digest: sha256:66f923b2f654561014424d3f19e1c5c210f5b114338414cbbc6b2a545738cbd1
-generated: "2026-02-15T12:20:15.468407293+04:00"
+- name: simple-charts-common
+  repository: file://../simple-charts-common
+  version: 0.4.0
+digest: sha256:d30ac6ab1581778b2ac2ae15be322bc6414ea628e8b0c36f9172c95e63942e3a
+generated: "2026-02-19T15:46:45.528446491+04:00"

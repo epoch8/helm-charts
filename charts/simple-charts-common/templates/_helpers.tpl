@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "epoch8-common.name" -}}
+{{- define "simple-charts-common.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "epoch8-common.fullname" -}}
+{{- define "simple-charts-common.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -25,14 +25,14 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "epoch8-common.chart" -}}
+{{- define "simple-charts-common.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Compute image based on global values and image specific values
 */}}
-{{- define "epoch8-common.image" -}}
+{{- define "simple-charts-common.image" -}}
 {{- $image := .Values.image -}}
 {{- $global := .Values.global.image -}}
 {{- $imageName := $image.repository | default $global.repository -}}
@@ -44,9 +44,9 @@ Compute image based on global values and image specific values
 {{/*
 Common labels
 */}}
-{{- define "epoch8-common.labels" -}}
-helm.sh/chart: {{ include "epoch8-common.chart" . }}
-{{ include "epoch8-common.selectorLabels" . }}
+{{- define "simple-charts-common.labels" -}}
+helm.sh/chart: {{ include "simple-charts-common.chart" . }}
+{{ include "simple-charts-common.selectorLabels" . }}
 app.kubernetes.io/version: {{ .Values.image.tag | default .Values.global.image.tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
@@ -54,8 +54,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "epoch8-common.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "epoch8-common.name" . }}
+{{- define "simple-charts-common.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "simple-charts-common.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -69,7 +69,7 @@ Else default to true
 
 Returns empty string if false, "true" if true
 */}}
-{{- define "epoch8-common.serviceAccount.create" -}}
+{{- define "simple-charts-common.serviceAccount.create" -}}
 {{- $localCreate := .Values.serviceAccount.create -}}
 {{- $globalCreate := .Values.global.serviceAccount.create -}}
 {{- if ne $localCreate nil -}}
@@ -85,14 +85,14 @@ true
 {{/*
 Name of the service account to use
 
-If "epoch8-common.serviceAccount.create" is true, use:
-    .Values.serviceAccount.name or .Values.global.serviceAccount.name or include "epoch8-common.fullname"
-If "epoch8-common.serviceAccount.create" is false, use:
+If "simple-charts-common.serviceAccount.create" is true, use:
+    .Values.serviceAccount.name or .Values.global.serviceAccount.name or include "simple-charts-common.fullname"
+If "simple-charts-common.serviceAccount.create" is false, use:
     .Values.serviceAccount.name or .Values.global.serviceAccount.name or "default"
 */}}
-{{- define "epoch8-common.serviceAccountName" -}}
-{{- if include "epoch8-common.serviceAccount.create" . -}}
-{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default (include "epoch8-common.fullname" .) -}}
+{{- define "simple-charts-common.serviceAccountName" -}}
+{{- if include "simple-charts-common.serviceAccount.create" . -}}
+{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default (include "simple-charts-common.fullname" .) -}}
 {{- else -}}
 {{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default "default" -}}
 {{- end -}}
@@ -100,12 +100,17 @@ If "epoch8-common.serviceAccount.create" is false, use:
 
 
 {{/*
-Compute environment variables from global and local values
+Compute environment variables from global and local values.
+- .Values.env overrides .Values.global.env (use one or the other)
+- .Values.extraEnv is always appended to the base env (global or local)
 */}}
-{{- define "epoch8-common.env" -}}
-{{- if .Values.env | default .Values.global.env }}
+{{- define "simple-charts-common.env" -}}
+{{- $baseEnv := .Values.env | default .Values.global.env | default list }}
+{{- $extraEnv := .Values.extraEnv | default list }}
+{{- $allEnv := concat $baseEnv $extraEnv }}
+{{- if $allEnv }}
 env:
-    {{- .Values.env | default .Values.global.env | toYaml | nindent 2 }}
+    {{- $allEnv | toYaml | nindent 2 }}
 {{- end }}
 {{- end }}
 
@@ -113,7 +118,7 @@ env:
 {{/*
 Compute hostAliases from global and local values
 */}}
-{{- define "epoch8-common.hostAliases" -}}
+{{- define "simple-charts-common.hostAliases" -}}
 {{- if .Values.hostAliases | default .Values.global.hostAliases }}
 hostAliases:
   {{- .Values.hostAliases | default .Values.global.hostAliases | toYaml | nindent 2 }}
@@ -126,7 +131,7 @@ Generate checksum annotations for pod restarts on config changes.
 Creates a SHA256 checksum of the configs values to trigger rolling updates
 when config content changes.
 */}}
-{{- define "epoch8-common.configChecksumAnnotations" -}}
+{{- define "simple-charts-common.configChecksumAnnotations" -}}
 {{- if .Values.configs }}
 {{- if not (hasKey .Values "autoRestartOnConfigChange") | or .Values.autoRestartOnConfigChange }}
 checksum/configs: {{ toYaml .Values.configs | sha256sum }}
@@ -138,10 +143,10 @@ checksum/configs: {{ toYaml .Values.configs | sha256sum }}
 {{/*
 Generate all pod annotations including checksums and user-provided annotations.
 Outputs the complete annotations block only if there are annotations to add.
-Usage: {{- include "epoch8-common.podAnnotations" . | nindent <spaces> }}
+Usage: {{- include "simple-charts-common.podAnnotations" . | nindent <spaces> }}
 */}}
-{{- define "epoch8-common.podAnnotations" -}}
-{{- $checksumAnnotations := include "epoch8-common.configChecksumAnnotations" . -}}
+{{- define "simple-charts-common.podAnnotations" -}}
+{{- $checksumAnnotations := include "simple-charts-common.configChecksumAnnotations" . -}}
 {{- if or $checksumAnnotations .Values.podAnnotations -}}
 annotations:
   {{- if $checksumAnnotations }}

@@ -1,11 +1,11 @@
-{{- $fullName := include "epoch8-common.fullname" . -}}
+{{- $fullName := include "simple-charts-common.fullname" . -}}
 
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "epoch8-common.fullname" . }}
+  name: {{ include "simple-charts-common.fullname" . }}
   labels:
-    {{- include "epoch8-common.labels" . | nindent 4 }}
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.schedule }}"
   timeZone: "{{ .Values.timeZone }}"
@@ -14,18 +14,18 @@ spec:
     spec:
       template:
         metadata:
-          {{- include "epoch8-common.podAnnotations" . | nindent 10 }}
+          {{- include "simple-charts-common.podAnnotations" . | nindent 10 }}
           labels:
-            {{- include "epoch8-common.selectorLabels" . | nindent 12 }}
+            {{- include "simple-charts-common.selectorLabels" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          serviceAccountName: {{ include "epoch8-common.serviceAccountName" . }}
+          serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
           securityContext:
             {{- toYaml .Values.podSecurityContext | nindent 12 }}
-          {{- include "epoch8-common.hostAliases" . | nindent 10 }}
+          {{- include "simple-charts-common.hostAliases" . | nindent 10 }}
           volumes:
             {{- if .Values.shmSize }}
             - name: shared-memory
@@ -56,16 +56,16 @@ spec:
             {{- end }}
           restartPolicy: "OnFailure"
           containers:
-            - name: {{ include "epoch8-common.name" . }}
+            - name: {{ include "simple-charts-common.name" . }}
               securityContext:
                 {{- toYaml .Values.securityContext | nindent 16 }}
-              image: "{{ include "epoch8-common.image" . }}"
+              image: "{{ include "simple-charts-common.image" . }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               {{- if .Values.command }}
               command: 
                 {{- .Values.command | toYaml | nindent 16 }}
               {{ end }}
-              {{- include "epoch8-common.env" . | nindent 14 }}
+              {{- include "simple-charts-common.env" . | nindent 14 }}
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               volumeMounts:

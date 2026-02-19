@@ -1,5 +1,5 @@
-{{- $fullName := include "epoch8-common.fullname" . -}}
-{{- $labels := include "epoch8-common.labels" . | nindent 4 -}}
+{{- $fullName := include "simple-charts-common.fullname" . -}}
+{{- $labels := include "simple-charts-common.labels" . | nindent 4 -}}
 
 {{ range .Values.volumes }}
 {{- if and (not .emptyDir) (and (not .secret) (not .configMap)) }}

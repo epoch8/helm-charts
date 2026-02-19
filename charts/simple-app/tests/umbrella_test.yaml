@@ -1,0 +1,136 @@
+suite: simple-app umbrella chart scenarios
+
+release:
+  name: service-one
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  # Image resolution
+
+  - it: Deployment should use global image when local image is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-global-repo
+          tag: v1.0.0
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: my-global-repo:v1.0.0
+
+  - it: Deployment should use local image tag over global
+    template: deployment.yaml
+    set:
+      image:
+        repository: my-global-repo
+        tag: v2.0.0-local
+      global:
+        image:
+          repository: my-global-repo
+          tag: v1.0.0
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: my-global-repo:v2.0.0-local
+
+  # env / extraEnv
+
+  - it: Deployment should use global.env when local env is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        env:
+          - name: GLOBAL_VAR
+            value: global-value
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: GLOBAL_VAR
+              value: global-value
+
+  - it: Deployment local env should override global.env
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        env:
+          - name: GLOBAL_VAR
+            value: global-value
+      env:
+        - name: LOCAL_VAR
+          value: local-value
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: LOCAL_VAR
+              value: local-value
+
+  - it: Deployment extraEnv should be appended to global.env
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        env:
+          - name: GLOBAL_VAR
+            value: global-value
+      extraEnv:
+        - name: EXTRA_VAR
+          value: extra-value
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: GLOBAL_VAR
+              value: global-value
+            - name: EXTRA_VAR
+              value: extra-value
+
+  - it: Deployment extraEnv should be appended to local env
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        env:
+          - name: GLOBAL_VAR
+            value: global-value
+      env:
+        - name: LOCAL_VAR
+          value: local-value
+      extraEnv:
+        - name: EXTRA_VAR
+          value: extra-value
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: LOCAL_VAR
+              value: local-value
+            - name: EXTRA_VAR
+              value: extra-value
