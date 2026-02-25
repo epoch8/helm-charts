@@ -1,12 +1,11 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
-{{- $g := .Values.global | default dict -}}
-{{- $port := .Values.port | default $g.port | default 8000 -}}
-{{- $probe := .Values.probe | default $g.probe | default dict -}}
+{{- $port := .Values.port | default .Values.global.port | default 8000 -}}
+{{- $probe := .Values.probe | default .Values.global.probe | default dict -}}
 {{- $probePath := $probe.path | default "/" -}}
-{{- $livenessProbe := .Values.livenessProbe | default $g.livenessProbe | default dict -}}
-{{- $readinessProbe := .Values.readinessProbe | default $g.readinessProbe | default dict -}}
-{{- $autoscaling := .Values.autoscaling | default $g.autoscaling | default dict -}}
-{{- $replicaCount := .Values.replicaCount | default $g.replicaCount | default 1 -}}
+{{- $livenessProbe := .Values.livenessProbe | default .Values.global.livenessProbe | default dict -}}
+{{- $readinessProbe := .Values.readinessProbe | default .Values.global.readinessProbe | default dict -}}
+{{- $autoscaling := .Values.autoscaling | default .Values.global.autoscaling | default dict -}}
+{{- $replicaCount := .Values.replicaCount | default .Values.global.replicaCount | default 1 -}}
 
 apiVersion: apps/v1
 kind: Deployment
