@@ -23,6 +23,8 @@ tests:
     template: hpa.yaml
     set:
       autoscaling.enabled: true
+      autoscaling.minReplicas: 1
+      autoscaling.maxReplicas: 100
     asserts:
       - isKind:
           of: HorizontalPodAutoscaler

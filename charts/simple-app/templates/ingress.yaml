@@ -1,6 +1,7 @@
-{{- if .Values.ingress.enabled -}}
+{{- $ingress := .Values.ingress | default .Values.global.ingress | default dict -}}
+{{- if $ingress.enabled -}}
 {{- $fullName := include "simple-charts-common.fullname" . -}}
-{{- $svcPort := .Values.servicePort -}}
+{{- $svcPort := .Values.servicePort | default .Values.global.servicePort | default 80 -}}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -14,24 +15,24 @@ metadata:
   labels:
     {{- include "simple-charts-common.labels" . | nindent 4 }}
   annotations:
-  {{- if .Values.ingress.nginx }}
+  {{- if $ingress.nginx }}
     kubernetes.io/ingress.class: nginx
   {{- end }}
   {{- if .Values.gke.managedCertificate.enabled }}
     networking.gke.io/managed-certificates: {{ include "simple-charts-common.fullname" . }}
   {{- end }}
-  {{- with .Values.ingress.annotations }}
+  {{- with $ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.className }}
+  {{- if $ingress.className }}
   {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: {{ $ingress.className }}
   {{- end }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
+  {{- if $ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range $ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -43,11 +44,11 @@ spec:
     - host: {{ .Values.domain }}
       http:
         paths:
-          - path: {{ if .Values.ingress.nginx }}/{{ else }}/*{{ end }}
+          - path: {{ if $ingress.nginx }}/{{ else }}/*{{ end }}
             pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ $fullName }}
-                port: 
+                port:
                   number: {{ $svcPort }}
   {{- end }}

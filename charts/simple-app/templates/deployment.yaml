@@ -1,4 +1,11 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
+{{- $port := .Values.port | default .Values.global.port | default 8000 -}}
+{{- $probe := .Values.probe | default .Values.global.probe | default dict -}}
+{{- $probePath := $probe.path | default "/" -}}
+{{- $livenessProbe := .Values.livenessProbe | default .Values.global.livenessProbe | default dict -}}
+{{- $readinessProbe := .Values.readinessProbe | default .Values.global.readinessProbe | default dict -}}
+{{- $autoscaling := .Values.autoscaling | default .Values.global.autoscaling | default dict -}}
+{{- $replicaCount := .Values.replicaCount | default .Values.global.replicaCount | default 1 -}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -7,8 +14,8 @@ metadata:
   labels:
     {{- include "simple-charts-common.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not $autoscaling.enabled }}
+  replicas: {{ $replicaCount }}
   {{- end }}
   selector:
     matchLabels:
@@ -25,10 +32,7 @@ spec:
       labels:
         {{- include "simple-charts-common.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "simple-charts-common.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
       {{- if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
@@ -84,7 +88,7 @@ spec:
           {{- include "simple-charts-common.env" . | nindent 10 }}
           ports:
             - name: http
-              containerPort: {{ .Values.port }}
+              containerPort: {{ $port }}
               protocol: TCP
             {{- range .Values.extraPorts }}
             - name: {{ .name }}
@@ -92,23 +96,22 @@ spec:
               protocol: {{ .protocol | default "TCP" }}
             {{- end }}
           livenessProbe:
-            {{- if .Values.livenessProbe }}
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- if $livenessProbe }}
+            {{- toYaml $livenessProbe | nindent 12 }}
             {{- else }}
             httpGet:
-              path: {{ .Values.probe.path }}
+              path: {{ $probePath }}
               port: http
             {{- end }}
           readinessProbe:
-            {{- if .Values.readinessProbe }}
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- if $readinessProbe }}
+            {{- toYaml $readinessProbe | nindent 12 }}
             {{- else }}
             httpGet:
-              path: {{ .Values.probe.path }}
+              path: {{ $probePath }}
               port: http
             {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          {{- include "simple-charts-common.resources" . | nindent 10 }}
           volumeMounts:
             {{- if .Values.shmSize }}
             - name: shared-memory
@@ -124,18 +127,9 @@ spec:
               subPath: {{ .name }}
               readOnly: true
             {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "simple-charts-common.nodeSelector" . | nindent 6 }}
+      {{- include "simple-charts-common.affinity" . | nindent 6 }}
+      {{- include "simple-charts-common.tolerations" . | nindent 6 }}
       {{- if .Values.spreadServiceAcrossNodes }}
       topologySpreadConstraints:
       - labelSelector:

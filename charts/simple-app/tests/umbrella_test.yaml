@@ -134,3 +134,285 @@ tests:
               value: local-value
             - name: EXTRA_VAR
               value: extra-value
+
+  # port
+
+  - it: Deployment should use global.port when local port is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        port: 9090
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 9090
+
+  - it: Deployment should use local port over global.port
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        port: 9090
+      port: 8080
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0].containerPort
+          value: 8080
+
+  # probe
+
+  - it: Deployment should use global.probe.path when local probe is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        probe:
+          path: /healthz
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /healthz
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /healthz
+
+  # livenessProbe / readinessProbe
+
+  - it: Deployment should use global.livenessProbe when local livenessProbe is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        livenessProbe:
+          exec:
+            command:
+              - cat
+              - /tmp/healthy
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.exec.command
+          value:
+            - cat
+            - /tmp/healthy
+
+  # resources
+
+  - it: Deployment should use global.resources when local resources is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 256Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+
+  - it: Deployment should use local resources over global.resources
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+      resources:
+        limits:
+          memory: 512Mi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 512Mi
+
+  # replicaCount
+
+  - it: Deployment should use global.replicaCount when local replicaCount is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  # autoscaling
+
+  - it: Deployment should omit replicas when global.autoscaling.enabled is true
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        autoscaling:
+          enabled: true
+          minReplicas: 2
+          maxReplicas: 10
+    asserts:
+      - notExists:
+          path: spec.replicas
+
+  - it: HPA should be created from global.autoscaling
+    template: hpa.yaml
+    set:
+      global:
+        autoscaling:
+          enabled: true
+          minReplicas: 2
+          maxReplicas: 10
+          targetCPUUtilizationPercentage: 70
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.minReplicas
+          value: 2
+      - equal:
+          path: spec.maxReplicas
+          value: 10
+
+  # servicePort
+
+  - it: Service should use global.servicePort when local servicePort is not set
+    template: service.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        servicePort: 8080
+    asserts:
+      - equal:
+          path: spec.ports[0].port
+          value: 8080
+
+  # ingress
+
+  - it: Ingress should be created from global.ingress
+    template: ingress.yaml
+    set:
+      domain: example.com
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        ingress:
+          enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+
+  - it: Local ingress should override global.ingress
+    template: ingress.yaml
+    set:
+      domain: example.com
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        ingress:
+          enabled: true
+      ingress:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  # monitoringCoreos
+
+  - it: ServiceMonitor should be created from global.monitoringCoreos
+    template: servicemonitor.yaml
+    set:
+      global:
+        monitoringCoreos:
+          enabled: true
+          path: /metrics
+          port: http
+    asserts:
+      - isKind:
+          of: ServiceMonitor
+
+  - it: Local monitoringCoreos should override global.monitoringCoreos
+    template: servicemonitor.yaml
+    set:
+      global:
+        monitoringCoreos:
+          enabled: true
+      monitoringCoreos:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  # nodeSelector / tolerations / affinity
+
+  - it: Deployment should use global.nodeSelector when local is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        nodeSelector:
+          disktype: ssd
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector.disktype
+          value: ssd
+
+  - it: Deployment should use global.tolerations when local is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        tolerations:
+          - key: dedicated
+            operator: Equal
+            value: gpu
+            effect: NoSchedule
+    asserts:
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: dedicated
+
+  # imagePullSecrets
+
+  - it: Deployment should use global.imagePullSecrets when local is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        imagePullSecrets:
+          - name: my-registry-secret
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: my-registry-secret

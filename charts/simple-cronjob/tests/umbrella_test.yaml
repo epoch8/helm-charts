@@ -1,0 +1,81 @@
+suite: simple-cronjob umbrella chart scenarios
+
+release:
+  name: service-one
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  # resources
+
+  - it: CronJob should use global.resources when local resources is not set
+    template: cronjob.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].resources.limits.memory
+          value: 256Mi
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+
+  - it: CronJob should use local resources over global.resources
+    template: cronjob.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+      resources:
+        limits:
+          memory: 512Mi
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].resources.limits.memory
+          value: 512Mi
+
+  # nodeSelector
+
+  - it: CronJob should use global.nodeSelector when local is not set
+    template: cronjob.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        nodeSelector:
+          disktype: ssd
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.nodeSelector.disktype
+          value: ssd
+
+  # imagePullSecrets
+
+  - it: CronJob should use global.imagePullSecrets when local is not set
+    template: cronjob.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        imagePullSecrets:
+          - name: my-registry-secret
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.imagePullSecrets[0].name
+          value: my-registry-secret

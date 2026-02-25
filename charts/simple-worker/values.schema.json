@@ -4,7 +4,7 @@
     "type": "object",
     "properties": {
         "global": {
-            "type": "object"
+            "type": ["object", "null"]
         },
         "nameOverride": {
             "type": "string"
@@ -176,7 +176,14 @@
             "type": "object"
         },
         "replicaCount": {
-            "type": "integer"
+            "oneOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "null"
+                }
+            ]
         },
         "serviceAccount": {
             "type": "object",

@@ -1,4 +1,5 @@
-{{ if .Values.monitoringCoreos.enabled }}
+{{- $monitoringCoreos := .Values.monitoringCoreos | default .Values.global.monitoringCoreos | default dict -}}
+{{- if $monitoringCoreos.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -7,12 +8,12 @@ metadata:
   name: {{ include "simple-charts-common.fullname" . }}
 spec:
   endpoints:
-    - path: {{ .Values.monitoringCoreos.path }}
-      port: {{ .Values.monitoringCoreos.port }}
+    - path: {{ $monitoringCoreos.path | default "/metrics" }}
+      port: {{ $monitoringCoreos.port | default "http" }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
       {{- include "simple-charts-common.selectorLabels" . | nindent 6 }}
-{{ end }}
+{{- end }}

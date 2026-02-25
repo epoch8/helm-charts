@@ -1,4 +1,5 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
+{{- $autoscaling := .Values.autoscaling | default .Values.global.autoscaling | default dict -}}
 
 apiVersion: batch/v1
 kind: CronJob
@@ -18,10 +19,7 @@ spec:
           labels:
             {{- include "simple-charts-common.selectorLabels" . | nindent 12 }}
         spec:
-          {{- with .Values.imagePullSecrets }}
-          imagePullSecrets:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+          {{- include "simple-charts-common.imagePullSecrets" . | nindent 10 }}
           serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
           securityContext:
             {{- toYaml .Values.podSecurityContext | nindent 12 }}
@@ -66,8 +64,7 @@ spec:
                 {{- .Values.command | toYaml | nindent 16 }}
               {{ end }}
               {{- include "simple-charts-common.env" . | nindent 14 }}
-              resources:
-                {{- toYaml .Values.resources | nindent 16 }}
+              {{- include "simple-charts-common.resources" . | nindent 14 }}
               volumeMounts:
                 {{- if .Values.shmSize }}
                 - name: shared-memory
@@ -83,15 +80,6 @@ spec:
                   subPath: {{ .name }}
                   readOnly: true
                 {{- end }}
-          {{- with .Values.nodeSelector }}
-          nodeSelector:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.affinity }}
-          affinity:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.tolerations }}
-          tolerations:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+          {{- include "simple-charts-common.nodeSelector" . | nindent 10 }}
+          {{- include "simple-charts-common.affinity" . | nindent 10 }}
+          {{- include "simple-charts-common.tolerations" . | nindent 10 }}

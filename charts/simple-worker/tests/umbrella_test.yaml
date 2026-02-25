@@ -1,0 +1,111 @@
+suite: simple-worker umbrella chart scenarios
+
+release:
+  name: service-one
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  # resources
+
+  - it: Deployment should use global.resources when local resources is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 256Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+
+  - it: Deployment should use local resources over global.resources
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        resources:
+          limits:
+            memory: 256Mi
+      resources:
+        limits:
+          memory: 512Mi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 512Mi
+
+  # replicaCount
+
+  - it: Deployment should use global.replicaCount when local replicaCount is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  # autoscaling
+
+  - it: Deployment should omit replicas when global.autoscaling.enabled is true
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        autoscaling:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.replicas
+
+  # nodeSelector
+
+  - it: Deployment should use global.nodeSelector when local is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        nodeSelector:
+          disktype: ssd
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector.disktype
+          value: ssd
+
+  # imagePullSecrets
+
+  - it: Deployment should use global.imagePullSecrets when local is not set
+    template: deployment.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        imagePullSecrets:
+          - name: my-registry-secret
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: my-registry-secret

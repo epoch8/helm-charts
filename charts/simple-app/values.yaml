@@ -17,20 +17,20 @@ image:
 
 imagePullSecrets: []
 
-# Port that container listens on
-port: 8000
+# Port that container listens on. Defaults to global.port or 8000.
+port:
 
 # Timeout, applies for deployment modes where applicable
 timeoutSec: 30
 
-# Path to probe for both liveness and readiness
-probe:
-  path: "/"
+# Path to probe for both liveness and readiness. Defaults to global.probe.path or "/".
+probe: {}
+  # path: "/"
 
 # backendTimeout: 30s
 
-# Port that service should listen on
-servicePort: 80
+# Port that service should listen on. Defaults to global.servicePort or 80.
+servicePort:
 serviceType: ClusterIP  # Service type
 
 # Extra ports to expose from the container on the service
@@ -150,7 +150,8 @@ readinessProbe: {}
   # successThreshold: 1
   # failureThreshold: 3
 
-replicaCount: 1
+# Defaults to global.replicaCount or 1
+replicaCount:
 
 # Grace period for pod termination in seconds
 # If not set, Kubernetes default (30) will be used
@@ -178,20 +179,19 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-ingress:
-  enabled: false
-
+# Ingress configuration. Defaults to global.ingress if not set locally.
+ingress: {}
+  # enabled: false
   # True if target ingress is Nginx (alters path definition and annotation)
-  nginx: false
-  className: ""
-
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  # nginx: false
+  # className: ""
+  # annotations: {}
+  #   # kubernetes.io/ingress.class: nginx
+  #   # kubernetes.io/tls-acme: "true"
+  # tls: []
+  # #  - secretName: chart-example-tls
+  # #    hosts:
+  # #      - chart-example.local
 
 gateway:
   # If enabled, creates HTTPRoute which uses given gateway
@@ -212,14 +212,15 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+# Autoscaling (HPA). Defaults to global.autoscaling if not set locally.
+autoscaling: {}
+  # enabled: false
+  # minReplicas: 1
+  # maxReplicas: 100
+  # targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
   # Custom metrics for HPA (Pods, Object, or External metrics)
-  customMetrics: []
+  # customMetrics: []
   # Example:
   # - type: Pods
   #   pods:
@@ -229,7 +230,7 @@ autoscaling:
   #       type: AverageValue
   #       averageValue: "100"
   # Behavior configuration for HPA scaling
-  behavior: {}
+  # behavior: {}
   # Example:
   #   scaleUp:
   #     stabilizationWindowSeconds: 0
@@ -277,15 +278,30 @@ gke:
     path: "/metrics"
     interval: "30s"
 
-monitoringCoreos:
-  # If enabled, creates ServiceMonitor for Prometheus Operator
-  enabled: false
-  path: "/metrics"
-  port: http
+# Prometheus Operator ServiceMonitor. Defaults to global.monitoringCoreos if not set locally.
+monitoringCoreos: {}
+  # enabled: false
+  # path: "/metrics"
+  # port: http
 
 
 ####
-global:
-  serviceAccount: {}
-  image: {}
-  hostAliases: []
+global: {}
+  # serviceAccount: {}
+  # image: {}
+  # hostAliases: []
+  # env: []
+  # port:
+  # servicePort:
+  # probe: {}
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # replicaCount:
+  # resources: {}
+  # autoscaling: {}
+  # ingress: {}
+  # monitoringCoreos: {}
+  # nodeSelector: {}
+  # tolerations: []
+  # affinity: {}
+  # imagePullSecrets: []
