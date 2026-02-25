@@ -1,19 +1,30 @@
+# 1.3.1
+
+* Fix ServiceAccount being recreated on every upgrade — hook changed from
+  `pre-install,pre-upgrade` to `pre-install`, preserving external annotations
+  (e.g. IRSA, Workload Identity)
+
 # 1.3.0
 
-* Add `extraEnv` for appending extra environment variables to the base env (`env` or `global.env`)
+* Add `extraEnv` for appending extra environment variables to the base env
+  (`env` or `global.env`)
 * Update simple-charts-common dependency to 0.4.0
 
 
 # 1.2.0
 
-* Add automatic pod restart when ConfigMap changes via `simple-charts-common.podAnnotations` helper
-* Pods now automatically restart on `configs` value changes (can be disabled with `autoRestartOnConfigChange: false`)
-* Centralize pod annotations generation in `simple-charts-common.podAnnotations` helper
+* Add automatic pod restart when ConfigMap changes via
+  `simple-charts-common.podAnnotations` helper
+* Pods now automatically restart on `configs` value changes (can be disabled
+  with `autoRestartOnConfigChange: false`)
+* Centralize pod annotations generation in `simple-charts-common.podAnnotations`
+  helper
 * Update simple-charts-common dependency to 0.3.0
 
 # 1.1.0
 
-* Add support for `hostAliases` configuration with global and local override support
+* Add support for `hostAliases` configuration with global and local override
+  support
 * Update simple-charts-common dependency to 0.2.0
 
 # 1.0.0
