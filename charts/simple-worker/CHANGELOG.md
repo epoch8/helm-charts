@@ -1,3 +1,11 @@
+# 1.4.0
+
+* Add global fallback support for umbrella-chart use cases — the following
+  properties can now be defined in `global` and serve as defaults for all
+  sub-charts: `replicaCount`, `autoscaling`, `resources`, `nodeSelector`,
+  `tolerations`, `affinity`, `imagePullSecrets`
+* Update simple-charts-common dependency to 0.5.0
+
 # 1.3.1
 
 * Fix ServiceAccount being recreated on every upgrade — hook changed from

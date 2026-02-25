@@ -1,3 +1,17 @@
+# 0.5.0
+
+* Add `simple-charts-common.resources` helper: resolves resources from local
+  `resources` falling back to `global.resources`
+* Add `simple-charts-common.imagePullSecrets` helper: resolves imagePullSecrets
+  from local falling back to `global.imagePullSecrets`
+* Add `simple-charts-common.nodeSelector` helper: resolves nodeSelector from
+  local falling back to `global.nodeSelector`
+* Add `simple-charts-common.tolerations` helper: resolves tolerations from
+  local falling back to `global.tolerations`
+* Add `simple-charts-common.affinity` helper: resolves affinity from local
+  falling back to `global.affinity`
+* All helpers are now nil-safe when `global` is unset
+
 # 0.4.0
 
 - Add `extraEnv` support in `simple-charts-common.env` helper: extra environment

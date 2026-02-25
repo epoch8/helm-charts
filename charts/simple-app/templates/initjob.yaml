@@ -1,4 +1,5 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
+{{- $g := .Values.global | default dict -}}
 {{- if .Values.initJob.enabled }}
 apiVersion: batch/v1
 kind: Job
@@ -39,7 +40,7 @@ spec:
           {{- end }}
           {{- include "simple-charts-common.env" . | nindent 10 }}
           resources:
-            {{- toYaml .Values.initJob.resources | default .Values.resources | nindent 12 }}
+            {{- toYaml (.Values.initJob.resources | default .Values.resources | default $g.resources | default dict) | nindent 12 }}
       serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

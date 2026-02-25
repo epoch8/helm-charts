@@ -27,7 +27,7 @@ All manifests should match snapshot:
               image: test:1.1.1
               imagePullPolicy: IfNotPresent
               name: hook-job
-              resources: null
+              resources: {}
           restartPolicy: Never
           securityContext: {}
           serviceAccountName: simple-simple-app

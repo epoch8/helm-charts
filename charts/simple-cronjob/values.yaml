@@ -114,11 +114,12 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+# Autoscaling. Defaults to global.autoscaling if not set locally.
+autoscaling: {}
+  # enabled: false
+  # minReplicas: 1
+  # maxReplicas: 100
+  # targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
@@ -128,7 +129,14 @@ tolerations: []
 affinity: {}
 
 ####
-global:
-  serviceAccount: {}
-  image: {}
-  hostAliases: []
+global: {}
+  # serviceAccount: {}
+  # image: {}
+  # hostAliases: []
+  # env: []
+  # resources: {}
+  # autoscaling: {}
+  # nodeSelector: {}
+  # tolerations: []
+  # affinity: {}
+  # imagePullSecrets: []

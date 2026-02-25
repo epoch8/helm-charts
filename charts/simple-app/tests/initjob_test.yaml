@@ -40,3 +40,49 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: test-hook:2.2.2
+
+  - it: Init Job - Inherits app resources when initJob.resources not set
+    templates:
+      - initjob.yaml
+    set:
+      resources:
+        limits:
+          memory: 256Mi
+        requests:
+          cpu: 100m
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 256Mi
+      - equal:
+          path: spec.template.spec.containers[0].resources.requests.cpu
+          value: 100m
+
+  - it: Init Job - initJob.resources overrides app resources
+    templates:
+      - initjob.yaml
+    set:
+      resources:
+        limits:
+          memory: 256Mi
+      initJob:
+        resources:
+          limits:
+            memory: 512Mi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 512Mi
+
+  - it: Init Job - Inherits global.resources as last fallback
+    templates:
+      - initjob.yaml
+    set:
+      global:
+        resources:
+          limits:
+            memory: 128Mi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].resources.limits.memory
+          value: 128Mi

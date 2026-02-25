@@ -4,7 +4,7 @@
     "type": "object",
     "properties": {
         "global": {
-            "type": "object"
+            "type": ["object", "null"]
         },
         "nameOverride": {
             "type": "string"
@@ -38,7 +38,14 @@
             "type": "string"
         },
         "port": {
-            "type": "integer"
+            "oneOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "null"
+                }
+            ]
         },
         "timeoutSec": {
             "type": "integer"
@@ -58,6 +65,9 @@
                 },
                 {
                     "type": "string"
+                },
+                {
+                    "type": "null"
                 }
             ]
         },
@@ -214,7 +224,14 @@
             "type": "object"
         },
         "replicaCount": {
-            "type": "integer"
+            "oneOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "null"
+                }
+            ]
         },
         "terminationGracePeriodSeconds": {
             "oneOf": [

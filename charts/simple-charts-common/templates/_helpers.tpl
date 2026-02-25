@@ -33,8 +33,9 @@ Create chart name and version as used by the chart label.
 Compute image based on global values and image specific values
 */}}
 {{- define "simple-charts-common.image" -}}
+{{- $g := .Values.global | default dict -}}
 {{- $image := .Values.image -}}
-{{- $global := .Values.global.image -}}
+{{- $global := $g.image | default dict -}}
 {{- $imageName := $image.repository | default $global.repository -}}
 {{- $imageTag := $image.tag | default $global.tag -}}
 {{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
@@ -45,9 +46,10 @@ Compute image based on global values and image specific values
 Common labels
 */}}
 {{- define "simple-charts-common.labels" -}}
+{{- $g := .Values.global | default dict -}}
 helm.sh/chart: {{ include "simple-charts-common.chart" . }}
 {{ include "simple-charts-common.selectorLabels" . }}
-app.kubernetes.io/version: {{ .Values.image.tag | default .Values.global.image.tag | quote }}
+app.kubernetes.io/version: {{ .Values.image.tag | default ($g.image | default dict).tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
@@ -70,8 +72,9 @@ Else default to true
 Returns empty string if false, "true" if true
 */}}
 {{- define "simple-charts-common.serviceAccount.create" -}}
+{{- $g := .Values.global | default dict -}}
 {{- $localCreate := .Values.serviceAccount.create -}}
-{{- $globalCreate := .Values.global.serviceAccount.create -}}
+{{- $globalCreate := ($g.serviceAccount | default dict).create -}}
 {{- if ne $localCreate nil -}}
 {{- if $localCreate -}}true{{- end -}}
 {{- else if ne $globalCreate nil -}}
@@ -91,10 +94,12 @@ If "simple-charts-common.serviceAccount.create" is false, use:
     .Values.serviceAccount.name or .Values.global.serviceAccount.name or "default"
 */}}
 {{- define "simple-charts-common.serviceAccountName" -}}
+{{- $g := .Values.global | default dict -}}
+{{- $globalSA := $g.serviceAccount | default dict -}}
 {{- if include "simple-charts-common.serviceAccount.create" . -}}
-{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default (include "simple-charts-common.fullname" .) -}}
+{{- .Values.serviceAccount.name | default $globalSA.name | default (include "simple-charts-common.fullname" .) -}}
 {{- else -}}
-{{- .Values.serviceAccount.name | default .Values.global.serviceAccount.name | default "default" -}}
+{{- .Values.serviceAccount.name | default $globalSA.name | default "default" -}}
 {{- end -}}
 {{- end }}
 
@@ -105,7 +110,8 @@ Compute environment variables from global and local values.
 - .Values.extraEnv is always appended to the base env (global or local)
 */}}
 {{- define "simple-charts-common.env" -}}
-{{- $baseEnv := .Values.env | default .Values.global.env | default list }}
+{{- $g := .Values.global | default dict -}}
+{{- $baseEnv := .Values.env | default $g.env | default list }}
 {{- $extraEnv := .Values.extraEnv | default list }}
 {{- $allEnv := concat $baseEnv $extraEnv }}
 {{- if $allEnv }}
@@ -119,9 +125,10 @@ env:
 Compute hostAliases from global and local values
 */}}
 {{- define "simple-charts-common.hostAliases" -}}
-{{- if .Values.hostAliases | default .Values.global.hostAliases }}
+{{- $g := .Values.global | default dict -}}
+{{- if .Values.hostAliases | default $g.hostAliases }}
 hostAliases:
-  {{- .Values.hostAliases | default .Values.global.hostAliases | toYaml | nindent 2 }}
+  {{- .Values.hostAliases | default $g.hostAliases | toYaml | nindent 2 }}
 {{- end }}
 {{- end }}
 
@@ -136,6 +143,65 @@ when config content changes.
 {{- if not (hasKey .Values "autoRestartOnConfigChange") | or .Values.autoRestartOnConfigChange }}
 checksum/configs: {{ toYaml .Values.configs | sha256sum }}
 {{- end }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Compute resources from global and local values.
+*/}}
+{{- define "simple-charts-common.resources" -}}
+{{- $g := .Values.global | default dict -}}
+{{- $r := .Values.resources | default $g.resources | default dict }}
+resources:
+  {{- toYaml $r | nindent 2 }}
+{{- end }}
+
+
+{{/*
+Compute imagePullSecrets from global and local values.
+*/}}
+{{- define "simple-charts-common.imagePullSecrets" -}}
+{{- $g := .Values.global | default dict -}}
+{{- with (.Values.imagePullSecrets | default $g.imagePullSecrets) }}
+imagePullSecrets:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Compute nodeSelector from global and local values.
+*/}}
+{{- define "simple-charts-common.nodeSelector" -}}
+{{- $g := .Values.global | default dict -}}
+{{- with (.Values.nodeSelector | default $g.nodeSelector) }}
+nodeSelector:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Compute tolerations from global and local values.
+*/}}
+{{- define "simple-charts-common.tolerations" -}}
+{{- $g := .Values.global | default dict -}}
+{{- with (.Values.tolerations | default $g.tolerations) }}
+tolerations:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+
+
+{{/*
+Compute affinity from global and local values.
+*/}}
+{{- define "simple-charts-common.affinity" -}}
+{{- $g := .Values.global | default dict -}}
+{{- with (.Values.affinity | default $g.affinity) }}
+affinity:
+  {{- toYaml . | nindent 2 }}
 {{- end }}
 {{- end }}
 
