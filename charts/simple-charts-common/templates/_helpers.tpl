@@ -47,7 +47,7 @@ Common labels
 {{- define "simple-charts-common.labels" -}}
 helm.sh/chart: {{ include "simple-charts-common.chart" . }}
 {{ include "simple-charts-common.selectorLabels" . }}
-app.kubernetes.io/version: {{ .Values.image.tag | default (.Values.global.image | default dict).tag | quote }}
+app.kubernetes.io/version: {{ (.Values.image | default dict).tag | default (.Values.global.image | default dict).tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
