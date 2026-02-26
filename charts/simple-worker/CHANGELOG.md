@@ -1,3 +1,7 @@
+# 1.4.1
+
+* Update simple-charts-common to 0.5.1 (fix nil-safe `.Values.image` in labels)
+
 # 1.4.0
 
 * Add global fallback support for umbrella-chart use cases — the following

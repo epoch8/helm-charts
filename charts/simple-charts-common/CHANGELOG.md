@@ -1,3 +1,7 @@
+# 0.5.1
+
+* Fix nil-safe access to `.Values.image.tag` in `simple-charts-common.labels`
+
 # 0.5.0
 
 * Add `simple-charts-common.resources` helper: resolves resources from local
