@@ -263,5 +263,5 @@
             "type": "object"
         }
     },
-    "additionalProperties": false
+    "additionalProperties": true
 }

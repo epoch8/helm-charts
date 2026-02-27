@@ -1,3 +1,7 @@
+# 1.4.2
+
+* Allow extra/unknown values (e.g. `enabled`) without schema validation errors
+
 # 1.4.1
 
 * Update simple-charts-common to 0.5.1 (fix nil-safe `.Values.image` in labels)
