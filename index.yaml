@@ -386,6 +386,20 @@ entries:
   simple-app:
   - apiVersion: v2
     appVersion: undefined
+    created: "2026-02-27T15:23:19.23330862Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.5.1
+    description: A Helm chart for Kubernetes
+    digest: 99079741686a2a2258c795dd407f5ad4cfc6a8bbbb3ea991261fc5f82648a989
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-1.4.2/simple-app-1.4.2.tgz
+    version: 1.4.2
+  - apiVersion: v2
+    appVersion: undefined
     created: "2026-02-26T11:49:25.667712959Z"
     dependencies:
     - name: simple-charts-common
@@ -953,6 +967,20 @@ entries:
   simple-cronjob:
   - apiVersion: v2
     appVersion: undefined
+    created: "2026-02-27T15:23:19.445382597Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.5.1
+    description: A Helm chart for Kubernetes
+    digest: dd09cd8f7bd03ba37b6e27690bc2284b18817112c652b60eab08afdd494225e7
+    name: simple-cronjob
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-1.4.2/simple-cronjob-1.4.2.tgz
+    version: 1.4.2
+  - apiVersion: v2
+    appVersion: undefined
     created: "2026-02-26T11:49:26.018497481Z"
     dependencies:
     - name: simple-charts-common
@@ -1090,6 +1118,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-0.1.0/simple-cronjob-0.1.0.tgz
     version: 0.1.0
   simple-worker:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-27T15:23:19.649096411Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.5.1
+    description: A Helm chart for Kubernetes
+    digest: 55efd0b041efd257200cdde646f798a43fc4e419ec3abce2ec0ed4a067b30560
+    name: simple-worker
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-worker-1.4.2/simple-worker-1.4.2.tgz
+    version: 1.4.2
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-26T11:49:26.207184834Z"
