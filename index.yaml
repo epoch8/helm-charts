@@ -386,6 +386,20 @@ entries:
   simple-app:
   - apiVersion: v2
     appVersion: undefined
+    created: "2026-03-04T12:14:23.739593257Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.5.1
+    description: A Helm chart for Kubernetes
+    digest: 3ea4fbef992c40101615ff13cb2313dcf15a0e8124869ab06fa3e408e81ec132
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-1.5.0/simple-app-1.5.0.tgz
+    version: 1.5.0
+  - apiVersion: v2
+    appVersion: undefined
     created: "2026-02-27T15:23:19.23330862Z"
     dependencies:
     - name: simple-charts-common
@@ -1118,6 +1132,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-0.1.0/simple-cronjob-0.1.0.tgz
     version: 0.1.0
   simple-worker:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-04T12:14:23.895038083Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.5.1
+    description: A Helm chart for Kubernetes
+    digest: 548b0494405b2c374d42a79a115ffa558454603e4d8bcaeb18243cac3efded06
+    name: simple-worker
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-worker-1.5.0/simple-worker-1.5.0.tgz
+    version: 1.5.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-02-27T15:23:19.649096411Z"
