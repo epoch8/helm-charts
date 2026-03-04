@@ -1,3 +1,8 @@
+# 1.5.0
+
+* Add `startupProbe` support with `global.startupProbe` fallback
+* Make `livenessProbe` and `readinessProbe` configurable via values (default behaviour unchanged: `exec: echo ok`)
+
 # 1.4.2
 
 * Allow extra/unknown values (e.g. `enabled`) without schema validation errors

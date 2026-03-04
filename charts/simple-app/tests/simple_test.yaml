@@ -338,3 +338,32 @@ tests:
                 matchLabels:
                   app.kubernetes.io/instance: simple
                   app.kubernetes.io/name: simple-app
+
+  - it: Deployment should not have startupProbe by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: Deployment should set startupProbe when specified
+    template: deployment.yaml
+    set:
+      startupProbe:
+        httpGet:
+          path: /healthz
+          port: http
+        failureThreshold: 30
+        periodSeconds: 10
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet
+          value:
+            path: /healthz
+            port: http
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30

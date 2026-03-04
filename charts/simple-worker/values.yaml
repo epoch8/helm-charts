@@ -78,6 +78,36 @@ configs: []
 # Defaults to global.replicaCount or 1
 replicaCount:
 
+livenessProbe: {}
+  # exec:
+  #   command:
+  #     - echo
+  #     - ok
+  # initialDelaySeconds: 5
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # failureThreshold: 3
+
+readinessProbe: {}
+  # exec:
+  #   command:
+  #     - echo
+  #     - ok
+  # initialDelaySeconds: 5
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # failureThreshold: 3
+
+startupProbe: {}
+  # exec:
+  #   command:
+  #     - echo
+  #     - ok
+  # initialDelaySeconds: 0
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # failureThreshold: 30
+
 serviceAccount: {}
   ## Specifies whether a service account should be created
   # create: true
@@ -133,6 +163,9 @@ global: {}
   # hostAliases: []
   # env: []
   # replicaCount:
+  # livenessProbe: {}
+  # readinessProbe: {}
+  # startupProbe: {}
   # resources: {}
   # autoscaling: {}
   # nodeSelector: {}
