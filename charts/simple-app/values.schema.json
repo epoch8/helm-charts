@@ -223,6 +223,9 @@
         "readinessProbe": {
             "type": "object"
         },
+        "startupProbe": {
+            "type": "object"
+        },
         "replicaCount": {
             "oneOf": [
                 {

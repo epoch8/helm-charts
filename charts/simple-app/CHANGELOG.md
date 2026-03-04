@@ -1,3 +1,7 @@
+# 1.5.0
+
+* Add `startupProbe` support with `global.startupProbe` fallback
+
 # 1.4.2
 
 * Allow extra/unknown values (e.g. `enabled`) without schema validation errors

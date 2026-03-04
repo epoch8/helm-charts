@@ -4,6 +4,7 @@
 {{- $probePath := $probe.path | default "/" -}}
 {{- $livenessProbe := .Values.livenessProbe | default .Values.global.livenessProbe | default dict -}}
 {{- $readinessProbe := .Values.readinessProbe | default .Values.global.readinessProbe | default dict -}}
+{{- $startupProbe := .Values.startupProbe | default .Values.global.startupProbe | default dict -}}
 {{- $autoscaling := .Values.autoscaling | default .Values.global.autoscaling | default dict -}}
 {{- $replicaCount := .Values.replicaCount | default .Values.global.replicaCount | default 1 -}}
 
@@ -111,6 +112,10 @@ spec:
               path: {{ $probePath }}
               port: http
             {{- end }}
+          {{- if $startupProbe }}
+          startupProbe:
+            {{- toYaml $startupProbe | nindent 12 }}
+          {{- end }}
           {{- include "simple-charts-common.resources" . | nindent 10 }}
           volumeMounts:
             {{- if .Values.shmSize }}

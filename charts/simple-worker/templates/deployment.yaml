@@ -1,6 +1,9 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
 {{- $autoscaling := .Values.autoscaling | default .Values.global.autoscaling | default dict -}}
 {{- $replicaCount := .Values.replicaCount | default .Values.global.replicaCount | default 1 -}}
+{{- $livenessProbe := .Values.livenessProbe | default .Values.global.livenessProbe | default dict -}}
+{{- $readinessProbe := .Values.readinessProbe | default .Values.global.readinessProbe | default dict -}}
+{{- $startupProbe := .Values.startupProbe | default .Values.global.startupProbe | default dict -}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -70,15 +73,27 @@ spec:
           {{ end }}
           {{- include "simple-charts-common.env" . | nindent 10 }}
           livenessProbe:
+            {{- if $livenessProbe }}
+            {{- toYaml $livenessProbe | nindent 12 }}
+            {{- else }}
             exec:
               command:
                 - echo
                 - ok
+            {{- end }}
           readinessProbe:
+            {{- if $readinessProbe }}
+            {{- toYaml $readinessProbe | nindent 12 }}
+            {{- else }}
             exec:
               command:
                 - echo
                 - ok
+            {{- end }}
+          {{- if $startupProbe }}
+          startupProbe:
+            {{- toYaml $startupProbe | nindent 12 }}
+          {{- end }}
           {{- include "simple-charts-common.resources" . | nindent 10 }}
           volumeMounts:
             {{- if .Values.shmSize }}

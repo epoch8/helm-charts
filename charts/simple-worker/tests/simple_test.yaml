@@ -181,3 +181,34 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: Deployment should not have startupProbe by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: Deployment should set startupProbe when specified
+    template: deployment.yaml
+    set:
+      startupProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/ready
+        failureThreshold: 30
+        periodSeconds: 10
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.exec.command
+          value:
+            - cat
+            - /tmp/ready
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+

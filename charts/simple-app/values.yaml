@@ -150,6 +150,16 @@ readinessProbe: {}
   # successThreshold: 1
   # failureThreshold: 3
 
+startupProbe: {}
+  # httpGet:
+  #   path: /
+  #   port: http
+  # initialDelaySeconds: 0
+  # timeoutSeconds: 1
+  # periodSeconds: 10
+  # successThreshold: 1
+  # failureThreshold: 30
+
 # Defaults to global.replicaCount or 1
 replicaCount:
 
@@ -296,6 +306,7 @@ global: {}
   # probe: {}
   # livenessProbe: {}
   # readinessProbe: {}
+  # startupProbe: {}
   # replicaCount:
   # resources: {}
   # autoscaling: {}
