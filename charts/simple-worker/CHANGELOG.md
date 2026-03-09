@@ -1,3 +1,7 @@
+# 1.5.1
+
+* Recreate service account before upgrade as well as on install
+
 # 1.5.0
 
 * Add `startupProbe` support with `global.startupProbe` fallback
