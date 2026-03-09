@@ -1,3 +1,7 @@
+# 1.4.3
+
+* Recreate service account before upgrade as well as on install
+
 # 1.4.2
 
 * Allow extra/unknown values (e.g. `enabled`) without schema validation errors
