@@ -1,3 +1,9 @@
+# 1.6.0
+
+* Add `initJob` support
+* Update simple-charts-common dependency to 0.6.0 to use common `initJobImage`
+  helper
+
 # 1.5.1
 
 * Recreate service account before upgrade as well as on install

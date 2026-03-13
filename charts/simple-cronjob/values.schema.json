@@ -81,6 +81,41 @@
                 "type": "string"
             }
         },
+        "initJob": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "workingDir": {
+                    "type": "string"
+                },
+                "command": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "repository": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "pullPolicy": {
+                    "type": "string"
+                },
+                "env": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "resources": {
+                    "type": "object"
+                }
+            }
+        },
         "shmSize": {
             "type": "string"
         },

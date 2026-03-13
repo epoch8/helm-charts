@@ -1,3 +1,7 @@
+# 0.6.0
+
+* Add `simple-charts-common.initJobImage` helper for `initJob`
+
 # 0.5.1
 
 * Fix nil-safe access to `.Values.image.tag` in `simple-charts-common.labels`
