@@ -42,6 +42,19 @@ Compute image based on global values and image specific values
 
 
 {{/*
+Compute initJob image based on local and global values
+*/}}
+{{- define "simple-charts-common.initJobImage" -}}
+{{- $initJobImage := .Values.initJob -}}
+{{- $image := .Values.image -}}
+{{- $global := .Values.global.image | default dict -}}
+{{- $imageName := $initJobImage.repository | default $image.repository | default $global.repository -}}
+{{- $imageTag := $initJobImage.tag | default $image.tag | default $global.tag -}}
+{{- printf "%s:%s" $imageName $imageTag | trimSuffix ":" }}
+{{- end }}
+
+
+{{/*
 Common labels
 */}}
 {{- define "simple-charts-common.labels" -}}
