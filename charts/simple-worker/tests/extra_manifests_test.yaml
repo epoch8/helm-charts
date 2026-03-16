@@ -1,0 +1,72 @@
+suite: simple-worker extra manifests
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: No extra manifests by default
+    template: extra-manifests.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: Renders a plain ConfigMap
+    template: extra-manifests.yaml
+    set:
+      extraManifests:
+        - apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: my-config
+          data:
+            key: value
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: my-config
+
+  - it: Supports tpl in manifest values using Release.Name
+    template: extra-manifests.yaml
+    set:
+      extraManifests:
+        - apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: "{{ .Release.Name }}-config"
+          data:
+            key: value
+    asserts:
+      - equal:
+          path: metadata.name
+          value: simple-config
+
+  - it: Renders multiple manifests
+    template: extra-manifests.yaml
+    set:
+      extraManifests:
+        - apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: config-one
+          data:
+            k: v
+        - apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: config-two
+          data:
+            k: v
+    asserts:
+      - hasDocuments:
+          count: 2

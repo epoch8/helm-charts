@@ -1,3 +1,7 @@
+# 1.7.0
+
+* Add `extraManifests` support to inject arbitrary Kubernetes manifests into the release
+
 # 1.6.0
 
 * Update simple-charts-common dependency to 0.6.0 to use common `initJobImage`

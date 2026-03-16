@@ -295,6 +295,16 @@ monitoringCoreos: {}
   # port: http
 
 
+# Extra Kubernetes manifests to include in the release.
+# Supports Helm template strings ({{ .Release.Name }}, {{ .Values.* }}, etc.)
+extraManifests: []
+# - apiVersion: v1
+#   kind: ConfigMap
+#   metadata:
+#     name: "{{ .Release.Name }}-extra"
+#   data:
+#     key: value
+
 ####
 global: {}
   # serviceAccount: {}
