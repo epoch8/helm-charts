@@ -1,3 +1,7 @@
+# 1.6.0
+
+* Add `extraManifests` support to inject arbitrary Kubernetes manifests into the release
+
 # 1.5.0
 
 * Add `initJob` support
