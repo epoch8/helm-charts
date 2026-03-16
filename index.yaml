@@ -217,7 +217,8 @@ entries:
     appVersion: v0.47.0
     created: "2023-08-29T20:15:49.341527237Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: 375866a91b5955213496a68e23e9d95d5217f7ea1023182bc3205c0f69a7c43e
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -231,7 +232,8 @@ entries:
     appVersion: v0.45.2
     created: "2023-02-09T10:39:39.29300504Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: ee255339322036ee4a89be9e468b82e35aa6d0a1e331e927355f72824b542381
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -245,7 +247,8 @@ entries:
     appVersion: v0.43.4
     created: "2022-07-06T13:50:04.865276332Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: 8bae79638842769396f427ea82f8785cca16d9a61b8e0702a09926e70a101708
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -259,7 +262,8 @@ entries:
     appVersion: v0.42.2
     created: "2022-03-31T08:53:56.721700575Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: 54a107ef76cb71321fe62a26c044ab687112d02711d8ae716d3539308faa9365
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -273,7 +277,8 @@ entries:
     appVersion: v0.42.2
     created: "2022-03-20T16:58:09.300848325Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: c79b61d5380dbfd198a5ea5a5e4182a5d2504686bf227837b17190e557c3b9f4
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -287,7 +292,8 @@ entries:
     appVersion: v0.40.1
     created: "2021-07-27T10:38:02.627814869Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: be60146f53082135e94e225fb66b5fb2e0c34bd9bbfcf1aca6d1fd284bfe7670
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -301,7 +307,8 @@ entries:
     appVersion: v0.36.3
     created: "2021-06-05T20:06:39.540225937Z"
     deprecated: true
-    description: The easy, open source way for everyone in your company to ask questions and learn from data.
+    description: The easy, open source way for everyone in your company to ask questions
+      and learn from data.
     digest: 67643558ec3197b0af2741dd47bd52bd367f04517c3decd45751d6e652cb97a8
     home: http://www.metabase.com/
     icon: http://www.metabase.com/images/logo.svg
@@ -384,6 +391,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/rasa-bot-1.5.0/rasa-bot-1.5.0.tgz
     version: 1.5.0
   simple-app:
+  - apiVersion: v2
+    appVersion: undefined
+    created: "2026-03-16T16:54:45.445972457Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.6.0
+    description: A Helm chart for Kubernetes
+    digest: 33d5ea01f11eb853837f4e307975e3fc25a4ec1ecf0e43af6fd16c0dc8695b18
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-1.7.0/simple-app-1.7.0.tgz
+    version: 1.7.0
   - apiVersion: v2
     appVersion: undefined
     created: "2026-03-13T09:02:54.037510251Z"
@@ -1018,6 +1039,20 @@ entries:
   simple-cronjob:
   - apiVersion: v2
     appVersion: undefined
+    created: "2026-03-16T16:54:45.773973115Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.6.0
+    description: A Helm chart for Kubernetes
+    digest: c866ec081fff6d7da1fb4a849985f565c8f285dd5fbed3a41fcbfca0c0e4ae8a
+    name: simple-cronjob
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-1.6.0/simple-cronjob-1.6.0.tgz
+    version: 1.6.0
+  - apiVersion: v2
+    appVersion: undefined
     created: "2026-03-13T09:02:54.338564542Z"
     dependencies:
     - name: simple-charts-common
@@ -1197,6 +1232,20 @@ entries:
     - https://github.com/epoch8/helm-charts/releases/download/simple-cronjob-0.1.0/simple-cronjob-0.1.0.tgz
     version: 0.1.0
   simple-worker:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-16T16:54:45.994302574Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.6.0
+    description: A Helm chart for Kubernetes
+    digest: 9cabc9d264db5d51e9ba23866e2942bf42255511def37abe02514606841fe8c5
+    name: simple-worker
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-worker-1.7.0/simple-worker-1.7.0.tgz
+    version: 1.7.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2026-03-13T09:02:54.485192271Z"
@@ -1411,4 +1460,4 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/simple-worker-0.1.0/simple-worker-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-27T15:25:33.290414096Z"
+generated: "2026-03-16T16:54:45.994780468Z"
