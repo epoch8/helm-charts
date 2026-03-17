@@ -393,6 +393,20 @@ entries:
   simple-app:
   - apiVersion: v2
     appVersion: undefined
+    created: "2026-03-17T08:01:58.033355033Z"
+    dependencies:
+    - name: simple-charts-common
+      repository: file://../simple-charts-common
+      version: 0.6.0
+    description: A Helm chart for Kubernetes
+    digest: 86f64e98a8db1be61e728687309d2716e866009dfbd7bb4365dbd16d0e50e1df
+    name: simple-app
+    type: application
+    urls:
+    - https://github.com/epoch8/helm-charts/releases/download/simple-app-1.8.0/simple-app-1.8.0.tgz
+    version: 1.8.0
+  - apiVersion: v2
+    appVersion: undefined
     created: "2026-03-16T16:54:45.445972457Z"
     dependencies:
     - name: simple-charts-common
@@ -1460,4 +1474,4 @@ entries:
     urls:
     - https://github.com/epoch8/helm-charts/releases/download/simple-worker-0.1.0/simple-worker-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-16T16:54:45.994780468Z"
+generated: "2026-03-17T08:01:58.033689367Z"
