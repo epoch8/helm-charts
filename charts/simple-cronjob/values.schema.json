@@ -75,6 +75,11 @@
         "concurrencyPolicy": {
             "type": "string"
         },
+        "backoffLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of retries before marking the Job as failed"
+        },
         "command": {
             "type": "array",
             "items": {

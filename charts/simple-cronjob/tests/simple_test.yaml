@@ -181,3 +181,33 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: CronJob should set backoffLimit when specified
+    template: cronjob.yaml
+    set:
+      backoffLimit: 3
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.backoffLimit
+          value: 3
+
+  - it: CronJob should set backoffLimit to 0 when specified
+    template: cronjob.yaml
+    set:
+      backoffLimit: 0
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.jobTemplate.spec.backoffLimit
+          value: 0
+
+  - it: CronJob should not set backoffLimit when not specified
+    template: cronjob.yaml
+    asserts:
+      - isKind:
+          of: CronJob
+      - notExists:
+          path: spec.jobTemplate.spec.backoffLimit
