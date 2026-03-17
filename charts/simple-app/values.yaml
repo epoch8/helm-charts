@@ -202,6 +202,10 @@ ingress: {}
   # #  - secretName: chart-example-tls
   # #    hosts:
   # #      - chart-example.local
+  # paths: []  # Optional list of path prefixes to expose (pathType: Prefix)
+  # #   - /api/v1/predict
+  # #   - /api/v1/health
+  # # If not set, defaults to a single catch-all path (/ for nginx, /* otherwise)
 
 gateway:
   # If enabled, creates HTTPRoute which uses given gateway
