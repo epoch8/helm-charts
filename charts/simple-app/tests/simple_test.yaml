@@ -233,6 +233,45 @@ tests:
           path: spec.rules[0].http.paths[0].backend.service.port.number
           value: 7000
 
+  - it: Ingress should use custom paths when ingress.paths is set
+    template: ingress.yaml
+    set:
+      domain: example.com
+      ingress.enabled: true
+      ingress.paths:
+        - /api/v1/predict
+        - /api/v1/health
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: /api/v1/predict
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: Prefix
+      - equal:
+          path: spec.rules[0].http.paths[1].path
+          value: /api/v1/health
+      - equal:
+          path: spec.rules[0].http.paths[1].pathType
+          value: Prefix
+
+  - it: Ingress should use default catch-all path when ingress.paths is not set
+    template: ingress.yaml
+    set:
+      domain: example.com
+      ingress.enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].http.paths[0].path
+          value: "/*"
+      - equal:
+          path: spec.rules[0].http.paths[0].pathType
+          value: ImplementationSpecific
+
   - it: Deployment should have correctly mounted volumes with pvc
     template: deployment.yaml
     asserts:

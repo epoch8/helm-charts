@@ -1,3 +1,7 @@
+# 1.8.0
+
+* Add `ingress.paths` support to allow restricting exposed URL paths
+
 # 1.7.0
 
 * Add `extraManifests` support to inject arbitrary Kubernetes manifests into the release

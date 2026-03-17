@@ -44,6 +44,17 @@ spec:
     - host: {{ .Values.domain }}
       http:
         paths:
+          {{- if $ingress.paths }}
+          {{- range $ingress.paths }}
+          - path: {{ . }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+          {{- end }}
+          {{- else }}
           - path: {{ if $ingress.nginx }}/{{ else }}/*{{ end }}
             pathType: ImplementationSpecific
             backend:
@@ -51,4 +62,5 @@ spec:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
+          {{- end }}
   {{- end }}
