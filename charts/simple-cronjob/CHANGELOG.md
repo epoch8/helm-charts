@@ -1,3 +1,7 @@
+# 1.7.0
+
+* Add `backoffLimit` support to control job retry behavior
+
 # 1.6.0
 
 * Add `extraManifests` support to inject arbitrary Kubernetes manifests into the release

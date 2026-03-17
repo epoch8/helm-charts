@@ -56,6 +56,9 @@ timeZone: "GMT"
 
 concurrencyPolicy: "Forbid"
 
+# Number of retries before marking the Job as failed. If not set, Kubernetes default applies (6).
+# backoffLimit: 3
+
 volumes: []
   # if "size" is set, it will create a PVC
   # - name: data

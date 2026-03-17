@@ -13,6 +13,9 @@ spec:
   concurrencyPolicy: "{{ .Values.concurrencyPolicy }}"
   jobTemplate:
     spec:
+      {{- if hasKey .Values "backoffLimit" }}
+      backoffLimit: {{ .Values.backoffLimit }}
+      {{- end }}
       template:
         metadata:
           {{- include "simple-charts-common.podAnnotations" . | nindent 10 }}
