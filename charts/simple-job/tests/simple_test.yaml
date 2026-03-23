@@ -1,0 +1,229 @@
+suite: simple-job simple case
+
+values:
+  - simple-values.yaml
+
+release:
+  name: simple
+  namespace: default
+
+chart:
+  version: 0.0.0
+
+tests:
+  - it: All manifests should match snapshot
+    templates:
+      - job.yaml
+      - serviceaccount.yaml
+      - pvc.yaml
+    asserts:
+      - matchSnapshot: {}
+
+  - it: Job should be named as release
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: metadata.name
+          value: simple-simple-job
+
+  - it: Job name should include nameSuffix when set
+    template: job.yaml
+    set:
+      nameSuffix: v2
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: metadata.name
+          value: simple-simple-job-v2
+
+  - it: Job image tag should be set correctly
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: test:1.1.1
+
+  - it: Job should use imagePullSecrets if specified
+    template: job.yaml
+    set:
+      imagePullSecrets:
+        - name: test
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.imagePullSecrets
+          value:
+            - name: test
+
+  - it: Job should mount shared memory volume if shmSize specified
+    template: job.yaml
+    set:
+      shmSize: 1Gi
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /dev/shm
+            name: shared-memory
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            emptyDir:
+              medium: Memory
+              sizeLimit: 1Gi
+            name: shared-memory
+
+  - it: Job should have correctly mounted configs
+    template: job.yaml
+    set:
+      configs:
+        - name: test.json
+          mountPath: /etc/test.json
+          value: |
+            {
+              "test": "test"
+            }
+        - name: test2.json
+          value: |
+            {
+              "test2": "test2"
+            }
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[1]
+          value:
+            mountPath: /etc/test.json
+            name: configs
+            subPath: test.json
+            readOnly: true
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[2]
+          value:
+            mountPath: /configs/test2.json
+            name: configs
+            subPath: test2.json
+            readOnly: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            configMap:
+              name: simple-simple-job
+            name: configs
+
+  - it: Job should have correctly mounted volumes with pvc
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: data
+            persistentVolumeClaim:
+              claimName: simple-simple-job-data
+
+  - it: Job should have correctly mounted volumes without pvc
+    template: job.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts[0]
+          value:
+            mountPath: /data
+            name: data
+      - equal:
+          path: spec.template.spec.volumes[0]
+          value:
+            name: data
+            emptyDir:
+              sizeLimit: 1Gi
+
+  - it: PVC should not be created if emptyDir
+    template: pvc.yaml
+    set:
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+          emptyDir: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: PVC should have correct storage size
+    template: pvc.yaml
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: spec.resources.requests.storage
+          value: 1Gi
+
+  - it: Job should set backoffLimit when specified
+    template: job.yaml
+    set:
+      backoffLimit: 3
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.backoffLimit
+          value: 3
+
+  - it: Job should set backoffLimit to 0 when specified
+    template: job.yaml
+    set:
+      backoffLimit: 0
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.backoffLimit
+          value: 0
+
+  - it: Job should not set backoffLimit when not specified
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - notExists:
+          path: spec.backoffLimit
+
+  - it: Job should have restartPolicy Never
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - equal:
+          path: spec.template.spec.restartPolicy
+          value: Never
+
+  - it: Job should not have hook annotations
+    template: job.yaml
+    asserts:
+      - isKind:
+          of: Job
+      - notExists:
+          path: metadata.annotations["helm.sh/hook"]

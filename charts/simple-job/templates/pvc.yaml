@@ -1,0 +1,21 @@
+{{- $fullName := include "simple-charts-common.fullname" . -}}
+{{- $labels := include "simple-charts-common.labels" . | nindent 4 -}}
+
+{{ range .Values.volumes }}
+{{- if and (not .emptyDir) (and (not .secret) (not .configMap)) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullName }}-{{ .name }}
+  labels:
+    {{- $labels }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .size }}
+
+---
+{{ end }}
+{{ end }}

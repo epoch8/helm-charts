@@ -1,0 +1,145 @@
+# Default values for simple-job.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: ""
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+
+# Environment variables for container
+env: []
+
+# Extra environment variables, joined with global.env (or env if set)
+extraEnv: []
+
+# Host aliases to inject into pod /etc/hosts
+hostAliases: []
+  # - ip: "127.0.0.1"
+  #   hostnames:
+  #   - "foo.local"
+
+command: []
+# - command
+# - to
+# - run
+
+# Amount of shared memory to allocate for the container
+# If not set, no shared-memory volume is allocated
+shmSize: ""
+
+# Optional suffix appended to the Job name: {fullname}-{nameSuffix}
+# Change this value to trigger a new job run on the next deploy.
+# nameSuffix: ""
+
+# Number of retries before marking the Job as failed. If not set, Kubernetes default applies (6).
+# backoffLimit: 3
+
+volumes: []
+  # if "size" is set, it will create a PVC
+  # - name: data
+  #   size: 1Gi
+  #   mountPath: /data
+
+  # if "emptyDir" is set, it will create an emptyDir
+  # - name: cache
+  #   emptyDir: true
+  #   size: 1Gi
+  #   mountPath: /cache
+
+  # if "secret" is set, it will use the secret
+  # - name: secret
+  #   secret:
+  #     secretName: secret
+  #   mountPath: /secret
+
+  # if "configMap" is set, it will use the configMap
+  # - name: config
+  #   configMap:
+  #     name: config
+  #   mountPath: /config
+
+
+# ConfigMap creation from inline values
+# When configs are set, pods will automatically restart when values change.
+# To disable auto-restart, set: autoRestartOnConfigChange: false
+configs: []
+  # - name: conn.json
+  #   mountPath: /etc/conn.json
+  #   value: |
+  #     {
+  #       "client": "pg",
+  #       "connection": {
+  #       }
+  #     }
+
+# Disable automatic pod restarts when configs change (default: true)
+# autoRestartOnConfigChange: false
+
+serviceAccount: {}
+  ## Specifies whether a service account should be created
+  # create: true
+  ## Annotations to add to the service account
+  # annotations: {}
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  # name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Extra Kubernetes manifests to include in the release.
+# Supports Helm template strings ({{ .Release.Name }}, {{ .Values.* }}, etc.)
+extraManifests: []
+# - apiVersion: v1
+#   kind: ConfigMap
+#   metadata:
+#     name: "{{ .Release.Name }}-extra"
+#   data:
+#     key: value
+
+####
+global: {}
+  # serviceAccount: {}
+  # image: {}
+  # hostAliases: []
+  # env: []
+  # resources: {}
+  # nodeSelector: {}
+  # tolerations: []
+  # affinity: {}
+  # imagePullSecrets: []

@@ -1,0 +1,13 @@
+{{ if .Values.configs }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "simple-charts-common.fullname" . }}
+  labels:
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
+data:
+  {{- range .Values.configs }}
+  {{ .name }}: |
+    {{- .value | nindent 4 }}
+  {{- end }}
+{{ end }}

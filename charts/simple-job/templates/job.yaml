@@ -1,0 +1,86 @@
+{{- $fullName := include "simple-charts-common.fullname" . -}}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  {{- if .Values.nameSuffix }}
+  name: {{ $fullName }}-{{ .Values.nameSuffix }}
+  {{- else }}
+  name: {{ $fullName }}
+  {{- end }}
+  labels:
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
+spec:
+  {{- if hasKey .Values "backoffLimit" }}
+  backoffLimit: {{ .Values.backoffLimit }}
+  {{- end }}
+  template:
+    metadata:
+      {{- include "simple-charts-common.podAnnotations" . | nindent 6 }}
+      labels:
+        {{- include "simple-charts-common.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- include "simple-charts-common.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "simple-charts-common.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- include "simple-charts-common.hostAliases" . | nindent 6 }}
+      volumes:
+        {{- if .Values.shmSize }}
+        - name: shared-memory
+          emptyDir:
+            medium: Memory
+            sizeLimit: {{ .Values.shmSize }}
+        {{- end }}
+        {{- range .Values.volumes }}
+        - name: {{ .name }}
+          {{- if .emptyDir }}
+          emptyDir:
+            sizeLimit: {{ .size }}
+          {{- else if .size }}
+          persistentVolumeClaim:
+            claimName: {{ $fullName }}-{{ .name }}
+          {{- else if .configMap }}
+          configMap:
+            {{- .configMap | toYaml | nindent 12 }}
+          {{- else if .secret }}
+          secret:
+            {{- .secret | toYaml | nindent 12 }}
+          {{- end }}
+        {{- end }}
+        {{- range .Values.configs }}
+        - name: configs
+          configMap:
+            name: {{ $fullName }}
+        {{- end }}
+      restartPolicy: "Never"
+      containers:
+        - name: {{ include "simple-charts-common.name" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ include "simple-charts-common.image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.command }}
+          command:
+            {{- .Values.command | toYaml | nindent 12 }}
+          {{ end }}
+          {{- include "simple-charts-common.env" . | nindent 10 }}
+          {{- include "simple-charts-common.resources" . | nindent 10 }}
+          volumeMounts:
+            {{- if .Values.shmSize }}
+            - name: shared-memory
+              mountPath: /dev/shm
+            {{- end }}
+            {{- range .Values.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+            {{- range .Values.configs }}
+            - name: configs
+              mountPath: {{ if .mountPath }}"{{ .mountPath }}"{{ else }}"/configs/{{ .name }}"{{ end }}
+              subPath: {{ .name }}
+              readOnly: true
+            {{- end }}
+      {{- include "simple-charts-common.nodeSelector" . | nindent 6 }}
+      {{- include "simple-charts-common.affinity" . | nindent 6 }}
+      {{- include "simple-charts-common.tolerations" . | nindent 6 }}
