@@ -11,7 +11,7 @@ spec:
     name: {{ .Values.gateway.name }}
     {{ if .Values.gateway.namespace }}namespace: {{ .Values.gateway.namespace }}{{ end }}
   hostnames:
-  - "{{ .Values.domain }}"
+  - "{{ include "simple-charts-common.domain" . }}"
   rules:
   - backendRefs:
     - name: {{ include "simple-charts-common.fullname" . }}

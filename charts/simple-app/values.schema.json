@@ -37,6 +37,12 @@
         "domain": {
             "type": "string"
         },
+        "subDomain": {
+            "type": "string"
+        },
+        "baseDomain": {
+            "type": "string"
+        },
         "port": {
             "oneOf": [
                 {

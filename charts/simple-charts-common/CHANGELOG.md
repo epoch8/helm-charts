@@ -1,3 +1,8 @@
+# 0.7.0
+
+* Add `simple-charts-common.domain` helper: resolves hostname from `domain`
+  (explicit), `subDomain`+`baseDomain` (composed), or `global.baseDomain`
+
 # 0.6.0
 
 * Add `simple-charts-common.initJobImage` helper for `initJob`

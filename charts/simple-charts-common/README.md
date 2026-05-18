@@ -32,6 +32,25 @@ Boolean logic for service account creation. Returns "true" or empty string based
 ### `simple-charts-common.serviceAccountName`
 Resolves the service account name based on whether a service account should be created.
 
+### `simple-charts-common.domain`
+Computes the effective hostname for ingress/gateway resources. Resolution priority (highest to lowest):
+1. `.Values.domain` — explicit full domain, used as-is (backward compatible)
+2. `{subDomain}.{baseDomain}` — composed when both are set (`baseDomain` resolves from `.Values.baseDomain` falling back to `.Values.global.baseDomain`)
+3. `baseDomain` alone — when only `baseDomain` is set
+4. `subDomain` alone — when only `subDomain` is set
+
+Typical umbrella-chart usage:
+```yaml
+# umbrella values.yaml
+global:
+  baseDomain: "example.com"
+
+service-one:
+  subDomain: "api"   # → api.example.com
+service-two:
+  subDomain: "web"   # → web.example.com
+```
+
 ### `simple-charts-common.env`
 Outputs environment variables from merged global and local values.
 
@@ -100,4 +119,4 @@ serviceAccount:
 
 ## Version
 
-Current version: 0.1.0
+Current version: 0.7.0

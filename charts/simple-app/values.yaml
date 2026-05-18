@@ -8,6 +8,8 @@ nameOverride: ""
 fullnameOverride: ""
 
 domain: ""
+subDomain: ""
+baseDomain: ""
 
 image:
   pullPolicy: IfNotPresent
@@ -311,6 +313,7 @@ extraManifests: []
 
 ####
 global: {}
+  # baseDomain: ""
   # serviceAccount: {}
   # image: {}
   # hostAliases: []

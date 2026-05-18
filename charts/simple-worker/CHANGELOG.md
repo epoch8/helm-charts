@@ -1,3 +1,7 @@
+# 1.8.0
+
+* Update simple-charts-common dependency to 0.7.0
+
 # 1.7.0
 
 * Add `extraManifests` support to inject arbitrary Kubernetes manifests into the release

@@ -5,5 +5,5 @@ metadata:
   name: {{ include "simple-charts-common.fullname" . }}
 spec:
   domains:
-    - {{ .Values.domain }}
+    - {{ include "simple-charts-common.domain" . }}
 {{- end }}

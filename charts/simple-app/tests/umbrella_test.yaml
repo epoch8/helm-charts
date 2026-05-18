@@ -310,6 +310,62 @@ tests:
           path: spec.ports[0].port
           value: 8080
 
+  # domain / baseDomain / subDomain
+
+  - it: Ingress should compose host from subDomain and global.baseDomain
+    template: ingress.yaml
+    set:
+      subDomain: api
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        baseDomain: example.com
+        ingress:
+          enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].host
+          value: api.example.com
+
+  - it: Ingress explicit domain should override subDomain and global.baseDomain
+    template: ingress.yaml
+    set:
+      domain: explicit.example.com
+      subDomain: api
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        baseDomain: example.com
+        ingress:
+          enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].host
+          value: explicit.example.com
+
+  - it: Ingress should use global.baseDomain alone when subDomain is not set
+    template: ingress.yaml
+    set:
+      global:
+        image:
+          repository: my-repo
+          tag: v1.0.0
+        baseDomain: example.com
+        ingress:
+          enabled: true
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].host
+          value: example.com
+
   # ingress
 
   - it: Ingress should be created from global.ingress
