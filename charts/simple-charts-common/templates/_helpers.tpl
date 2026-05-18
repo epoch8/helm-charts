@@ -225,3 +225,24 @@ annotations:
   {{- end }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Compute the effective domain hostname.
+Priority: .Values.domain > subDomain.baseDomain > baseDomain > subDomain > ""
+baseDomain resolves from .Values.baseDomain falling back to .Values.global.baseDomain.
+*/}}
+{{- define "simple-charts-common.domain" -}}
+{{- $domain := .Values.domain -}}
+{{- $subDomain := .Values.subDomain -}}
+{{- $baseDomain := .Values.baseDomain | default (.Values.global.baseDomain) -}}
+{{- if $domain -}}
+{{- $domain -}}
+{{- else if and $subDomain $baseDomain -}}
+{{- printf "%s.%s" $subDomain $baseDomain -}}
+{{- else if $baseDomain -}}
+{{- $baseDomain -}}
+{{- else if $subDomain -}}
+{{- $subDomain -}}
+{{- end -}}
+{{- end }}

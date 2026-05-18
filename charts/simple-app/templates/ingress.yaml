@@ -41,7 +41,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.domain }}
+    - host: {{ include "simple-charts-common.domain" . }}
       http:
         paths:
           {{- if $ingress.paths }}

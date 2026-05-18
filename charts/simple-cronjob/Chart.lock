@@ -1,6 +1,6 @@
 dependencies:
 - name: simple-charts-common
   repository: file://../simple-charts-common
-  version: 0.6.0
-digest: sha256:4efdec454b858830f4345b0e8476216f979b08069979dc2567e8e91fbac96e6a
-generated: "2026-03-13T12:41:47.892845897+04:00"
+  version: 0.7.0
+digest: sha256:6d45c6a89d4fcce3f71000a85cd96907d79cbc8b35d5b9cbb435a8c3115d4605
+generated: "2026-05-19T00:45:07.776908744+04:00"

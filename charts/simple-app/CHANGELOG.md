@@ -1,3 +1,10 @@
+# 1.9.0
+
+* Add `subDomain` and `baseDomain` / `global.baseDomain` values for
+  umbrella-chart hostname composition: `subDomain.baseDomain` is used as the
+  effective domain when `domain` is not set explicitly
+* Update simple-charts-common dependency to 0.7.0
+
 # 1.8.0
 
 * Add `ingress.paths` support to allow restricting exposed URL paths
