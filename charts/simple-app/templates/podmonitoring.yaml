@@ -1,4 +1,6 @@
-{{ if and .Values.gke.enabled .Values.gke.monitoring.enabled }}
+{{- $gke := .Values.gke | default .Values.global.gke | default dict -}}
+{{- $gkeMonitoring := $gke.monitoring | default dict -}}
+{{ if and $gke.enabled $gkeMonitoring.enabled }}
 apiVersion: monitoring.googleapis.com/v1
 kind: PodMonitoring
 metadata:
@@ -11,6 +13,6 @@ spec:
       {{- include "simple-charts-common.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: http
-    path: {{ .Values.gke.monitoring.path }}
-    interval: {{ .Values.gke.monitoring.interval }}
+    path: {{ $gkeMonitoring.path | default "/metrics" }}
+    interval: {{ $gkeMonitoring.interval | default "30s" }}
 {{ end }}

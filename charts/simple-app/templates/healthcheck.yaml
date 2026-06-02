@@ -1,4 +1,5 @@
-{{- if .Values.gke.enabled -}}
+{{- $gke := .Values.gke | default .Values.global.gke | default dict -}}
+{{- if $gke.enabled -}}
 apiVersion: networking.gke.io/v1
 kind: HealthCheckPolicy
 metadata:
@@ -10,8 +11,8 @@ spec:
     config:
       type: HTTP
       httpHealthCheck:
-        port: {{ .Values.port }}
-        requestPath: {{ .Values.probe.path }}
+        port: {{ include "simple-app.port" . }}
+        requestPath: {{ include "simple-app.probePath" . }}
   targetRef:
     group: ""
     kind: Service

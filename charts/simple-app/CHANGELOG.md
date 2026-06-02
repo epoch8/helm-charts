@@ -1,3 +1,10 @@
+# 1.11.0
+
+* Add EKS Gateway API support: generate `TargetGroupConfiguration` (gateway.k8s.aws/v1beta1) when `eks.enabled` and `gateway.enabled` are both true
+* Add `global.eks` and `global.gke` fallback support for umbrella chart usage
+* Extract `simple-app.probePath` and `simple-app.port` helpers; fix `healthcheck.yaml` and `podmonitoring.yaml` to use global probe/port fallback
+* Migrate `managedcertificate.yaml`, `podmonitoring.yaml`, and `ingress.yaml` to use resolved `$gke` variable for nil-safe sub-field access
+
 # 1.10.0
 
 * Make Gateway API integration follow local-over-global gateway defaults

@@ -1,0 +1,27 @@
+{{- $gateway := .Values.gateway | default .Values.global.gateway | default dict -}}
+{{- $eks := .Values.eks | default .Values.global.eks | default dict -}}
+{{- $eksHealthCheck := $eks.healthCheck | default dict -}}
+{{- $eksMatcher := $eksHealthCheck.matcher | default dict -}}
+{{- if and $gateway.enabled $eks.enabled -}}
+{{- $probePath := include "simple-app.probePath" . -}}
+apiVersion: gateway.k8s.aws/v1beta1
+kind: TargetGroupConfiguration
+metadata:
+  name: {{ include "simple-charts-common.fullname" . }}
+  labels:
+    {{- include "simple-charts-common.labels" . | nindent 4 }}
+spec:
+  targetReference:
+    name: {{ include "simple-charts-common.fullname" . }}
+  defaultConfiguration:
+    healthCheckConfig:
+      healthCheckPath: {{ $probePath }}
+      healthCheckPort: "traffic-port"
+      healthCheckProtocol: {{ $eksHealthCheck.protocol | default "HTTP" }}
+      healthCheckInterval: {{ $eksHealthCheck.interval | default 15 }}
+      healthCheckTimeout: {{ $eksHealthCheck.timeout | default 5 }}
+      healthyThresholdCount: {{ $eksHealthCheck.healthyThreshold | default 2 }}
+      unhealthyThresholdCount: {{ $eksHealthCheck.unhealthyThreshold | default 3 }}
+      matcher:
+        httpCode: {{ $eksMatcher.httpCode | default "200" | quote }}
+{{- end -}}
