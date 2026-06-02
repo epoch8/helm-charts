@@ -437,6 +437,74 @@ tests:
       - hasDocuments:
           count: 0
 
+  # gke
+
+  - it: HealthCheckPolicy should be created from global.gke
+    template: healthcheck.yaml
+    set:
+      global:
+        gke:
+          enabled: true
+    asserts:
+      - isKind:
+          of: HealthCheckPolicy
+
+  - it: GCPBackendPolicy should be created from global.gke
+    template: gcpbackendpolicy.yaml
+    set:
+      global:
+        gateway:
+          enabled: true
+          name: external-gateway
+        gke:
+          enabled: true
+    asserts:
+      - isKind:
+          of: GCPBackendPolicy
+
+  - it: Local gke should override global.gke
+    template: healthcheck.yaml
+    set:
+      global:
+        gke:
+          enabled: true
+      gke:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  # eks
+
+  - it: TargetGroupConfiguration should be created from global.eks
+    template: targetgroupconfiguration.yaml
+    set:
+      domain: example.com
+      global:
+        gateway:
+          enabled: true
+          name: external-gateway
+        eks:
+          enabled: true
+    asserts:
+      - isKind:
+          of: TargetGroupConfiguration
+
+  - it: Local eks should override global.eks
+    template: targetgroupconfiguration.yaml
+    set:
+      global:
+        gateway:
+          enabled: true
+          name: external-gateway
+        eks:
+          enabled: true
+      eks:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
   # monitoringCoreos
 
   - it: ServiceMonitor should be created from global.monitoringCoreos

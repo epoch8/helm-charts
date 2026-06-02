@@ -1,4 +1,5 @@
 {{- $ingress := .Values.ingress | default .Values.global.ingress | default dict -}}
+{{- $gke := .Values.gke | default .Values.global.gke | default dict -}}
 {{- if $ingress.enabled -}}
 {{- $fullName := include "simple-charts-common.fullname" . -}}
 {{- $svcPort := .Values.servicePort | default .Values.global.servicePort | default 80 -}}
@@ -18,7 +19,7 @@ metadata:
   {{- if $ingress.nginx }}
     kubernetes.io/ingress.class: nginx
   {{- end }}
-  {{- if .Values.gke.managedCertificate.enabled }}
+  {{- if ($gke.managedCertificate | default dict).enabled }}
     networking.gke.io/managed-certificates: {{ include "simple-charts-common.fullname" . }}
   {{- end }}
   {{- with $ingress.annotations }}

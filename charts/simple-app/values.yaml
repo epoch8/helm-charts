@@ -278,38 +278,34 @@ affinity: {}
 # If set, create topologySpreadConstraints to spread the pods across nodes
 spreadServiceAcrossNodes: false
 
-# Settings specific to GKE deployment
-gke:
+# Settings specific to GKE deployment. Defaults to global.gke if not set locally.
+gke: {}
   # If enabled and gateway.enabled is true, creates GCPBackendPolicy and
   # HealthCheck for service
-  enabled: false
+  # enabled: false
+  # managedCertificate:
+  #   enabled: false
+  # iap:
+  #   enabled: false
+  #   clientID: ""
+  #   oauth2ClientSecret: ""
+  # monitoring:
+  #   enabled: false
+  #   path: "/metrics"
+  #   interval: "30s"
 
-  managedCertificate:
-    enabled: false
-
-  iap:
-    enabled: false
-    clientID: ""
-    oauth2ClientSecret: ""
-
-  monitoring:
-    enabled: false
-    path: "/metrics"
-    interval: "30s"
-
-# Settings specific to EKS deployment
-eks:
+# Settings specific to EKS deployment. Defaults to global.eks if not set locally.
+eks: {}
   # If enabled and gateway.enabled is true, creates TargetGroupConfiguration
-  enabled: false
-
-  healthCheck:
-    protocol: HTTP
-    interval: 15
-    timeout: 5
-    healthyThreshold: 2
-    unhealthyThreshold: 3
-    matcher:
-      httpCode: "200"
+  # enabled: false
+  # healthCheck:
+  #   protocol: HTTP
+  #   interval: 15
+  #   timeout: 5
+  #   healthyThreshold: 2
+  #   unhealthyThreshold: 3
+  #   matcher:
+  #     httpCode: "200"
 
 # Prometheus Operator ServiceMonitor. Defaults to global.monitoringCoreos if not set locally.
 monitoringCoreos: {}
@@ -351,3 +347,5 @@ global: {}
   # tolerations: []
   # affinity: {}
   # imagePullSecrets: []
+  # eks: {}
+  # gke: {}

@@ -1,5 +1,8 @@
 {{- $gateway := .Values.gateway | default .Values.global.gateway | default dict -}}
-{{- if and $gateway.enabled .Values.eks.enabled -}}
+{{- $eks := .Values.eks | default .Values.global.eks | default dict -}}
+{{- $eksHealthCheck := $eks.healthCheck | default dict -}}
+{{- $eksMatcher := $eksHealthCheck.matcher | default dict -}}
+{{- if and $gateway.enabled $eks.enabled -}}
 {{- $probePath := include "simple-app.probePath" . -}}
 apiVersion: gateway.k8s.aws/v1beta1
 kind: TargetGroupConfiguration
@@ -14,11 +17,11 @@ spec:
     healthCheckConfig:
       healthCheckPath: {{ $probePath }}
       healthCheckPort: "traffic-port"
-      healthCheckProtocol: {{ .Values.eks.healthCheck.protocol }}
-      healthCheckInterval: {{ .Values.eks.healthCheck.interval }}
-      healthCheckTimeout: {{ .Values.eks.healthCheck.timeout }}
-      healthyThresholdCount: {{ .Values.eks.healthCheck.healthyThreshold }}
-      unhealthyThresholdCount: {{ .Values.eks.healthCheck.unhealthyThreshold }}
+      healthCheckProtocol: {{ $eksHealthCheck.protocol | default "HTTP" }}
+      healthCheckInterval: {{ $eksHealthCheck.interval | default 15 }}
+      healthCheckTimeout: {{ $eksHealthCheck.timeout | default 5 }}
+      healthyThresholdCount: {{ $eksHealthCheck.healthyThreshold | default 2 }}
+      unhealthyThresholdCount: {{ $eksHealthCheck.unhealthyThreshold | default 3 }}
       matcher:
-        httpCode: {{ .Values.eks.healthCheck.matcher.httpCode | quote }}
+        httpCode: {{ $eksMatcher.httpCode | default "200" | quote }}
 {{- end -}}

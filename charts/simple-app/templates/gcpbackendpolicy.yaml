@@ -1,5 +1,7 @@
 {{- $gateway := .Values.gateway | default .Values.global.gateway | default dict -}}
-{{- if and $gateway.enabled .Values.gke.enabled -}}
+{{- $gke := .Values.gke | default .Values.global.gke | default dict -}}
+{{- $gkeIap := $gke.iap | default dict -}}
+{{- if and $gateway.enabled $gke.enabled -}}
 apiVersion: networking.gke.io/v1
 kind: GCPBackendPolicy
 metadata:
@@ -9,12 +11,12 @@ metadata:
 spec:
   default:
     timeoutSec: {{ .Values.timeoutSec}}
-    {{ if .Values.gke.iap.enabled }}
+    {{ if $gkeIap.enabled }}
     iap:
       enabled: true
       oauth2ClientSecret:
-        name: {{ .Values.gke.iap.oauth2ClientSecret}}
-      clientID: {{ .Values.gke.iap.clientID}}
+        name: {{ $gkeIap.oauth2ClientSecret}}
+      clientID: {{ $gkeIap.clientID}}
     {{ end }}
   targetRef:
     group: ""
