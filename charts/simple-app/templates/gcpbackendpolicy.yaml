@@ -1,4 +1,5 @@
-{{- if .Values.gateway.enabled -}}
+{{- $gateway := .Values.gateway | default .Values.global.gateway | default dict -}}
+{{- if and $gateway.enabled .Values.gke.enabled -}}
 apiVersion: networking.gke.io/v1
 kind: GCPBackendPolicy
 metadata:

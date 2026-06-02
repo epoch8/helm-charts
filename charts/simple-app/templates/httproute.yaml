@@ -1,4 +1,5 @@
-{{- if .Values.gateway.enabled -}}
+{{- $gateway := .Values.gateway | default .Values.global.gateway | default dict -}}
+{{- if $gateway.enabled -}}
 kind: HTTPRoute
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
@@ -8,8 +9,13 @@ metadata:
 spec:
   parentRefs:
   - kind: Gateway
-    name: {{ .Values.gateway.name }}
-    {{ if .Values.gateway.namespace }}namespace: {{ .Values.gateway.namespace }}{{ end }}
+    name: {{ $gateway.name }}
+    {{- if $gateway.namespace }}
+    namespace: {{ $gateway.namespace }}
+    {{- end }}
+    {{- if $gateway.sectionName }}
+    sectionName: {{ $gateway.sectionName }}
+    {{- end }}
   hostnames:
   - "{{ include "simple-charts-common.domain" . }}"
   rules:

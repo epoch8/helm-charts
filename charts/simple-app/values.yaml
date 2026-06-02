@@ -209,12 +209,15 @@ ingress: {}
   # #   - /api/v1/health
   # # If not set, defaults to a single catch-all path (/ for nginx, /* otherwise)
 
-gateway:
-  # If enabled, creates HTTPRoute which uses given gateway
-  enabled: false
-
+# Gateway API configuration. Defaults to global.gateway if not set locally.
+gateway: {}
+  # enabled: false
   # Name of gateway to be used
-  name: ""
+  # name: ""
+  # Optional namespace of the Gateway to reference
+  # namespace: ""
+  # Optional Gateway listener section to attach the HTTPRoute to
+  # sectionName: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -328,6 +331,7 @@ global: {}
   # resources: {}
   # autoscaling: {}
   # ingress: {}
+  # gateway: {}
   # monitoringCoreos: {}
   # nodeSelector: {}
   # tolerations: []

@@ -398,6 +398,45 @@ tests:
       - hasDocuments:
           count: 0
 
+  # gateway
+
+  - it: HTTPRoute should be created from global.gateway
+    template: httproute.yaml
+    set:
+      domain: example.com
+      global:
+        gateway:
+          enabled: true
+          name: external-gateway
+          namespace: shared-gateways
+          sectionName: https
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.parentRefs[0].name
+          value: external-gateway
+      - equal:
+          path: spec.parentRefs[0].namespace
+          value: shared-gateways
+      - equal:
+          path: spec.parentRefs[0].sectionName
+          value: https
+
+  - it: Local gateway should override global.gateway
+    template: httproute.yaml
+    set:
+      domain: example.com
+      global:
+        gateway:
+          enabled: true
+          name: external-gateway
+      gateway:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
   # monitoringCoreos
 
   - it: ServiceMonitor should be created from global.monitoringCoreos

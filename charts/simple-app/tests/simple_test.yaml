@@ -359,6 +359,55 @@ tests:
           path: metadata.name
           value: simple-simple-app
 
+  - it: Gateway should set optional namespace and sectionName on HTTPRoute parentRef
+    template: httproute.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+        namespace: shared-gateways
+        sectionName: https
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: spec.parentRefs[0].name
+          value: external-gateway
+      - equal:
+          path: spec.parentRefs[0].namespace
+          value: shared-gateways
+      - equal:
+          path: spec.parentRefs[0].sectionName
+          value: https
+
+  - it: GCPBackendPolicy should not be created when GKE integration is disabled
+    template: gcpbackendpolicy.yaml
+    set:
+      gateway:
+        enabled: true
+        name: external-gateway
+      gke:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: GCPBackendPolicy should be created when gateway and GKE integration are enabled
+    template: gcpbackendpolicy.yaml
+    set:
+      gateway:
+        enabled: true
+        name: external-gateway
+      gke:
+        enabled: true
+    asserts:
+      - isKind:
+          of: GCPBackendPolicy
+      - equal:
+          path: metadata.name
+          value: simple-simple-app
+
   - it: Spread service across nodes
     template: deployment.yaml
     set:
