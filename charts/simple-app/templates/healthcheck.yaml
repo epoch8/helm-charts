@@ -10,8 +10,8 @@ spec:
     config:
       type: HTTP
       httpHealthCheck:
-        port: {{ .Values.port }}
-        requestPath: {{ .Values.probe.path }}
+        port: {{ include "simple-app.port" . }}
+        requestPath: {{ include "simple-app.probePath" . }}
   targetRef:
     group: ""
     kind: Service

@@ -408,6 +408,78 @@ tests:
           path: metadata.name
           value: simple-simple-app
 
+  - it: TargetGroupConfiguration should not be created when EKS is disabled
+    template: targetgroupconfiguration.yaml
+    set:
+      gateway:
+        enabled: true
+        name: external-gateway
+      eks:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: TargetGroupConfiguration should not be created when gateway is disabled
+    template: targetgroupconfiguration.yaml
+    set:
+      gateway:
+        enabled: false
+      eks:
+        enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: TargetGroupConfiguration should be created when gateway and EKS are enabled
+    template: targetgroupconfiguration.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+      eks:
+        enabled: true
+    asserts:
+      - isKind:
+          of: TargetGroupConfiguration
+      - equal:
+          path: metadata.name
+          value: simple-simple-app
+
+  - it: TargetGroupConfiguration healthCheck path should use probe.path
+    template: targetgroupconfiguration.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+      eks:
+        enabled: true
+      probe:
+        path: /health
+    asserts:
+      - equal:
+          path: spec.defaultConfiguration.healthCheckConfig.healthCheckPath
+          value: /health
+
+  - it: TargetGroupConfiguration healthCheck path should fall back to global.probe.path
+    template: targetgroupconfiguration.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+      eks:
+        enabled: true
+      global:
+        probe:
+          path: /ready
+    asserts:
+      - equal:
+          path: spec.defaultConfiguration.healthCheckConfig.healthCheckPath
+          value: /ready
+
   - it: Spread service across nodes
     template: deployment.yaml
     set:

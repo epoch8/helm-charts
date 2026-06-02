@@ -297,6 +297,20 @@ gke:
     path: "/metrics"
     interval: "30s"
 
+# Settings specific to EKS deployment
+eks:
+  # If enabled and gateway.enabled is true, creates TargetGroupConfiguration
+  enabled: false
+
+  healthCheck:
+    protocol: HTTP
+    interval: 15
+    timeout: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    matcher:
+      httpCode: "200"
+
 # Prometheus Operator ServiceMonitor. Defaults to global.monitoringCoreos if not set locally.
 monitoringCoreos: {}
   # enabled: false

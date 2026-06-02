@@ -1,7 +1,6 @@
 {{- $fullName := include "simple-charts-common.fullname" . -}}
-{{- $port := .Values.port | default .Values.global.port | default 8000 -}}
-{{- $probe := .Values.probe | default .Values.global.probe | default dict -}}
-{{- $probePath := $probe.path | default "/" -}}
+{{- $port := include "simple-app.port" . -}}
+{{- $probePath := include "simple-app.probePath" . -}}
 {{- $livenessProbe := .Values.livenessProbe | default .Values.global.livenessProbe | default dict -}}
 {{- $readinessProbe := .Values.readinessProbe | default .Values.global.readinessProbe | default dict -}}
 {{- $startupProbe := .Values.startupProbe | default .Values.global.startupProbe | default dict -}}
