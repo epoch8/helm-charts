@@ -279,7 +279,21 @@
             "type": "object"
         },
         "gateway": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "sectionName": {
+                    "type": "string"
+                }
+            }
         },
         "resources": {
             "type": "object"

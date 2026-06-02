@@ -1,3 +1,9 @@
+# 1.10.0
+
+* Make Gateway API integration follow local-over-global gateway defaults
+* Add optional `gateway.sectionName` for HTTPRoute parent references
+* Render GCPBackendPolicy only when both Gateway API and GKE integration are enabled
+
 # 1.9.0
 
 * Add `subDomain` and `baseDomain` / `global.baseDomain` values for
