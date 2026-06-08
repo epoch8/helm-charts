@@ -1,3 +1,8 @@
+# 0.8.0
+
+* Add `global.extraEnv` support in `simple-charts-common.env`: local `extraEnv`
+  overrides `global.extraEnv`, mirroring the existing `env`/`global.env` pattern
+
 # 0.7.0
 
 * Add `simple-charts-common.domain` helper: resolves hostname from `domain`

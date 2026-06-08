@@ -189,6 +189,7 @@ global: {}
   # image: {}
   # hostAliases: []
   # env: []
+  # extraEnv: []
   # replicaCount:
   # livenessProbe: {}
   # readinessProbe: {}

@@ -164,6 +164,7 @@ global: {}
   # image: {}
   # hostAliases: []
   # env: []
+  # extraEnv: []
   # resources: {}
   # autoscaling: {}
   # nodeSelector: {}

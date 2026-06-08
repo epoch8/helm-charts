@@ -116,11 +116,12 @@ If "simple-charts-common.serviceAccount.create" is false, use:
 {{/*
 Compute environment variables from global and local values.
 - .Values.env overrides .Values.global.env (use one or the other)
-- .Values.extraEnv is always appended to the base env (global or local)
+- .Values.extraEnv overrides .Values.global.extraEnv (use one or the other)
+- The resolved extraEnv is always appended to the base env
 */}}
 {{- define "simple-charts-common.env" -}}
 {{- $baseEnv := .Values.env | default .Values.global.env | default list }}
-{{- $extraEnv := .Values.extraEnv | default list }}
+{{- $extraEnv := .Values.extraEnv | default .Values.global.extraEnv | default list }}
 {{- $allEnv := concat $baseEnv $extraEnv }}
 {{- if $allEnv }}
 env:
