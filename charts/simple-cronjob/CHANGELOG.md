@@ -1,3 +1,9 @@
+# 1.9.0
+
+* Add `global.extraEnv` support: local `extraEnv` overrides `global.extraEnv`,
+  enabling umbrella charts to inject shared extra env vars across sub-charts
+* Update simple-charts-common dependency to 0.8.0
+
 # 1.8.0
 
 * Update simple-charts-common dependency to 0.7.0

@@ -331,6 +331,7 @@ global: {}
   # image: {}
   # hostAliases: []
   # env: []
+  # extraEnv: []
   # port:
   # servicePort:
   # probe: {}
