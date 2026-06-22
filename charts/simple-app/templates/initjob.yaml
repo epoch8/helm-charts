@@ -13,10 +13,7 @@ metadata:
 spec:
   template:
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "simple-charts-common.imagePullSecrets" . | nindent 6 }}
       restartPolicy: Never
       {{- with .Values.tolerations }}
       tolerations:

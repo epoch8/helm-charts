@@ -1,3 +1,7 @@
+# 1.12.1
+
+* `imagePullSecrets` in `initjob.yaml` template use `global` value
+
 # 1.12.0
 
 * Add `global.extraEnv` support: local `extraEnv` overrides `global.extraEnv`,
