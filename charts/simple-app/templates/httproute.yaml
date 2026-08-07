@@ -6,6 +6,10 @@ metadata:
   name: {{ include "simple-charts-common.fullname" . }}
   labels:
     {{- include "simple-charts-common.labels" . | nindent 4 }}
+  {{- with $gateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   parentRefs:
   - kind: Gateway

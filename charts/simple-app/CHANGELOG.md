@@ -1,3 +1,7 @@
+# 1.13.0
+
+* Add `gateway.annotations` support: custom annotations can now be set on the HTTPRoute resource
+
 # 1.12.1
 
 * `imagePullSecrets` in `initjob.yaml` template use `global` value
