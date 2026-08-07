@@ -381,6 +381,26 @@ tests:
           path: spec.parentRefs[0].sectionName
           value: https
 
+  - it: Gateway should set custom annotations on HTTPRoute
+    template: httproute.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+        annotations:
+          custom.annotation/key: value1
+          another.annotation/key: value2
+    asserts:
+      - isKind:
+          of: HTTPRoute
+      - equal:
+          path: metadata.annotations["custom.annotation/key"]
+          value: value1
+      - equal:
+          path: metadata.annotations["another.annotation/key"]
+          value: value2
+
   - it: GCPBackendPolicy should not be created when GKE integration is disabled
     template: gcpbackendpolicy.yaml
     set:

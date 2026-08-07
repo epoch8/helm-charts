@@ -218,6 +218,8 @@ gateway: {}
   # namespace: ""
   # Optional Gateway listener section to attach the HTTPRoute to
   # sectionName: ""
+  # Optional custom annotations for the HTTPRoute resource
+  # annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
