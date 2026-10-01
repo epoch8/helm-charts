@@ -21,7 +21,9 @@ spec:
     matchLabels:
       {{- include "simple-charts-common.selectorLabels" . | nindent 6 }}
   strategy:
-    {{- if (include "simple-app.needs-recreate" .) }}
+    {{- if .Values.strategy.type }}
+    type: {{ .Values.strategy.type }}
+    {{- else if (include "simple-app.needs-recreate" .) }}
     type: Recreate
     {{- else }}
     type: RollingUpdate

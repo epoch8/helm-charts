@@ -165,6 +165,12 @@ startupProbe: {}
 # Defaults to global.replicaCount or 1
 replicaCount:
 
+# Deployment strategy. If type is not set, it is selected automatically based on volumes.
+strategy: {}
+# Example:
+# strategy:
+#   type: RollingUpdate
+
 # Grace period for pod termination in seconds
 # If not set, Kubernetes default (30) will be used
 terminationGracePeriodSeconds: null
