@@ -1,3 +1,7 @@
+# 1.10.0
+
+* Add `strategy.type` to explicitly set the Deployment strategy
+
 # 1.9.0
 
 * Add `global.extraEnv` support: local `extraEnv` overrides `global.extraEnv`,
