@@ -95,6 +95,12 @@ configs: []
 # Defaults to global.replicaCount or 1
 replicaCount:
 
+# Deployment strategy. If type is not set, it is selected automatically based on volumes.
+strategy: {}
+# Example:
+# strategy:
+#   type: RollingUpdate
+
 livenessProbe: {}
   # exec:
   #   command:

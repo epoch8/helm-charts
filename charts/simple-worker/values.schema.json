@@ -232,6 +232,17 @@
                 }
             ]
         },
+        "strategy": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [
+                        "Recreate",
+                        "RollingUpdate"
+                    ]
+                }
+            }
+        },
         "serviceAccount": {
             "type": "object",
             "properties": {
