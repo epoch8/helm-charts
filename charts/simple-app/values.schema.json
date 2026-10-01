@@ -242,6 +242,17 @@
                 }
             ]
         },
+        "strategy": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [
+                        "Recreate",
+                        "RollingUpdate"
+                    ]
+                }
+            }
+        },
         "terminationGracePeriodSeconds": {
             "oneOf": [
                 {

@@ -47,6 +47,21 @@ tests:
           path: spec.strategy.type
           value: Recreate
 
+  - it: Deployment - Use explicitly configured strategy type
+    templates:
+      - deployment.yaml
+    set:
+      strategy:
+        type: RollingUpdate
+      volumes:
+        - name: data
+          size: 1Gi
+          mountPath: /data
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate
+
   - it: PVC - Do not create PVC if emptyDir is set
     templates:
       - pvc.yaml

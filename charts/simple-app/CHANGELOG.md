@@ -1,3 +1,7 @@
+# 1.14.0
+
+* Add `strategy.type` to explicitly set the Deployment strategy
+
 # 1.13.0
 
 * Add `gateway.annotations` support: custom annotations can now be set on the HTTPRoute resource
