@@ -1,3 +1,7 @@
+# 1.14.1
+
+* Fix HTTPRoute `backendRefs` port: default to `global.servicePort` or 80 like Service/Ingress (previously rendered empty when `servicePort` unset)
+
 # 1.14.0
 
 * Add `strategy.type` to explicitly set the Deployment strategy

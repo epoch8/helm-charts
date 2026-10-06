@@ -359,6 +359,47 @@ tests:
           path: metadata.name
           value: simple-simple-app
 
+  - it: Gateway HTTPRoute backendRef port should default to 80
+    template: httproute.yaml
+    set:
+      domain: example.com
+      gateway:
+        enabled: true
+        name: external-gateway
+    asserts:
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 80
+
+  - it: Gateway HTTPRoute backendRef port should fall back to global.servicePort
+    template: httproute.yaml
+    set:
+      domain: example.com
+      global:
+        servicePort: 8080
+      gateway:
+        enabled: true
+        name: external-gateway
+    asserts:
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 8080
+
+  - it: Gateway HTTPRoute backendRef port should use local servicePort
+    template: httproute.yaml
+    set:
+      domain: example.com
+      servicePort: 9000
+      global:
+        servicePort: 8080
+      gateway:
+        enabled: true
+        name: external-gateway
+    asserts:
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 9000
+
   - it: Gateway should set optional namespace and sectionName on HTTPRoute parentRef
     template: httproute.yaml
     set:
