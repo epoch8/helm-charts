@@ -25,5 +25,5 @@ spec:
   rules:
   - backendRefs:
     - name: {{ include "simple-charts-common.fullname" . }}
-      port: {{ .Values.servicePort }}
+      port: {{ .Values.servicePort | default .Values.global.servicePort | default 80 }}
 {{- end -}}
